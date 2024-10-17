@@ -17,21 +17,11 @@ Particle::Particle(const char *name, double px, double py, double pz)
     }
 }
 
-// setter
-void Particle::SetfIndex(int index)
-{
-    
-}
-
-void Particle::SetfIndex(const char *name)
-{
-}
-
 int Particle::FindParticle(const char *name)
 {
     for (int i = 0; i < fMaxNumParticleType; ++i)
     {
-        if (fParticleType[i] != nullptr && &fParticleType[i]->GetName() != name)
+        if (fParticleType[i] != nullptr && std::strcmp(fParticleType[i]->GetName(), name) == 0)
         {
             return i;
         }
@@ -56,11 +46,11 @@ void Particle::AddParticleType(const char *name, double mass, int charge, double
     ParticleType *newParticleType;
     if (width > 0)
     {
-        newParticleType = new ResonanceType(*name, mass, charge, width);
+        newParticleType = new ResonanceType(name, mass, charge, width);
     }
     else
     {
-        newParticleType = new ParticleType(*name, mass, charge);
+        newParticleType = new ParticleType(name, mass, charge);
     }
 
     for (int i = 0; i < fMaxNumParticleType; ++i)
@@ -74,6 +64,7 @@ void Particle::AddParticleType(const char *name, double mass, int charge, double
     }
 }
 
+// setter
 void Particle::SetIndex(int index)
 {
     if (index < 10 && fParticleType[index] != nullptr)
@@ -82,7 +73,7 @@ void Particle::SetIndex(int index)
     }
     else
     {
-        std::cerr << "Errore: Valore di Index non valido (superiore o pari a 10)" << std::endl;
+        std::cerr << "Errore: Valore di Index non valido (superiore o pari a 10 o contenente un'altra particella)" << std::endl;
     }
 }
 

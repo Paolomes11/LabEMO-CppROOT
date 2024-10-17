@@ -3,7 +3,7 @@
 #include <iomanip>
 
 // ctor
-ResonanceType::ResonanceType(const char &Name, double Mass, int Charge, double Width) : ParticleType(Name, Mass, Charge), fWidth(Width) {};
+ResonanceType::ResonanceType(const char *Name, double Mass, int Charge, double Width) : ParticleType(Name, Mass, Charge), fWidth(Width) {};
 
 // dtro
 

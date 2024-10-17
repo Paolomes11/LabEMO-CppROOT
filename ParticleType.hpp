@@ -4,11 +4,11 @@
 class ParticleType
 {
 public:
-    ParticleType(const char &name, double mass, int charge); // ctor
+    ParticleType(const char* name, double mass, int charge); // ctor
     virtual ~ParticleType() = default;
 
     // getters
-    const char &GetName() const;
+    const char* GetName() const;
     double GetMass() const;
     int GetCharge() const;
 
@@ -16,7 +16,7 @@ public:
     virtual void Print() const;
 
 private:
-    const char fName;
+    const char *fName;
     const double fMass;
     const int fCharge;
 };

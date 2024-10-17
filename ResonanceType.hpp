@@ -5,7 +5,7 @@
 class ResonanceType : public virtual ParticleType
 {
 public:
-    ResonanceType(const char &Name, double Mass, int Charge, double Width); // ctor
+    ResonanceType(const char *Name, double Mass, int Charge, double Width); // ctor
 
     // getter
     double GetWidth() const;

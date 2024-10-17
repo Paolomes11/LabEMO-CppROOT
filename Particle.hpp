@@ -9,12 +9,10 @@ public:
     Particle(const char *name, double px = 0., double py = 0., double pz = 0.);
 
     // setter
-    void SetfIndex(int index);
-    void SetfIndex(const char *name);
-
-    static void AddParticleType(const char *name, double mass, int charge, double width = 0.);
     void SetIndex(const char *name);
     void SetIndex(int index);
+
+    static void AddParticleType(const char *name, double mass, int charge, double width = 0.);
 
 private:
     int fIndex;
