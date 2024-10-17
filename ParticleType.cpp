@@ -2,7 +2,7 @@
 #include <iostream>
 
 // ctor
-ParticleType::ParticleType(const char &fName, double fMass, int fCharge) : fName_(fName), fMass_(fMass), fCharge_(fCharge)
+ParticleType::ParticleType(char &fName, double fMass, int fCharge) : fName_(fName), fMass_(fMass), fCharge_(fCharge)
 {
 }
 
