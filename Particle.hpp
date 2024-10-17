@@ -2,6 +2,7 @@
 #define PARTICLE_HPP
 
 #include "ParticleType.hpp"
+#include "ResonanceType.hpp"
 
 class Particle {
 public:
