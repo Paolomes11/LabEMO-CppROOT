@@ -16,9 +16,9 @@ public:
     virtual void Print() const;
 
 private:
-    char fName_;
-    double fMass_;
-    int fCharge_;
+    const char fName_;
+    const double fMass_;
+    const int fCharge_;
 };
 
 #endif
