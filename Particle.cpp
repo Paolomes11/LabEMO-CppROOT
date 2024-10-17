@@ -17,7 +17,7 @@ Particle::Particle(const char* name, double px, double py, double pz)
 
 int Particle::FindParticle(const char* fName) {
     for (int i = 0; i < fMaxNumParticleType; ++i) {
-        if (fParticleType[i] != nullptr && strcmp(fParticleType[i]->GetName(), fName) == 0) {
+        if (fParticleType[i] != nullptr && strcmp(&fParticleType[i]->GetName(), fName) == 0) {
             return i;  
         }
     }
@@ -37,9 +37,9 @@ void Particle::AddParticleType(const char* name, double mass, int charge, double
 
     ParticleType* newParticleType;
     if (width > 0) {
-        newParticleType = new ResonanceType(name, mass, charge, width);
+        newParticleType = new ResonanceType(*name, mass, charge, width);
     } else {
-        newParticleType = new ParticleType(name, mass, charge);
+        newParticleType = new ParticleType(*name, mass, charge);
     }
 
     for (int i = 0; i < fMaxNumParticleType; ++i) {
