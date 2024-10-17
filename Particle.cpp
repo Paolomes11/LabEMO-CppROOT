@@ -21,7 +21,7 @@ int Particle::FindParticle(const char *fName)
 {
     for (int i = 0; i < fMaxNumParticleType; ++i)
     {
-        if (fParticleType[i] != nullptr && strcmp(&fParticleType[i]->GetName(), fName) == 0)
+        if (fParticleType[i] != nullptr && &fParticleType[i]->GetName() != fName)
         {
             return i;
         }
