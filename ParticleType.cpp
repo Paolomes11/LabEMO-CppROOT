@@ -7,9 +7,6 @@ ParticleType::ParticleType(const char* name, double mass, int charge) : fName(na
 {
 }
 
-// dtor
-// ParticleType::~ParticleType
-
 // getters
 int ParticleType::GetCharge() const
 {

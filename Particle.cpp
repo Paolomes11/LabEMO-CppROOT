@@ -84,12 +84,16 @@ void Particle::SetIndex(const char *name)
 
 void Particle::PrintParticleTypes()
 {
-    for(int i = 0; i < fMaxNumParticleType; ++i){
+    for (int i = 0; i < fMaxNumParticleType && fParticleType[i] != nullptr; ++i)
+    {
         std::cout << "Indice: " << i << std::endl;
         fParticleType[i]->Print();
+        std::cout << std::endl;
     }
 }
 
-void Particle::PrintParticleProperties(){
-    std::cout << '\n' << std::endl;
+void Particle::PrintParticleProperties()
+{
+    std::cout << '\n'
+              << std::endl;
 }
