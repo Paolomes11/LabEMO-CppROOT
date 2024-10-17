@@ -2,31 +2,31 @@
 #include <iostream>
 #include <cstring>  
 
-ParticleType* Particle::fParticleType_[fMaxNumParticleType] = {nullptr};
+ParticleType* Particle::fParticleType[fMaxNumParticleType] = {nullptr};
 int Particle::fNParticleType = 0;  
 
-Particle::Particle(const char* fName, double fPx, double fPy, double fPz) 
-    : fPx_(fPx), fPy_(fPy), fPz_(fPz) {
+Particle::Particle(const char* name, double px, double py, double pz) 
+    : fPx(px), fPy(py), fPz(pz) {
     
-    fIndex_ = FindParticle(fName);
+    fIndex = FindParticle(name);
 
-    if (fIndex_ == -1) {
-        std::cerr << "Errore: tipo di particella '" << fName << "' non trovato!" << std::endl;
+    if (fIndex == -1) {
+        std::cerr << "Errore: tipo di particella '" << name << "' non trovato!" << std::endl;
     }
 }
 
 int Particle::FindParticle(const char* fName) {
     for (int i = 0; i < fMaxNumParticleType; ++i) {
-        if (fParticleType_[i] != nullptr && strcmp(fParticleType_[i]->GetName(), fName) == 0) {
+        if (fParticleType[i] != nullptr && strcmp(fParticleType[i]->GetName(), fName) == 0) {
             return i;  
         }
     }
     return -1;  
 }
 
-void Particle::AddParticleType(const char* nome, double massa, int carica, double larghezza) {
-    if (FindParticle(nome) != -1) {
-        std::cerr << "Errore: tipo di particella '" << nome << "' già presente!" << std::endl;  
+void Particle::AddParticleType(const char* name, double mass, int charge, double width) {
+    if (FindParticle(name) != -1) {
+        std::cerr << "Errore: tipo di particella '" << name << "' già presente!" << std::endl;  
         return;  
     }
 
@@ -36,15 +36,15 @@ void Particle::AddParticleType(const char* nome, double massa, int carica, doubl
     }
 
     ParticleType* newParticleType;
-    if (larghezza > 0) {
-        newParticleType = new ResonanceType(nome, massa, carica, larghezza);
+    if (width > 0) {
+        newParticleType = new ResonanceType(name, mass, charge, width);
     } else {
-        newParticleType = new ParticleType(nome, massa, carica);
+        newParticleType = new ParticleType(name, mass, charge);
     }
 
     for (int i = 0; i < fMaxNumParticleType; ++i) {
-        if (fParticleType_[i] == nullptr) {  
-            fParticleType_[i] = newParticleType;  
+        if (fParticleType[i] == nullptr) {  
+            fParticleType[i] = newParticleType;  
             fNParticleType++;  
             return;  
         }

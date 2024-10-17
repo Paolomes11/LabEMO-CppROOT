@@ -6,18 +6,18 @@
 
 class Particle {
 public:
-    Particle(const char* fName, double fPx = 0., double fPy = 0., double fPz = 0.);
+    Particle(const char* name, double px = 0., double py = 0., double pz = 0.);
 
-    static void AddParticleType(const char* nome, double massa, int carica, double larghezza = 0.);
+    static void AddParticleType(const char* name, double mass, int charge, double width = 0.);
 
 private:
-    int fIndex_;  
-    double fPx_; 
-    double fPy_;  
-    double fPz_;  
+    int fIndex;  
+    double fPx; 
+    double fPy;  
+    double fPz;  
 
     static const int fMaxNumParticleType = 10;  
-    static ParticleType* fParticleType_[fMaxNumParticleType];  
+    static ParticleType* fParticleType[fMaxNumParticleType];  
     static int fNParticleType;  
 
     static int FindParticle(const char* name);
