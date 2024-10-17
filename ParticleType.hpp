@@ -8,7 +8,7 @@ public:
     virtual ~ParticleType();
 
     // getters
-    char &GetName() const;
+    const char &GetName() const;
     double GetMass() const;
     int GetCharge() const;
 
