@@ -17,11 +17,21 @@ Particle::Particle(const char *name, double px, double py, double pz)
     }
 }
 
-int Particle::FindParticle(const char *fName)
+// setter
+void Particle::SetfIndex(int index)
+{
+    
+}
+
+void Particle::SetfIndex(const char *name)
+{
+}
+
+int Particle::FindParticle(const char *name)
 {
     for (int i = 0; i < fMaxNumParticleType; ++i)
     {
-        if (fParticleType[i] != nullptr && &fParticleType[i]->GetName() != fName)
+        if (fParticleType[i] != nullptr && &fParticleType[i]->GetName() != name)
         {
             return i;
         }
