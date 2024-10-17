@@ -3,21 +3,23 @@
 
 #include "ParticleType.hpp"
 
-// class Particle : public ParticleType {
 class Particle {
 public:
-Particle(int fIndex, double impulso_x, double impulso_y, double impulso_z);
+    Particle(const char* fName, double fPx = 0., double fPy = 0., double fPz = 0.);
 
-static void AddParticleType(ParticleType* particleType);
+    static void AddParticleType(const char* nome, double massa, int carica, double larghezza = 0.);
 
 private:
-int fIndex_;
-double impulso_x_;
-double impulso_y_;
-double impulso_z_;
+    int fIndex_;  
+    double fPx_; 
+    double fPy_;  
+    double fPz_;  
 
-static ParticleType* particleTypes_[6];
-static int FindParticle(const char*name);
+    static const int fMaxNumParticleType = 10;  
+    static ParticleType* fParticleType_[fMaxNumParticleType];  
+    static int fNParticleType;  
+
+    static int FindParticle(const char* name);
 };
 
 #endif
