@@ -6,7 +6,7 @@ class ResonanceType : public ParticleType
 {
     public:
     ResonanceType(char &fName, double fMass, int fCharge, double fWidth); //ctor
-    virtual ~ResonanceType(); //dtor
+    virtual ~ResonanceType() = default; //dtor
     
     //getter
     double GetWidth() const;

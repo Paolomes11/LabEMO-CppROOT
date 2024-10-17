@@ -5,7 +5,7 @@ class ParticleType
 {
 public:
     ParticleType(char &fName, double fMass, int fCharge); // ctor
-    virtual ~ParticleType();
+    virtual ~ParticleType() = default;
 
     // getters
     const char &GetName() const;
