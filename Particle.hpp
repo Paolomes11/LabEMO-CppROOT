@@ -13,6 +13,8 @@ public:
     void SetfIndex(const char *name);
 
     static void AddParticleType(const char *name, double mass, int charge, double width = 0.);
+    void SetIndex(const char *name);
+    void SetIndex(int index);
 
 private:
     int fIndex;
