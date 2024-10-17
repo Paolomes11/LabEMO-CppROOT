@@ -7,6 +7,7 @@ class ResonanceType : public ParticleType
     public:
     ResonanceType(double fWidth);
     double GetWidth() const;
+    
     protected:
 
     private:
