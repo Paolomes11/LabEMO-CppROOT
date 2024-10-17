@@ -63,3 +63,20 @@ void Particle::AddParticleType(const char *name, double mass, int charge, double
         }
     }
 }
+
+void Particle::SetIndex(int index)
+{
+    if (index < 10 && fParticleType[index] != nullptr)
+    {
+        fIndex = index;
+    }
+    else
+    {
+        std::cerr << "Errore: Valore di Index non valido (superiore o pari a 10)" << std::endl;
+    }
+}
+
+void Particle::SetIndex(const char *name)
+{
+    fIndex = FindParticle(name);
+}
