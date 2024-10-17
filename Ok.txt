@@ -1,5 +1,6 @@
 Some useful comand
 g++ ParticleType.cpp ResonanceType.cpp Particle.cpp main_test1.cpp -Wall -Wextra -o test1
+cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug
 
 Osservazioni:
 1. Forse è possibile rimuovere FindParticle() e sostituirlo con una analoga nella standard library
