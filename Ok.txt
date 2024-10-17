@@ -1,2 +1,2 @@
-Just to show bolla bollo
-g++ ParticleType.cpp ResonanceType.cpp main_test1.cpp -Wall -Wextra -o test1
+Some useful comand
+g++ ParticleType.cpp ResonanceType.cpp Particle.cpp main_test1.cpp -Wall -Wextra -o test1
