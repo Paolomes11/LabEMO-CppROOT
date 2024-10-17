@@ -25,5 +25,6 @@ int main()
     Particle::AddParticleType("pullo", 1.34, +2, 2.);
     Particle::AddParticleType("pullo", 1.34, +2, 2.);
 
+    Particle::PrintParticleTypes();
     return 0;
 }

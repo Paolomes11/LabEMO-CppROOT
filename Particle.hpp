@@ -14,6 +14,9 @@ public:
 
     static void AddParticleType(const char *name, double mass, int charge, double width = 0.);
 
+    static void PrintParticleTypes();
+    void PrintParticleProperties();
+
 private:
     int fIndex;
     double fPx;
