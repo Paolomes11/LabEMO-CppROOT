@@ -2,7 +2,7 @@
 #include <iostream>
 
 //ctor
-ResonanceType::ResonanceType(const char &fName, double fMass, int fCharge, double fWidth): fWidth_{fWidth}, ParticleType(&fName, fMass, fCharge) {};
+ResonanceType::ResonanceType(const char &fName, double fMass, int fCharge, double fWidth): ParticleType(&fName, fMass, fCharge), fWidth_(fWidth) {};
 
 //dtro
 
@@ -12,7 +12,7 @@ double ResonanceType::GetWidth() const{
 }
 
 //printer ovveride
-void ResonanceType::Print() const override{
+void ResonanceType::Print() const{
     ParticleType::Print();
-    std::cout "fWidth: " << fWidth_ <<std::endl;
+    std::cout << "fWidth: " << fWidth_ <<std::endl;
 }
