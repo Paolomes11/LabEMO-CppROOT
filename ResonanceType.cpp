@@ -7,5 +7,5 @@ double ResonanceType::GetWidth() const{
 }
 
 void ResonanceType::Print() const override{
-    return;
+    std::cout << "fName: " << fName_ << "fCharge: " << fCharge_ << "fMass: " << fMass_ << "fWidth: " << fWidth_ <<std::endl;
 }
