@@ -11,7 +11,7 @@ class ResonanceType : public ParticleType
     //getter
     double GetWidth() const;
     
-    //print attributes
+    //print attributes override
     void Print() const override;
 
     private:
