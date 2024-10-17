@@ -15,5 +15,5 @@ double ResonanceType::GetWidth() const{
 //printer ovveride
 void ResonanceType::Print() const{
     ParticleType::Print();
-    std::cout << std::left << std::setw(8) << "fWidth: " << std::setw(8) << fWidth_ << '\n' << std::endl;
+    std::cout << std::left << std::setw(8) << "fWidth: " << std::setw(8) << fWidth_ << std::endl;
 }
