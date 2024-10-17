@@ -15,6 +15,6 @@ int main()
 
     Particle::AddParticleType("pollo", 18.34, +1, 22.);
     Particle::AddParticleType("pollo", 18.34, +1, 22.);
-
+    Particle::PrintParticleTypes();
     return 0;
 }

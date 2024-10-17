@@ -16,6 +16,8 @@ public:
     void SetIndex(const char *name);
     void SetIndex(int index);
 
+    static void PrintParticleTypes();
+
 private:
     int fIndex;
     double fPx;
