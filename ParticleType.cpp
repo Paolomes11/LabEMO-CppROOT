@@ -1,5 +1,6 @@
 #include "ParticleType.hpp"
 #include <iostream>
+#include <iomanip>
 
 // ctor
 ParticleType::ParticleType(char &fName, double fMass, int fCharge) : fName_(fName), fMass_(fMass), fCharge_(fCharge)
@@ -28,5 +29,5 @@ const char &ParticleType::GetName() const
 // printer
 void ParticleType::Print() const
 {
-    std::cout << "fName: " << fName_ << "fCharge: " << fCharge_ << "fMass: " << fMass_ << std::endl;
+    std::cout << std::left << std::setw(8) << "fName: " << fName_ << std::setw(8) << "fCharge: " << fCharge_ << std::setw(8) << "fMass: " << fMass_ << std::endl;
 }
