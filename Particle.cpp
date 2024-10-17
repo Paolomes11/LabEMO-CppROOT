@@ -97,3 +97,7 @@ void Particle::PrintParticleTypes()
         fParticleType[i]->Print();
     }
 }
+
+void Particle::PrintParticleProperties(){
+    std::cout << '\n' << std::endl;
+}

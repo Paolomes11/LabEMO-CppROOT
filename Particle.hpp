@@ -17,6 +17,7 @@ public:
     void SetIndex(int index);
 
     static void PrintParticleTypes();
+    void PrintParticleProperties();
 
 private:
     int fIndex;
