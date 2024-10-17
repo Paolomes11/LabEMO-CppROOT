@@ -1,4 +1,4 @@
-#include "ResonanceType.hpp"
+#include "Particle.hpp"
 
 int main() {
     char name1 = 'N';
@@ -10,6 +10,8 @@ int main() {
     for(int i= 0; i < 2; ++i){
         p[i]->Print();
     }
+
+    Particle::AddParticleType("pollo", 18.34, +1, 22.);
 
     return 0;
     }
