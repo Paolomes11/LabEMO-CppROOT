@@ -4,7 +4,7 @@
 class ParticleType
 {
 public:
-    ParticleType(const char &fName, double fMass, int fCharge); // ctor
+    ParticleType(char &fName, double fMass, int fCharge); // ctor
     virtual ~ParticleType();
 
     // getters
