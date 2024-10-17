@@ -2,7 +2,7 @@
 #include <iostream>
 
 //ctor
-ResonanceType::ResonanceType(const char &fName, double fMass, int fCharge, double fWidth): ParticleType(&fName, fMass, fCharge), fWidth_(fWidth) {};
+ResonanceType::ResonanceType(char &fName, double fMass, int fCharge, double fWidth): ParticleType(fName, fMass, fCharge), fWidth_(fWidth) {};
 
 //dtro
 
