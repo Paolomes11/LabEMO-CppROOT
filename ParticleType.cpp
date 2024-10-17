@@ -29,5 +29,5 @@ const char &ParticleType::GetName() const
 // printer
 void ParticleType::Print() const
 {
-    std::cout << std::left << std::setw(8) << "fName: " << std::setw(8) << fName << std::setw(8) << "fCharge: " << std::setw(8) << fCharge << std::setw(8) << "fMass: " << std::setw(8) << fMass << std::endl;
+    std::cout << '\n' << std::left << std::setw(8) << "fName: " << std::setw(8) << fName << '\n' << std::setw(8) << "fCharge: " << std::setw(8) << fCharge << '\n' << std::setw(8) << "fMass: " << std::setw(8) << fMass << std::endl;
 }
