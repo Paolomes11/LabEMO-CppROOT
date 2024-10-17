@@ -5,10 +5,14 @@
 class ResonanceType : public ParticleType
 {
     public:
-    ResonanceType(double fWidth);
+    ResonanceType(double fWidth); //ctor
+    virtual ~ResonanceType(); //des
+    
+    //getter
     double GetWidth() const;
     
-    protected:
+    //print attributes
+    void Print() const override;
 
     private:
     double const fWidth_;
