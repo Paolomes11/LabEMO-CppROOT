@@ -1,13 +1,11 @@
-#include "ParticleType.hpp"
 #include "ResonanceType.hpp"
 
 int main() {
-    ParticleType * p[2];
-    p[0] = new ParticleType("Name1", 14.5, +1);
-    p[1] = new ResonanceType("Name2", 17.5, -1, 24.3);
+    const char name1 = 'N';
+    ParticleType proton(name1, 14.5, 1);
 
     for(int i= 0; i < 2; ++i){
-        p[i].Print();
+        proton.Print();
     }
 
     return 0;

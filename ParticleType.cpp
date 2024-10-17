@@ -2,7 +2,7 @@
 #include <iostream>
 
 // ctor
-ParticleType::ParticleType(char &fName, double fMass, int fCharge) : fName_(fName), fMass_(fMass), fCharge_(fCharge)
+ParticleType::ParticleType(const char &name, double mass, int charge) : fName(name), fMass(mass), fCharge(charge)
 {
 }
 
@@ -12,21 +12,21 @@ ParticleType::ParticleType(char &fName, double fMass, int fCharge) : fName_(fNam
 // getters
 int ParticleType::GetCharge() const
 {
-    return fCharge_;
+    return fCharge;
 }
 
 double ParticleType::GetMass() const
 {
-    return fMass_;
+    return fMass;
 }
 
 const char &ParticleType::GetName() const
 {
-    return fName_;
+    return fName;
 }
 
 // printer
 void ParticleType::Print() const
 {
-    std::cout << "fName: " << fName_ << "fCharge: " << fCharge_ << "fMass: " << fMass_ << std::endl;
+    std::cout << "fName: " << fName << "fCharge: " << fCharge << "fMass: " << fMass << std::endl;
 }

@@ -2,11 +2,10 @@
 #define RESONANCETYPE_HPP
 #include "ParticleType.hpp"
 
-class ResonanceType : public ParticleType
+class ResonanceType : public virtual ParticleType
 {
     public:
-    ResonanceType(char &fName, double fMass, int fCharge, double fWidth); //ctor
-    virtual ~ResonanceType(); //dtor
+    ResonanceType(const char &Name, double Mass, int Charge, double Width); //ctor
     
     //getter
     double GetWidth() const;
@@ -15,7 +14,7 @@ class ResonanceType : public ParticleType
     void Print() const override;
 
     private:
-    double const fWidth_;
+    double const fWidth;
 };
 
 #endif
