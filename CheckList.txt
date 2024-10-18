@@ -4,3 +4,4 @@ cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug
 
 Osservazioni:
 1. Forse è possibile rimuovere FindParticle() e sostituirlo con una analoga nella standard library
+2. Bisogna fare un file di TEST, così è troppo lungo e inefficiente
