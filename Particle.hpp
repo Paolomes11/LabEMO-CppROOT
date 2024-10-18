@@ -18,11 +18,28 @@ class Particle
   static void PrintParticleTypes();
   void PrintParticleProperties();
 
+  // getters
+  double GetPx() const;
+  double GetPy() const;
+  double GetPz() const;
+
+  double GetMass() const;
+
  private:
   int fIndex;
   double fPx;
   double fPy;
   double fPz;
+
+  // Impulse setters
+  void SetP(double px, double py, double pz);
+
+  // Invariant mass and Energy
+  double fEnergy() const;
+  double InvMass(Particle& p) const;
+
+  // calculate the squared module of a vector
+  double fModule2(double x, double y, double z) const;
 
   static const int fMaxNumParticleType = 10;
   static ParticleType* fParticleType[fMaxNumParticleType];

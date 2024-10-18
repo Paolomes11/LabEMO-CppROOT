@@ -1,4 +1,5 @@
 #include "Particle.hpp"
+#include "cmath"
 #include <cstring>
 #include <iomanip>
 #include <iostream>
@@ -93,9 +94,78 @@ void Particle::PrintParticleProperties()
               << fIndex << '\n'
               << std::setw(8) << "Name: " << std::setw(8)
               << fParticleType[fIndex]->GetName() << '\n'
-              << std::setw(8) << "Impulse: " << fPx << ", " << fPy << ", "
+              << std::setw(8) << "Impulse (xyz): " << fPx << ", " << fPy << ", "
               << fPz << std::endl;
   } else {
-    std::cout << "ERROR: The given particle doesn't exist!" << '\n' << '\n';
+    std::cerr << "ERROR: The given particle doesn't exist!" << '\n' << '\n';
   }
+}
+
+// getters for impulse
+double Particle::GetPx() const
+{
+  if (fIndex != -1) {
+    return fPx; // TO TEST
+  } else {
+    std::cerr << "ERROR: The given particle doesn't exist (Px)" << '\n' << '\n';
+    return -1;
+  }
+}
+
+double Particle::GetPy() const
+{
+  if (fIndex != -1) {
+    return fPy; // TO TEST
+  } else {
+    std::cerr << "ERROR: The given particle doesn't exist (Py)" << '\n' << '\n';
+    return -1;
+  }
+}
+
+double Particle::GetPz() const
+{
+  if (fIndex != -1) {
+    return fPz; // TO TEST
+  } else {
+    std::cerr << "ERROR: The given particle doesn't exist (Pz)" << '\n' << '\n';
+    return -1;
+  }
+}
+
+double Particle::GetMass() const
+{
+  if (fIndex != -1) {
+    return fParticleType[fIndex]->GetMass(); // TO TEST
+  } else {
+    std::cerr << "ERROR: The given particle doesn't exist (Mass)" << '\n'
+              << '\n';
+    return -1;
+  }
+}
+
+// Impulse setters
+void Particle::SetP(double px, double py, double pz)
+{
+  fPx = px;
+  fPy = py;
+  fPz = pz;
+}
+
+// Energy and invariant mass
+double Particle::fEnergy() const // TO TEST
+{
+  return sqrt(pow(fParticleType[fIndex]->GetMass(), 2)
+              + fModule2(fPx, fPy, fPz));
+}
+
+double Particle::InvMass(Particle& p) const // TO TEST
+{
+  return sqrt(pow(fEnergy() + p.fEnergy(), 2)
+              - fModule2(fPx + p.fPx, fPy + p.fPy, fPz + p.fPz));
+}
+
+// Squared module
+double Particle::fModule2(double x, double y, double z) const
+{ // TO TEST
+  return x * x + y * y + z * z;
 }

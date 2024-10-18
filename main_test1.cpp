@@ -13,6 +13,7 @@ int main()
     delete p[i]; // TO RETHINK AFTER
   }
 
+  // test for error managemente of adding particle
   Particle::AddParticleType("a", 18.34, +1, 22.); // TO FIX THE NUMBER OF CHARS
   Particle::AddParticleType("e", 18.34, +1, 22.);
   Particle::AddParticleType("i", 1.34, +2, 2.);
@@ -25,13 +26,18 @@ int main()
   Particle::AddParticleType("u", 1.34, +2, 2.);
   Particle::AddParticleType("u", 1.34, +2, 2.);
 
+  // test for some member functions of Particle
   Particle::PrintParticleTypes();
 
   Particle* particle[2];
   particle[0] = new Particle("pollo");
-  particle[1] = new Particle("a");
+  particle[1] = new Particle("a", 0., 1., 2.);
   for (int i = 0; i < 2; ++i) {
     particle[i]->PrintParticleProperties();
+    particle[i]->GetPx();
+    particle[i]->GetPy();
+    particle[i]->GetPz();
+    particle[i]->GetMass();
     delete particle[i];
   }
 
