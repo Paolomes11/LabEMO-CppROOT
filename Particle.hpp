@@ -5,29 +5,30 @@
 
 class Particle
 {
-public:
-    Particle(const char *name, double px = 0., double py = 0., double pz = 0.);
+ public:
+  Particle(const char* name, double px = 0., double py = 0., double pz = 0.);
 
-    // setter
-    void SetIndex(const char *name);
-    void SetIndex(int index);
+  // setter
+  void SetIndex(const char* name);
+  void SetIndex(int index);
 
-    static void AddParticleType(const char *name, double mass, int charge, double width = 0.);
+  static void AddParticleType(const char* name, double mass, int charge,
+                              double width = 0.);
 
-    static void PrintParticleTypes();
-    void PrintParticleProperties();
+  static void PrintParticleTypes();
+  void PrintParticleProperties();
 
-private:
-    int fIndex;
-    double fPx;
-    double fPy;
-    double fPz;
+ private:
+  int fIndex;
+  double fPx;
+  double fPy;
+  double fPz;
 
-    static const int fMaxNumParticleType = 10;
-    static ParticleType *fParticleType[fMaxNumParticleType];
-    static int fNParticleType;
+  static const int fMaxNumParticleType = 10;
+  static ParticleType* fParticleType[fMaxNumParticleType];
+  static int fNParticleType;
 
-    static int FindParticle(const char *name);
+  static int FindParticle(const char* name);
 };
 
 #endif

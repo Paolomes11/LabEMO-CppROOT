@@ -4,17 +4,18 @@
 
 class ResonanceType : public virtual ParticleType
 {
-public:
-    ResonanceType(const char *Name, double Mass, int Charge, double Width); // ctor
+ public:
+  ResonanceType(const char* Name, double Mass, int Charge,
+                double Width); // ctor
 
-    // getter
-    double GetWidth() const;
+  // getter
+  double GetWidth() const;
 
-    // print attributes override
-    void Print() const override;
+  // print attributes override
+  void Print() const override;
 
-private:
-    double const fWidth;
+ private:
+  double const fWidth;
 };
 
 #endif
