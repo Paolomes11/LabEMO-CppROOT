@@ -23,6 +23,8 @@ string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-o
 
 add_executable(test1 main_test1.cpp Particle.cpp ParticleType.cpp ResonanceType.cpp)
 
+add_executable(test.t test_file.cpp Particle.cpp ParticleType.cpp ResonanceType.cpp)
+add_test(NAME test.t COMMAND test.t)
 
 # se il testing e' abilitato...
 #   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
