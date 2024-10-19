@@ -36,12 +36,12 @@ void Particle::AddParticleType(const char* name, double mass, int charge,
 {
   if (FindParticle(name) != -1) {
     std::cerr << "ERROR: particle type '" << name << "' already exist!"
-              << std::endl;
+              << '\n' << '\n';
     return;
   }
 
   if (fNParticleType >= fMaxNumParticleType) {
-    std::cerr << "ERROR: max number of types reached!" << std::endl;
+    std::cerr << "ERROR: max number of types reached!" << '\n' << '\n';
     return;
   }
 
