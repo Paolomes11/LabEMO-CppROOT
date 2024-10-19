@@ -18,6 +18,12 @@ class Particle
   static void PrintParticleTypes();
   void PrintParticleProperties();
 
+  // Impulse setters
+  void SetP(double px, double py, double pz);
+
+  // Invariant mass and Energy
+  double fEnergy() const;
+  double InvMass(Particle& p) const;
   // getters
   double GetPx() const;
   double GetPy() const;
@@ -30,13 +36,6 @@ class Particle
   double fPx;
   double fPy;
   double fPz;
-
-  // Impulse setters
-  void SetP(double px, double py, double pz);
-
-  // Invariant mass and Energy
-  double fEnergy() const;
-  double InvMass(Particle& p) const;
 
   // calculate the squared module of a vector
   double fModule2(double x, double y, double z) const;
