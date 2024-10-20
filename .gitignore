@@ -1,3 +1,45 @@
+# Build directories
 build*
-.vscode
-test?
+bin/
+obj/
+Debug/
+Release/
+*.exe
+*.out
+
+# Visual Studio Code settings
+.vscode/
+
+# Test directories
+test/
+tests/
+test?/
+
+# CMake files
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Compiled object files
+*.o
+*.obj
+
+# Core dumps
+core
+
+# IDE settings
+*.sublime-workspace
+*.sublime-project
+
+# Other system files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*~
