@@ -5,7 +5,7 @@
 #include <iostream>
 
 std::unique_ptr<ParticleType> Particle::fParticleType[fMaxNumParticleType] = {nullptr};
-int Particle::fNParticleType = 0;
+int Particle::fNParticleType                                               = 0;
 
 Particle::Particle(const char* name, double px, double py, double pz)
     : fPx(px)
@@ -76,19 +76,27 @@ void Particle::SetIndex(const char* name)
 
 void Particle::PrintParticleTypes()
 {
+  std::cout << "=============================\n";
+  std::cout << "  Particle Types\n";
+  std::cout << "=============================\n";
   for (int i = 0; i < fMaxNumParticleType && fParticleType[i] != nullptr; ++i) {
-    std::cout << "Index: " << i;
+    std::cout << "Index: " << i << '\n';
     fParticleType[i]->Print();
-    std::cout << std::endl;
+    std::cout << "-----------------------------\n";
   }
+  std::cout << "=============================\n";
 }
 
 void Particle::PrintParticleProperties()
 {
   if (fIndex != -1) {
-    std::cout << std::left << std::setw(8) << "Index: " << std::setw(8) << fIndex << '\n'
-              << std::setw(8) << "Name: " << std::setw(8) << fParticleType[fIndex]->GetName() << '\n'
-              << std::setw(8) << "Impulse (xyz): " << fPx << ", " << fPy << ", " << fPz << std::endl;
+    std::cout << "=============================\n";
+    std::cout << "  Particle Properties\n";
+    std::cout << "=============================\n";
+    std::cout << std::left << std::setw(20) << "Index:" << fIndex << '\n'
+              << std::left << std::setw(20) << "Name:" << fParticleType[fIndex]->GetName() << '\n'
+              << std::left << std::setw(20) << "Impulse (Px, Py, Pz):" << fPx << ", " << fPy << ", " << fPz << '\n'
+              << "=============================\n";
   } else {
     std::cerr << "ERROR: The given particle doesn't exist!" << '\n' << '\n';
   }
