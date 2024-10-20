@@ -1,11 +1,11 @@
 #include "Particle.hpp"
-#include "cmath"
+#include <cmath>
 #include <cstring>
 #include <iomanip>
 #include <iostream>
 
-ParticleType* Particle::fParticleType[fMaxNumParticleType] = {nullptr};
-int Particle::fNParticleType                               = 0;
+std::unique_ptr<ParticleType> Particle::fParticleType[fMaxNumParticleType] = {nullptr};
+int Particle::fNParticleType = 0;
 
 Particle::Particle(const char* name, double px, double py, double pz)
     : fPx(px)
@@ -15,28 +15,24 @@ Particle::Particle(const char* name, double px, double py, double pz)
   fIndex = FindParticle(name);
 
   if (fIndex == -1) {
-    std::cerr << "ERROR: particle type '" << name << "' not found!"
-              << std::endl;
+    std::cerr << "ERROR: particle type '" << name << "' not found!" << std::endl;
   }
 }
 
 int Particle::FindParticle(const char* name)
 {
   for (int i = 0; i < fMaxNumParticleType; ++i) {
-    if (fParticleType[i] != nullptr
-        && std::strcmp(fParticleType[i]->GetName(), name) == 0) {
+    if (fParticleType[i] != nullptr && std::strcmp(fParticleType[i]->GetName(), name) == 0) {
       return i;
     }
   }
   return -1;
 }
 
-void Particle::AddParticleType(const char* name, double mass, int charge,
-                               double width)
+void Particle::AddParticleType(const char* name, double mass, int charge, double width)
 {
   if (FindParticle(name) != -1) {
-    std::cerr << "ERROR: particle type '" << name << "' already exist!"
-              << '\n' << '\n';
+    std::cerr << "ERROR: particle type '" << name << "' already exist!" << '\n' << '\n';
     return;
   }
 
@@ -45,16 +41,16 @@ void Particle::AddParticleType(const char* name, double mass, int charge,
     return;
   }
 
-  ParticleType* newParticleType;
+  std::unique_ptr<ParticleType> newParticleType;
   if (width > 0) {
-    newParticleType = new ResonanceType(name, mass, charge, width);
+    newParticleType = std::make_unique<ResonanceType>(name, mass, charge, width);
   } else {
-    newParticleType = new ParticleType(name, mass, charge);
+    newParticleType = std::make_unique<ParticleType>(name, mass, charge);
   }
 
   for (int i = 0; i < fMaxNumParticleType; ++i) {
     if (fParticleType[i] == nullptr) {
-      fParticleType[i] = newParticleType;
+      fParticleType[i] = std::move(newParticleType);
       fNParticleType++;
       return;
     }
@@ -90,12 +86,9 @@ void Particle::PrintParticleTypes()
 void Particle::PrintParticleProperties()
 {
   if (fIndex != -1) {
-    std::cout << std::left << std::setw(8) << "Index: " << std::setw(8)
-              << fIndex << '\n'
-              << std::setw(8) << "Name: " << std::setw(8)
-              << fParticleType[fIndex]->GetName() << '\n'
-              << std::setw(8) << "Impulse (xyz): " << fPx << ", " << fPy << ", "
-              << fPz << std::endl;
+    std::cout << std::left << std::setw(8) << "Index: " << std::setw(8) << fIndex << '\n'
+              << std::setw(8) << "Name: " << std::setw(8) << fParticleType[fIndex]->GetName() << '\n'
+              << std::setw(8) << "Impulse (xyz): " << fPx << ", " << fPy << ", " << fPz << std::endl;
   } else {
     std::cerr << "ERROR: The given particle doesn't exist!" << '\n' << '\n';
   }
@@ -104,32 +97,17 @@ void Particle::PrintParticleProperties()
 // getters for impulse
 double Particle::GetPx() const
 {
-  if (fIndex != -1) {
-    return fPx; // TO TEST
-  } else {
-    std::cerr << "ERROR: The given particle doesn't exist (Px)" << '\n' << '\n';
-    return -1;
-  }
+  return fIndex != -1 ? fPx : (std::cerr << "ERROR: The given particle doesn't exist (Px)" << std::endl, -1);
 }
 
 double Particle::GetPy() const
 {
-  if (fIndex != -1) {
-    return fPy; // TO TEST
-  } else {
-    std::cerr << "ERROR: The given particle doesn't exist (Py)" << '\n' << '\n';
-    return -1;
-  }
+  return fIndex != -1 ? fPy : (std::cerr << "ERROR: The given particle doesn't exist (Px)" << std::endl, -1);
 }
 
 double Particle::GetPz() const
 {
-  if (fIndex != -1) {
-    return fPz; // TO TEST
-  } else {
-    std::cerr << "ERROR: The given particle doesn't exist (Pz)" << '\n' << '\n';
-    return -1;
-  }
+  return fIndex != -1 ? fPz : (std::cerr << "ERROR: The given particle doesn't exist (Px)" << std::endl, -1);
 }
 
 double Particle::GetMass() const
@@ -137,8 +115,7 @@ double Particle::GetMass() const
   if (fIndex != -1) {
     return fParticleType[fIndex]->GetMass(); // TO TEST
   } else {
-    std::cerr << "ERROR: The given particle doesn't exist (Mass)" << '\n'
-              << '\n';
+    std::cerr << "ERROR: The given particle doesn't exist (Mass)" << '\n' << '\n';
     return -1;
   }
 }
@@ -154,14 +131,12 @@ void Particle::SetP(double px, double py, double pz)
 // Energy and invariant mass
 double Particle::fEnergy() const // TO TEST
 {
-  return sqrt(pow(fParticleType[fIndex]->GetMass(), 2)
-              + fModule2(fPx, fPy, fPz));
+  return sqrt(pow(fParticleType[fIndex]->GetMass(), 2) + fModule2(fPx, fPy, fPz));
 }
 
 double Particle::InvMass(Particle& p) const // TO TEST
 {
-  return sqrt(pow(fEnergy() + p.fEnergy(), 2)
-              - fModule2(fPx + p.fPx, fPy + p.fPy, fPz + p.fPz));
+  return sqrt(pow(fEnergy() + p.fEnergy(), 2) - fModule2(fPx + p.fPx, fPy + p.fPy, fPz + p.fPz));
 }
 
 // Squared module

@@ -3,8 +3,7 @@
 #include <iostream>
 
 // ctor
-ResonanceType::ResonanceType(const char* Name, double Mass, int Charge,
-                             double Width)
+ResonanceType::ResonanceType(const char* Name, double Mass, int Charge, double Width)
     : ParticleType(Name, Mass, Charge)
     , fWidth(Width) {};
 
@@ -20,6 +19,5 @@ double ResonanceType::GetWidth() const
 void ResonanceType::Print() const
 {
   ParticleType::Print();
-  std::cout << std::left << std::setw(8) << "fWidth: " << std::setw(8) << fWidth
-            << std::endl;
+  std::cout << std::left << std::setw(8) << "fWidth: " << std::setw(8) << fWidth << std::endl;
 }

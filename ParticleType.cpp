@@ -29,8 +29,7 @@ const char* ParticleType::GetName() const
 void ParticleType::Print() const
 {
   std::cout << '\n'
-            << std::left << std::setw(8) << "fName: " << std::setw(8) << *fName
-            << '\n'
+            << std::left << std::setw(8) << "fName: " << std::setw(8) << *fName << '\n'
             << std::setw(8) << "fCharge: " << std::setw(8) << fCharge << '\n'
             << std::setw(8) << "fMass: " << std::setw(8) << fMass << std::endl;
 }

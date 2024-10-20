@@ -2,6 +2,7 @@
 #define PARTICLE_HPP
 
 #include "ResonanceType.hpp"
+#include <memory>
 
 class Particle
 {
@@ -12,8 +13,7 @@ class Particle
   void SetIndex(const char* name);
   void SetIndex(int index);
 
-  static void AddParticleType(const char* name, double mass, int charge,
-                              double width = 0.);
+  static void AddParticleType(const char* name, double mass, int charge, double width = 0.);
 
   static void PrintParticleTypes();
   void PrintParticleProperties();
@@ -24,11 +24,11 @@ class Particle
   // Invariant mass and Energy
   double fEnergy() const;
   double InvMass(Particle& p) const;
+  
   // getters
   double GetPx() const;
   double GetPy() const;
   double GetPz() const;
-
   double GetMass() const;
 
  private:
@@ -41,7 +41,7 @@ class Particle
   double fModule2(double x, double y, double z) const;
 
   static const int fMaxNumParticleType = 10;
-  static ParticleType* fParticleType[fMaxNumParticleType];
+  static std::unique_ptr<ParticleType> fParticleType[fMaxNumParticleType];
   static int fNParticleType;
 
   static int FindParticle(const char* name);
