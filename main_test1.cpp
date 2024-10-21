@@ -13,7 +13,7 @@ int main()
   }
 
   // test for error managemente of adding particle
-  Particle::AddParticleType("a", 18.34, +1, 22.); // TO FIX THE NUMBER OF CHARS
+  Particle::AddParticleType("a", 18.34, +1, 22.);
   Particle::AddParticleType("e", 18.34, +1, 22.);
   Particle::AddParticleType("i", 1.34, +2, 2.);
   Particle::AddParticleType("o", 1.34, +2, 2.);

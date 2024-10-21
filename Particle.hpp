@@ -12,19 +12,19 @@ class Particle
   // setter
   void SetIndex(const char* name);
   void SetIndex(int index);
-
-  static void AddParticleType(const char* name, double mass, int charge, double width = 0.);
-
-  static void PrintParticleTypes();
-  void PrintParticleProperties();
-
-  // Impulse setters
   void SetP(double px, double py, double pz);
 
-  // Invariant mass and Energy
+  // static
+  static void AddParticleType(const char* name, double mass, int charge, double width = 0.);
+  static void PrintParticleTypes();
+
+  // printer of particle properties
+  void PrintParticleProperties();
+
+  // invariant mass and Energy
   double fEnergy() const;
   double InvMass(Particle& p) const;
-  
+
   // getters
   double GetPx() const;
   double GetPy() const;

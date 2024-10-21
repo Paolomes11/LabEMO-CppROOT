@@ -71,7 +71,11 @@ void Particle::SetIndex(int index)
 
 void Particle::SetIndex(const char* name)
 {
-  fIndex = FindParticle(name);
+  if (FindParticle(name) == -1) {
+    std::cerr << "ERROR: particle type '" << name << "' doesn't exist!" << std::endl;
+  } else {
+    fIndex = FindParticle(name);
+  }
 }
 
 void Particle::PrintParticleTypes()
@@ -110,12 +114,12 @@ double Particle::GetPx() const
 
 double Particle::GetPy() const
 {
-  return fIndex != -1 ? fPy : (std::cerr << "ERROR: The given particle doesn't exist (Px)" << std::endl, -1);
+  return fIndex != -1 ? fPy : (std::cerr << "ERROR: The given particle doesn't exist (Py)" << std::endl, -1);
 }
 
 double Particle::GetPz() const
 {
-  return fIndex != -1 ? fPz : (std::cerr << "ERROR: The given particle doesn't exist (Px)" << std::endl, -1);
+  return fIndex != -1 ? fPz : (std::cerr << "ERROR: The given particle doesn't exist (Pz)" << std::endl, -1);
 }
 
 double Particle::GetMass() const
