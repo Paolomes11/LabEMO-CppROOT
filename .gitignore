@@ -11,9 +11,9 @@ Release/
 .vscode/
 
 # Test directories
-test/
-tests/
-test?/
+# test/
+# tests/
+# test?/
 
 # CMake files
 CMakeFiles/

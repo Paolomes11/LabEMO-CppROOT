@@ -4,6 +4,11 @@ project(root_project VERSION 0.1.0)
 # abilita il supporto per i test, tra cui l'opzione BUILD_TESTING usata sotto
 include(CTest)
 
+# Abilita la variabile BUILD_TESTING, per compilare o meno i test
+if(BUILD_TESTING)
+      enable_testing()
+endif()
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # richiedi l'uso di C++17, senza estensioni non-standard offerte dal compilatore usato 
@@ -21,24 +26,23 @@ string(APPEND CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,u
 string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
 
-add_executable(test1 main_test1.cpp Particle.cpp ParticleType.cpp ResonanceType.cpp)
+# Aggiungi la directory 'src' e 'third_party' alle directory di inclusione
+include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/third_party)
 
-add_executable(test.t test_file.cpp Particle.cpp ParticleType.cpp ResonanceType.cpp)
-add_test(NAME test.t COMMAND test.t)
+# Definisci i file sorgente comuni in una variabile
+set(SOURCES
+      src/Particle.cpp
+      src/ParticleType.cpp
+      src/ResonanceType.cpp
+)
 
-# se il testing e' abilitato...
-#   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
-# if (BUILD_TESTING)
+# Eseguibili di test
+add_executable(test1 tests/main_test1.cpp ${SOURCES})
 
-#   # aggiungi l'eseguibile NAME.t
-#   add_executable(probability.t ants_simulator/probability.test.cpp)
-#   add_executable(mapweight.t ants_simulator/mapweight.test.cpp ants_simulator/mapweight.cpp)
-#   # aggiungi l'eseguibile NAME.t alla lista dei test
-#   add_test(NAME probability.t COMMAND probability.t)
-#   add_test(NAME mapweight.t COMMAND mapweight.t)
+add_executable(test.t tests/test_file.cpp ${SOURCES})
 
-#   add_executable(maptranslate.t test_maptranslate/maptranslate.test.cpp test_maptranslate/maptranslate.cpp)
-#   target_link_libraries(maptranslate.t PRIVATE sfml-graphics)
-#   add_test(NAME maptranslate.t COMMAND maptranslate.t)
-
-# endif()
+# Definisci il test associato a test.t se i test sono abilitati
+if (BUILD_TESTING)
+  add_test(NAME test.t COMMAND test.t)
+endif()
