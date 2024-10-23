@@ -15,7 +15,7 @@ TEST_CASE("Tests of Particle")
     Particle::AddParticleType("P-", 1.34, +2, 2.);
     Particle::AddParticleType("K*", 1.34, +2, 2.);
     Particle::AddParticleType("a", 1.34, +2, 2.);
-    Particle::AddParticleType("b", 0.0, +2, 2.); 
+    Particle::AddParticleType("b", 0.0, +2, 2.);
     Particle::AddParticleType("c", 1.34, +2, 2.); // non prende nuoi valori di width
 
     std::unique_ptr<Particle> particle[2];
@@ -74,7 +74,7 @@ TEST_CASE("Tests of Particle")
     particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
     particle[1] = std::make_unique<Particle>("K+", 0., 0., 0.);
     particle[2] = std::make_unique<Particle>("P+", 0., 0., 0.);
-    CHECK(particle[0]->Decay2body(*particle[1], *particle[2])==0);
+    CHECK(particle[0]->Decay2body(*particle[1], *particle[2]) == 0);
   }
 }
 
@@ -188,13 +188,14 @@ TEST_CASE("Test of Errors launch")
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'd' not found!\nERROR: The given particle doesn't exist (Mass)\n\n");
   }
-  SUBCASE("Decay2body Errors"){
+  SUBCASE("Decay2body Errors")
+  {
     std::unique_ptr<Particle> particle[4];
     particle[0] = std::make_unique<Particle>("b", 0., 1., 2.);
     particle[1] = std::make_unique<Particle>("K-", 0., 1., 2.);
     particle[2] = std::make_unique<Particle>("K+", 0., 0., 0.);
     particle[3] = std::make_unique<Particle>("P+", 0., 0., 0.);
-    CHECK(particle[0]->Decay2body(*particle[1], *particle[2])==1);
-    CHECK(particle[1]->Decay2body(*particle[1], *particle[2])==2);
+    CHECK(particle[0]->Decay2body(*particle[1], *particle[2]) == 1);
+    CHECK(particle[1]->Decay2body(*particle[1], *particle[2]) == 2);
   }
 }

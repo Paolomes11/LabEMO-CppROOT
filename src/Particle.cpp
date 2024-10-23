@@ -31,7 +31,7 @@ int Particle::FindParticle(const char* name)
 
 void Particle::AddParticleType(const char* name, double mass, int charge, double width)
 {
-  if (FindParticle(name) != -1) {
+  if (FindParticle(name) != -1) { // TO SEE
     std::cerr << "ERROR: particle type '" << name << "' already exist!" << '\n' << '\n';
     return;
   }
