@@ -38,10 +38,10 @@ TEST_CASE("Test of Energy and Invariant functions")
   particle[1] = std::make_unique<Particle>("K+", 1.1, 0.5, 3.7);
   particle[2] = std::make_unique<Particle>("K+", 1., 0., 2.);
 
-  CHECK(particle[0]->fEnergy() == doctest::Approx(18.4758));
+  CHECK(particle[0]->GetEnergy() == doctest::Approx(18.4758));
   CHECK(particle[0]->InvMass(*particle[2]) == doctest::Approx(20.6513));
 
-  CHECK(particle[1]->fEnergy() == doctest::Approx(4.1165));
+  CHECK(particle[1]->GetEnergy() == doctest::Approx(4.1165));
   CHECK(particle[1]->InvMass(*particle[2]) == doctest::Approx(2.8378));
 }
 

@@ -22,7 +22,7 @@ class Particle
   void PrintParticleProperties();
 
   // invariant mass and Energy
-  double fEnergy() const;
+  double GetEnergy() const;
   double InvMass(Particle& p) const;
 
   // getters
@@ -30,6 +30,9 @@ class Particle
   double GetPy() const;
   double GetPz() const;
   double GetMass() const;
+
+  // function for decaying 1
+  int Decay2body(Particle& dau1, Particle& dau2) const;
 
  private:
   int fIndex;
@@ -45,6 +48,9 @@ class Particle
   static int fNParticleType;
 
   static int FindParticle(const char* name);
+
+  // function for decaying 2
+  void Boost(double bx, double by, double bz);
 };
 
 #endif

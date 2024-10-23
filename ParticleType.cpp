@@ -25,6 +25,11 @@ const char* ParticleType::GetName() const
   return fName;
 }
 
+double ParticleType::GetWidth() const
+{
+  return 0;
+}
+
 // printer
 void ParticleType::Print() const
 {

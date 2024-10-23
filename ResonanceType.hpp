@@ -9,7 +9,7 @@ class ResonanceType : public virtual ParticleType
                 double Width); // ctor
 
   // getter
-  double GetWidth() const;
+  double GetWidth() const override;
 
   // print attributes override
   void Print() const override;

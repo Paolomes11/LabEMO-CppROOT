@@ -11,6 +11,7 @@ class ParticleType
   const char* GetName() const;
   double GetMass() const;
   int GetCharge() const;
+  virtual double GetWidth() const;
 
   // print attributes
   virtual void Print() const;
