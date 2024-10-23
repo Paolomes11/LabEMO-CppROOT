@@ -37,12 +37,16 @@ set(SOURCES
       src/ResonanceType.cpp
 )
 
-# Eseguibili di test
-add_executable(test1 tests/main_test1.cpp ${SOURCES})
+# Crea la libreria condivisa
+add_library(myrootlib SHARED ${SOURCES})
 
-add_executable(test.t tests/test_file.cpp ${SOURCES})
+# Installazione della libreria
+install(TARGETS myrootlib DESTINATION myRoot)
 
 # Definisci il test associato a test.t se i test sono abilitati
-if (BUILD_TESTING)
-  add_test(NAME test.t COMMAND test.t)
+if(BUILD_TESTING)
+      # Eseguibili di test
+      add_executable(test1 tests/main_test1.cpp ${SOURCES})
+      add_executable(test.t tests/test_file.cpp ${SOURCES})
+      add_test(NAME test.t COMMAND test.t)
 endif()
