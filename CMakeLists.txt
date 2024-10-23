@@ -43,10 +43,11 @@ add_library(myrootlib SHARED ${SOURCES})
 # Installazione della libreria
 install(TARGETS myrootlib DESTINATION myRoot)
 
+# Eseguibili di test
+add_executable(test1 tests/main_test1.cpp ${SOURCES})
+add_executable(test.t tests/test_file.cpp ${SOURCES})
+
 # Definisci il test associato a test.t se i test sono abilitati
 if(BUILD_TESTING)
-      # Eseguibili di test
-      add_executable(test1 tests/main_test1.cpp ${SOURCES})
-      add_executable(test.t tests/test_file.cpp ${SOURCES})
       add_test(NAME test.t COMMAND test.t)
 endif()
