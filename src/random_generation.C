@@ -41,9 +41,9 @@ void random_generation()
       new TH1F("histo_invmass_Pi_K_conc", "Pion and Kaon Concordant Invariant Mass Distribution");
   TH1F* histo_invmass_Ks_prod = new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution");
 
-  Particle* EventParticle[N];
+  Particle* EventParticle[Nmax];
   for (int i = 1; i < nGen; i++) {
-    for (int j = 0; j < 100; j++) {
+    for (int j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle();
       // Part 2 set random impulse
       double phi       = TRandom::Uniform(0, TMath::2pi);
