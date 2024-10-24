@@ -9,16 +9,16 @@ class Particle
   Particle(const char* name, double px = 0., double py = 0., double pz = 0.);
 
   // setter
-  void SetIndex(const char* name);
-  void SetIndex(int index);
-  void SetP(double px, double py, double pz);
+  int SetIndex(const char* name);
+  int SetIndex(int index);
+  int SetP(double px, double py, double pz);
 
   // static
-  static void AddParticleType(const char* name, double mass, int charge, double width = 0.);
-  static void PrintParticleTypes();
+  static int AddParticleType(const char* name, double mass, int charge, double width = 0.);
+  static int PrintParticleTypes();
 
   // printer of particle properties
-  void PrintParticleProperties();
+  int PrintParticleProperties();
 
   // invariant mass and Energy
   double GetEnergy() const;

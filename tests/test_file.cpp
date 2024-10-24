@@ -16,7 +16,7 @@ TEST_CASE("Tests of Particle")
     Particle::AddParticleType("K*", 1.34, +2, 2.);
     Particle::AddParticleType("a", 1.34, +2, 2.);
     Particle::AddParticleType("b", 0.0, +2, 2.);
-    Particle::AddParticleType("c", 1.34, +2, 2.); // non prende nuoi valori di width
+    Particle::AddParticleType("c", 1.34, +2, 2.);
 
     Particle* particle[2];
     particle[0] = new Particle("Pi+", 0., 1., 2.);
@@ -53,19 +53,27 @@ TEST_CASE("Tests of Particle")
     particle[0] = new Particle("Pi+", 0., 1., 2.);
     particle[1] = new Particle("K+", 1.1, 0.5, 3.7);
 
-    particle[0]->SetIndex(3);
-    particle[0]->SetP(1., 1., 1.);
+    CHECK(particle[0]->SetIndex(3)==0);
+    CHECK(particle[0]->SetP(1., 1., 1.)==0);
     CHECK(particle[0]->GetMass() == doctest::Approx(1.34));
     CHECK(particle[0]->GetPx() == doctest::Approx(1.));
     CHECK(particle[0]->GetPy() == doctest::Approx(1.));
     CHECK(particle[0]->GetPz() == doctest::Approx(1.));
 
-    particle[1]->SetIndex("Pi+");
-    particle[1]->SetP(0., 1.5, 2.);
+    CHECK(particle[1]->SetIndex("Pi+")==0);
+    CHECK(particle[1]->SetP(0., 1.5, 2.)==0);
     CHECK(particle[1]->GetMass() == doctest::Approx(18.34));
     CHECK(particle[1]->GetPx() == doctest::Approx(0.));
     CHECK(particle[1]->GetPy() == doctest::Approx(1.5));
     CHECK(particle[1]->GetPz() == doctest::Approx(2.));
+  }
+
+  SUBCASE("Test of Printers functions"){
+    CHECK(Particle::PrintParticleTypes()==0);
+    std::unique_ptr<Particle> particle[2];
+    particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
+    particle[1] = std::make_unique<Particle>("K+", 1.1, 0.5, 3.7);
+    CHECK(particle[0]->PrintParticleProperties()==0);
   }
 
   SUBCASE("Test of Decay2body function")
@@ -113,7 +121,7 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    Particle::AddParticleType("a", 1.34, +2, 2.);
+   CHECK(Particle::AddParticleType("a", 1.34, +2, 2.)==1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'a' already exist!\n\n");
@@ -123,7 +131,7 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    Particle::AddParticleType("d", 1.34, +2, 2.);
+    CHECK(Particle::AddParticleType("d", 1.34, +2, 2.)==2);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: max number of types reached!\n\n");
@@ -134,7 +142,7 @@ TEST_CASE("Test of Errors launch")
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
     Particle* particle = new Particle("Pi+", 0., 1., 2.);
-    particle->SetIndex(11);
+    CHECK(particle->SetIndex(11)==1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str()
@@ -146,7 +154,7 @@ TEST_CASE("Test of Errors launch")
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
     Particle* particle = new Particle("Pi+", 0., 1., 2.);
-    particle->SetIndex("d");
+    CHECK(particle->SetIndex("d")==1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'd' doesn't exist!\n");
@@ -157,7 +165,7 @@ TEST_CASE("Test of Errors launch")
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
     Particle* particle = new Particle("d", 0., 1., 2.);
-    particle->PrintParticleProperties();
+    CHECK(particle->PrintParticleProperties()==1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'd' not found!\nERROR: The given particle doesn't exist!\n\n");
@@ -168,9 +176,9 @@ TEST_CASE("Test of Errors launch")
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
     Particle* particle = new Particle("d", 0., 1., 2.);
-    particle->GetPx();
-    particle->GetPy();
-    particle->GetPz();
+    CHECK(particle->GetPx()==-1);
+    CHECK(particle->GetPy()==-1);
+    CHECK(particle->GetPz()==-1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str()
@@ -183,7 +191,7 @@ TEST_CASE("Test of Errors launch")
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
     Particle* particle = new Particle("d", 0., 1., 2.);
-    particle->GetMass();
+    CHECK(particle->GetMass()==-1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'd' not found!\nERROR: The given particle doesn't exist (Mass)\n\n");
