@@ -11,9 +11,9 @@ R__LOAD_LIBRARY(src/ResonanceType_cpp.so)
 
 void random_generation()
 {
-  int Nbase = 100;
-  int Nmax  = 120;
-  int nGen  = 1E5;
+  Int_t Nbase = 100;
+  Int_t Nmax  = 120;
+  Int_t nGen  = 1E5;
 
   AddParticleType("Pi+", 0.13957, 1.);
   AddParticleType("Pi-", 0.13957, -1.);
