@@ -44,7 +44,7 @@ void random_generation()
   Particle* EventParticle[N];
   for (int i = 1; i < nGen; i++) {
     for (int j = 0; j < 100; j++) {
-      EventParticle[j] = new Particle("a");
+      EventParticle[j] = new Particle();
       // Part 2 set random impulse
       double phi       = TRandom::Uniform(0, TMath::2pi);
       double theta     = TRandom::Uniform(0, TMath::pi);
