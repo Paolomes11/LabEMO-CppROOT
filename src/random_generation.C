@@ -11,9 +11,9 @@ R__LOAD_LIBRARY(src/ResonanceType_cpp.so)
 
 void random_generation()
 {
-  int Nbase = 100;
-  int Nmax  = 120;
-  int nGen  = 1E5;
+  Int_t Nbase = 100;
+  Int_t Nmax  = 120;
+  Int_t nGen  = 1E5;
 
   AddParticleType("Pi+", 0.13957, 1.);
   AddParticleType("Pi-", 0.13957, -1.);
@@ -42,10 +42,10 @@ void random_generation()
   TH1F* histo_invmass_Ks_prod =
       new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution", 60, 0, 6.1);
 
-  Particle* EventParticle[N];
+  Particle* EventParticle[Nmax];
   for (int i = 1; i < nGen; i++) {
-    for (int j = 0; j < 100; j++) {
-      EventParticle[j] = new Particle("a");
+    for (int j = 0; j < Nbase; j++) {
+      EventParticle[j] = new Particle();
       // Part 2 set random impulse
       double phi       = TRandom::Uniform(0, TMath::2pi);
       double theta     = TRandom::Uniform(0, TMath::pi);
