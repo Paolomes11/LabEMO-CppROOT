@@ -29,16 +29,16 @@ int Particle::FindParticle(const char* name)
   return -1;
 }
 
-void Particle::AddParticleType(const char* name, double mass, int charge, double width)
+int Particle::AddParticleType(const char* name, double mass, int charge, double width)
 {
   if (FindParticle(name) != -1) { // TO SEE
     std::cerr << "ERROR: particle type '" << name << "' already exist!" << '\n' << '\n';
-    return;
+    return 1;
   }
 
   if (fNParticleType >= fMaxNumParticleType) {
     std::cerr << "ERROR: max number of types reached!" << '\n' << '\n';
-    return;
+    return 2;
   }
 
   std::unique_ptr<ParticleType> newParticleType;
@@ -52,33 +52,37 @@ void Particle::AddParticleType(const char* name, double mass, int charge, double
     if (fParticleType[i] == nullptr) {
       fParticleType[i] = std::move(newParticleType);
       fNParticleType++;
-      return;
+      return 0;
     }
   }
 }
 
 // setter
-void Particle::SetIndex(int index)
+int Particle::SetIndex(int index)
 {
   if (index < 10 && fParticleType[index] != nullptr) {
     fIndex = index;
+    return 0;
   } else {
     std::cerr << "ERROR: The value of Index is invalid (greater or equal to 10 "
                  "or containing another particle)"
               << std::endl;
+    return 1;
   }
 }
 
-void Particle::SetIndex(const char* name)
+int Particle::SetIndex(const char* name)
 {
   if (FindParticle(name) == -1) {
     std::cerr << "ERROR: particle type '" << name << "' doesn't exist!" << std::endl;
+    return 1;
   } else {
     fIndex = FindParticle(name);
+    return 0;
   }
 }
 
-void Particle::PrintParticleTypes()
+int Particle::PrintParticleTypes()
 {
   std::cout << "=============================\n";
   std::cout << "  Particle Types\n";
@@ -89,9 +93,10 @@ void Particle::PrintParticleTypes()
     std::cout << "-----------------------------\n";
   }
   std::cout << "=============================\n";
+  return 0;
 }
 
-void Particle::PrintParticleProperties()
+int Particle::PrintParticleProperties()
 {
   if (fIndex != -1) {
     std::cout << "=============================\n";
@@ -101,8 +106,10 @@ void Particle::PrintParticleProperties()
               << std::left << std::setw(20) << "Name:" << fParticleType[fIndex]->GetName() << '\n'
               << std::left << std::setw(20) << "Impulse (Px, Py, Pz):" << fPx << ", " << fPy << ", " << fPz << '\n'
               << "=============================\n";
+    return 0;
   } else {
     std::cerr << "ERROR: The given particle doesn't exist!" << '\n' << '\n';
+    return 1;
   }
 }
 
@@ -133,11 +140,12 @@ double Particle::GetMass() const
 }
 
 // Impulse setters
-void Particle::SetP(double px, double py, double pz)
+int Particle::SetP(double px, double py, double pz)
 {
   fPx = px;
   fPy = py;
   fPz = pz;
+  return 0;
 }
 
 // Energy and invariant mass
