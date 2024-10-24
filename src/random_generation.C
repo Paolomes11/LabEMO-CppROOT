@@ -26,11 +26,20 @@ void random_generation()
   gRandom→SetSeed();
 
   TH1F* histo_particles          = new TH1F("histo_particles", "Particles Distribution", 7);
-  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 7);
-  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 7);
-  TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution", 7);
-  TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 7);
-  TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution", 7);
+  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution");
+  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution");
+  TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution");
+  TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution");
+  TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution");
+  TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution");
+  TH1F* histo_invmass            = new TH1F("histo_invmass", "Invariant Mass Distribution");
+  TH1F* histo_invmass_disc       = new TH1F("histo_invmass_disc", "Discordant Invariant Mass Distribution");
+  TH1F* histo_invmass_conc       = new TH1F("histo_invmass_conc", "Concordant Invariant Mass Distribution");
+  TH1F* histo_invmass_Pi_K_disc =
+      new TH1F("histo_invmass_Pi_K_disc", "Pion and Kaon Discordant Invariant Mass Distribution");
+  TH1F* histo_invmass_Pi_K_conc =
+      new TH1F("histo_invmass_Pi_K_conc", "Pion and Kaon Concordant Invariant Mass Distribution");
+  TH1F* histo_invmass_Ks_prod = new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution");
 
   Particle* EventParticle[N];
   for (int i = 1; i < nGen; i++) {
