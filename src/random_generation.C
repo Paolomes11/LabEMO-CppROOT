@@ -25,12 +25,12 @@ void random_generation()
 
   gRandom→SetSeed();
 
-TH1F *histo_particles = new TH1F("histo_particles", "Particles Distribution", 7);
-TH1F *histo_azimutal = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 7);
-TH1F *histo_polar = new TH1F("histo_polar", "Polar Angle Distribution", 7);
-TH1F *histo_impulse = new TH1F("histo_impulse", "Impulse Distribution", 7);
-TH1F *histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 7);
-TH1F *histo_energy = new TH1F("histo_energy", "Energy Distribution", 7);
+  TH1F* histo_particles          = new TH1F("histo_particles", "Particles Distribution", 7);
+  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 7);
+  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 7);
+  TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution", 7);
+  TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 7);
+  TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution", 7);
 
   Particle* EventParticle[N];
   for (int i = 1; i < nGen; i++) {
