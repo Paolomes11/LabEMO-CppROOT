@@ -1,6 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "Particle.hpp"
 #include "doctest.h"
+#include <memory>
 #include <sstream>
 
 TEST_CASE("Tests of Particle")
@@ -18,9 +19,9 @@ TEST_CASE("Tests of Particle")
     Particle::AddParticleType("b", 0.0, +2, 2.);
     Particle::AddParticleType("c", 1.34, +2, 2.);
 
-    Particle* particle[2];
-    particle[0] = new Particle("Pi+", 0., 1., 2.);
-    particle[1] = new Particle("K+", 1.1, 0.5, 3.7);
+    std::unique_ptr<Particle> particle[2];
+    particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
+    particle[1] = std::make_unique<Particle>("K+", 1.1, 0.5, 3.7);
 
     CHECK(particle[0]->GetPx() == doctest::Approx(0.));
     CHECK(particle[0]->GetPy() == doctest::Approx(1.));
@@ -35,10 +36,10 @@ TEST_CASE("Tests of Particle")
 
   SUBCASE("Test of Energy and Invariant functions")
   {
-    Particle* particle[3];
-    particle[0] = new Particle("Pi+", 0., 1., 2.);
-    particle[1] = new Particle("K+", 1.1, 0.5, 3.7);
-    particle[2] = new Particle("K+", 1., 0., 2.);
+    std::unique_ptr<Particle> particle[3];
+    particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
+    particle[1] = std::make_unique<Particle>("K+", 1.1, 0.5, 3.7);
+    particle[2] = std::make_unique<Particle>("K+", 1., 0., 2.);
 
     CHECK(particle[0]->GetEnergy() == doctest::Approx(18.4758));
     CHECK(particle[0]->InvMass(*particle[2]) == doctest::Approx(20.6513));
@@ -49,39 +50,40 @@ TEST_CASE("Tests of Particle")
 
   SUBCASE("Test of Setters functions")
   {
-    Particle* particle[2];
-    particle[0] = new Particle("Pi+", 0., 1., 2.);
-    particle[1] = new Particle("K+", 1.1, 0.5, 3.7);
+    std::unique_ptr<Particle> particle[2];
+    particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
+    particle[1] = std::make_unique<Particle>("K+", 1.1, 0.5, 3.7);
 
-    CHECK(particle[0]->SetIndex(3)==0);
-    CHECK(particle[0]->SetP(1., 1., 1.)==0);
+    CHECK(particle[0]->SetIndex(3) == 0);
+    CHECK(particle[0]->SetP(1., 1., 1.) == 0);
     CHECK(particle[0]->GetMass() == doctest::Approx(1.34));
     CHECK(particle[0]->GetPx() == doctest::Approx(1.));
     CHECK(particle[0]->GetPy() == doctest::Approx(1.));
     CHECK(particle[0]->GetPz() == doctest::Approx(1.));
 
-    CHECK(particle[1]->SetIndex("Pi+")==0);
-    CHECK(particle[1]->SetP(0., 1.5, 2.)==0);
+    CHECK(particle[1]->SetIndex("Pi+") == 0);
+    CHECK(particle[1]->SetP(0., 1.5, 2.) == 0);
     CHECK(particle[1]->GetMass() == doctest::Approx(18.34));
     CHECK(particle[1]->GetPx() == doctest::Approx(0.));
     CHECK(particle[1]->GetPy() == doctest::Approx(1.5));
     CHECK(particle[1]->GetPz() == doctest::Approx(2.));
   }
 
-  SUBCASE("Test of Printers functions"){
-    CHECK(Particle::PrintParticleTypes()==0);
+  SUBCASE("Test of Printers functions")
+  {
+    CHECK(Particle::PrintParticleTypes() == 0);
     std::unique_ptr<Particle> particle[2];
     particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
     particle[1] = std::make_unique<Particle>("K+", 1.1, 0.5, 3.7);
-    CHECK(particle[0]->PrintParticleProperties()==0);
+    CHECK(particle[0]->PrintParticleProperties() == 0);
   }
 
   SUBCASE("Test of Decay2body function")
   {
-    Particle* particle[3];
-    particle[0] = new Particle("Pi+", 0., 1., 2.);
-    particle[1] = new Particle("K+", 0., 0., 0.);
-    particle[2] = new Particle("P+", 0., 0., 0.);
+    std::unique_ptr<Particle> particle[3];
+    particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
+    particle[1] = std::make_unique<Particle>("K+", 0., 0., 0.);
+    particle[2] = std::make_unique<Particle>("P+", 0., 0., 0.);
     CHECK(particle[0]->Decay2body(*particle[1], *particle[2]) == 0);
   }
 }
@@ -111,7 +113,7 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    Particle* particle = new Particle("Nano", 0., 1., 2.); // the warning is wanted
+    std::unique_ptr<Particle> particle = std::make_unique<Particle>("Nano", 0., 1., 2.); // the warning is wanted
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'Nano' not found!\n");
@@ -121,7 +123,7 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-   CHECK(Particle::AddParticleType("a", 1.34, +2, 2.)==1);
+    CHECK(Particle::AddParticleType("a", 1.34, +2, 2.) == 1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'a' already exist!\n\n");
@@ -131,7 +133,7 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    CHECK(Particle::AddParticleType("d", 1.34, +2, 2.)==2);
+    CHECK(Particle::AddParticleType("d", 1.34, +2, 2.) == 2);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: max number of types reached!\n\n");
@@ -141,8 +143,8 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    Particle* particle = new Particle("Pi+", 0., 1., 2.);
-    CHECK(particle->SetIndex(11)==1);
+    std::unique_ptr<Particle> particle = std::make_unique<Particle>("Pi+", 0., 1., 2.);
+    CHECK(particle->SetIndex(11) == 1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str()
@@ -153,8 +155,8 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    Particle* particle = new Particle("Pi+", 0., 1., 2.);
-    CHECK(particle->SetIndex("d")==1);
+    std::unique_ptr<Particle> particle = std::make_unique<Particle>("Pi+", 0., 1., 2.);
+    CHECK(particle->SetIndex("d") == 1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'd' doesn't exist!\n");
@@ -164,8 +166,8 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    Particle* particle = new Particle("d", 0., 1., 2.);
-    CHECK(particle->PrintParticleProperties()==1);
+    std::unique_ptr<Particle> particle = std::make_unique<Particle>("d", 0., 1., 2.);
+    CHECK(particle->PrintParticleProperties() == 1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'd' not found!\nERROR: The given particle doesn't exist!\n\n");
@@ -175,10 +177,10 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    Particle* particle = new Particle("d", 0., 1., 2.);
-    CHECK(particle->GetPx()==-1);
-    CHECK(particle->GetPy()==-1);
-    CHECK(particle->GetPz()==-1);
+    std::unique_ptr<Particle> particle = std::make_unique<Particle>("d", 0., 1., 2.);
+    CHECK(particle->GetPx() == -1);
+    CHECK(particle->GetPy() == -1);
+    CHECK(particle->GetPz() == -1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str()
@@ -190,20 +192,20 @@ TEST_CASE("Test of Errors launch")
     std::stringstream buffer;
     std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
 
-    Particle* particle = new Particle("d", 0., 1., 2.);
-    CHECK(particle->GetMass()==-1);
+    std::unique_ptr<Particle> particle = std::make_unique<Particle>("d", 0., 1., 2.);
+    CHECK(particle->GetMass() == -1);
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'd' not found!\nERROR: The given particle doesn't exist (Mass)\n\n");
   }
   SUBCASE("Decay2body Errors")
   {
-    Particle* particle[4];
-    particle[0] = new Particle("b", 0., 1., 2.);
-    particle[1] = new Particle("K-", 0., 1., 2.);
-    particle[2] = new Particle("K+", 0., 0., 0.);
-    particle[3] = new Particle("P+", 0., 0., 0.);
-    CHECK(particle[0]->Decay2body(*particle[1], *particle[2]) == 1);
-    CHECK(particle[1]->Decay2body(*particle[1], *particle[2]) == 2);
+    std::unique_ptr<Particle> particle[4];
+    particle[0] = std::make_unique<Particle>("b", 0., 1., 2.);
+    particle[1] = std::make_unique<Particle>("K-", 0., 1., 2.);
+    particle[2] = std::make_unique<Particle>("K+", 0., 0., 0.);
+    particle[3] = std::make_unique<Particle>("P+", 0., 0., 0.);
+    CHECK(particle[0]->Decay2body(*particle[2], *particle[3]) == 1);
+    CHECK(particle[1]->Decay2body(*particle[2], *particle[3]) == 2);
   }
 }
