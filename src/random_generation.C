@@ -19,20 +19,22 @@ void random_generation()
   AddParticleType("kaoni_positivi", 0.49367, 1.);
   AddParticleType("kaoni_negativi", 0.49367, -1.);
   AddParticleType("protoni_positivi", 0.93827, 1.);
-  AddParticleType("protoni_negativi", 0.93827, 1.);
+  AddParticleType("protoni_negativi", 0.93827, -1.);
   AddParticleType("K*", 0.89166, 0., 0.050);
 
   gRandom→SetSeed();
 
   Particle* EventParticle[N];
-  for (int i = 1; i < nGen; i++) {
-    for (i = 1, i < 100, i++) {
+  for (int j = 1; j < nGen; i++) {
+    for (int i = 1, i < 100, i++) {
+      EventParticle[i]= new Particle();
       double phi       = TRandom::Uniform(0, TMath::2pi);
       double theta     = TRandom::Uniform(0, TMath::pi);
       double impulse   = TRandom::Exp(1); // 1GeV
       double impulse_x = impulse * TMath::sin(theta) * TMath::cos(phi);
       double impulse_y = impulse * TMath::sin(theta) * TMath::sin(phi);
       double impulse_z = impulse * TMath::cos(theta);
+      EventParticle[i]->SetP(impulse_x, impulse_y, impulse_z);
     }
   }
 }
