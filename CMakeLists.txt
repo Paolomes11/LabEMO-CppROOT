@@ -46,20 +46,20 @@ if(BUILD_TESTING)
       add_test(NAME test.t COMMAND test.t)
 endif()
 
-# Trova il pacchetto ROOT per il file random_generation.C
-find_package(ROOT REQUIRED)
+# # Trova il pacchetto ROOT per il file random_generation.C
+# find_package(ROOT REQUIRED)
 
-include_directories(${ROOT_INCLUDE_DIRS})
-link_directories(${ROOT_LIBRARY_DIR})
+# include_directories(${ROOT_INCLUDE_DIRS})
+# link_directories(${ROOT_LIBRARY_DIR})
 
-# Definisci l'output directory per i file .so
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/myRoot)
+# # Definisci l'output directory per i file .so
+# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/myRoot)
 
-# Crea le librerie condivise (.so)
-add_library(Particle SHARED src/Particle.cpp)
-add_library(ParticleType SHARED src/ParticleType.cpp)
-add_library(ResonanceType SHARED src/ResonanceType.cpp)
+# # Crea le librerie condivise (.so)
+# add_library(Particle SHARED src/Particle.cpp)
+# add_library(ParticleType SHARED src/ParticleType.cpp)
+# add_library(ResonanceType SHARED src/ResonanceType.cpp)
 
-# Linka ROOT solo a random_generation.C
-add_executable(random_generation myRoot/random_generation.C)
-target_link_libraries(random_generation ${ROOT_LIBRARIES})
+# # Linka ROOT solo a random_generation.C
+# add_executable(random_generation myRoot/random_generation.C)
+# target_link_libraries(random_generation ${ROOT_LIBRARIES})

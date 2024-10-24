@@ -5,7 +5,7 @@
 #include <iostream>
 
 ParticleType* Particle::fParticleType[fMaxNumParticleType] = {nullptr};
-int Particle::fNParticleType                                               = 0;
+int Particle::fNParticleType                               = 0;
 
 Particle::Particle(const char* name, double px, double py, double pz)
     : fPx(px)
@@ -14,7 +14,8 @@ Particle::Particle(const char* name, double px, double py, double pz)
 {
   fIndex = FindParticle(name);
 
-  if (fIndex == -1) {
+  // a buffer name for random_generation
+  if (fIndex == -1 && std::strcmp("buffer", name) != 0) {
     std::cerr << "ERROR: particle type '" << name << "' not found!" << std::endl;
   }
 }
@@ -55,7 +56,7 @@ int Particle::AddParticleType(const char* name, double mass, int charge, double 
       return 0;
     }
   }
-  return 2; //per evitare il warning del compilatore
+  return 2; // per evitare il warning del compilatore
 }
 
 // setter
@@ -186,12 +187,12 @@ int Particle::Decay2body(Particle& dau1, Particle& dau2) const
 
     double invnum = 1. / RAND_MAX;
     do {
-      x1 = 2.0 * rand() * invnum - 1.0; //warning double to float
-      x2 = 2.0 * rand() * invnum - 1.0; //warning double to float
+      x1 = 2.0 * rand() * invnum - 1.0; // warning double to float
+      x2 = 2.0 * rand() * invnum - 1.0; // warning double to float
       w  = x1 * x1 + x2 * x2;
     } while (w >= 1.0);
 
-    w  = sqrt((-2.0 * log(w)) / w); //warning double to float
+    w  = sqrt((-2.0 * log(w)) / w); // warning double to float
     y1 = x1 * w;
 
     massMot += fParticleType[fIndex]->GetWidth() * y1;
