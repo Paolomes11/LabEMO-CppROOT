@@ -16,7 +16,7 @@ TEST_CASE("Tests of Particle")
     Particle::AddParticleType("K*", 1.34, +2, 2.);
     Particle::AddParticleType("a", 1.34, +2, 2.);
     Particle::AddParticleType("b", 0.0, +2, 2.);
-    Particle::AddParticleType("c", 1.34, +2, 2.); // non prende nuoi valori di width
+    Particle::AddParticleType("c", 1.34, +2, 2.);
 
     std::unique_ptr<Particle> particle[2];
     particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
