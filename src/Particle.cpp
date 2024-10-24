@@ -55,6 +55,7 @@ int Particle::AddParticleType(const char* name, double mass, int charge, double 
       return 0;
     }
   }
+  return 2; //per evitare il warning del compilatore
 }
 
 // setter
