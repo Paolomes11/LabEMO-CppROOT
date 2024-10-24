@@ -14,6 +14,14 @@ AddParticleType("K*", 0.89166, 0., 0.050)
 gRandom→SetSeed();
 int nGen=1E5;
 std::array<Particle, N> EventParticles;
+
+TH1F *histo_particles = new TH1F("histo_particles", "Particles Distribution", 7);
+TH1F *histo_azimutal = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 7);
+TH1F *histo_polar = new TH1F("histo_polar", "Polar Angle Distribution", 7);
+TH1F *histo_impulse = new TH1F("histo_impulse", "Impulse Distribution", 7);
+TH1F *histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 7);
+TH1F *histo_energy = new TH1F("histo_energy", "Energy Distribution", 7);
+
 for (int i=1, i<nGen, i++)
 {
 int N=120;
