@@ -8,3 +8,5 @@ Osservazioni:
 2. Decay2Body da testare
 3. Boost da testare
 4. GetWidth di ParticleType da testare
+
+sqrt((sqrt(m1^2+p1^2)+sqrt(m2^2+p2^2))^2-p1*p2)
