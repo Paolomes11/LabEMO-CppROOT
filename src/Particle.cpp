@@ -186,12 +186,12 @@ int Particle::Decay2body(Particle& dau1, Particle& dau2) const
 
     double invnum = 1. / RAND_MAX;
     do {
-      x1 = 2.0 * rand() * invnum - 1.0;
-      x2 = 2.0 * rand() * invnum - 1.0;
+      x1 = 2.0 * rand() * invnum - 1.0; //warning double to float
+      x2 = 2.0 * rand() * invnum - 1.0; //warning double to float
       w  = x1 * x1 + x2 * x2;
     } while (w >= 1.0);
 
-    w  = sqrt((-2.0 * log(w)) / w);
+    w  = sqrt((-2.0 * log(w)) / w); //warning double to float
     y1 = x1 * w;
 
     massMot += fParticleType[fIndex]->GetWidth() * y1;
