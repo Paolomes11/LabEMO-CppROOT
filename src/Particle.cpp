@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-std::unique_ptr<ParticleType> Particle::fParticleType[fMaxNumParticleType] = {nullptr};
+ParticleType* Particle::fParticleType[fMaxNumParticleType] = {nullptr};
 int Particle::fNParticleType                                               = 0;
 
 Particle::Particle(const char* name, double px, double py, double pz)
@@ -41,16 +41,16 @@ void Particle::AddParticleType(const char* name, double mass, int charge, double
     return;
   }
 
-  std::unique_ptr<ParticleType> newParticleType;
+  ParticleType* newParticleType;
   if (width > 0) {
-    newParticleType = std::make_unique<ResonanceType>(name, mass, charge, width);
+    newParticleType = new ResonanceType(name, mass, charge, width);
   } else {
-    newParticleType = std::make_unique<ParticleType>(name, mass, charge);
+    newParticleType = new ParticleType(name, mass, charge);
   }
 
   for (int i = 0; i < fMaxNumParticleType; ++i) {
     if (fParticleType[i] == nullptr) {
-      fParticleType[i] = std::move(newParticleType);
+      fParticleType[i] = newParticleType;
       fNParticleType++;
       return;
     }

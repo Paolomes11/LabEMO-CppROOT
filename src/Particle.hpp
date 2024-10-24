@@ -2,7 +2,6 @@
 #define PARTICLE_HPP
 
 #include "ResonanceType.hpp"
-#include <memory>
 
 class Particle
 {
@@ -44,7 +43,7 @@ class Particle
   double fModule2(double x, double y, double z) const;
 
   static const int fMaxNumParticleType = 10;
-  static std::unique_ptr<ParticleType> fParticleType[fMaxNumParticleType];
+  static ParticleType* fParticleType[fMaxNumParticleType];
   static int fNParticleType;
 
   static int FindParticle(const char* name);
