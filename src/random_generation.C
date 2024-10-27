@@ -44,6 +44,7 @@ void random_generation()
 
   Particle* EventParticle[Nmax];
   for (int i = 1; i < nGen; i++) {
+    Int_t Decay_index = Nbase;
     for (int j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");
       // Part 2 set random impulse
@@ -72,7 +73,11 @@ void random_generation()
         EventParticle[j]->SetIndex("P-");
       } else if (chPart >= 0.99) {
         EventParticle[j]->SetIndex("K*");
+        // Part 4
+        EventParticle[j]->Decay2body(EventParticle[Decay_index]; EventParticle[Decay_index+1]); //TO SEE colpa di quel birichino di GIULIO
+        Decay_index+=2;
       }
+      
     }
 
     // Part 5 fill the histograms
