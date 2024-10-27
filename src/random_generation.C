@@ -1,7 +1,7 @@
 #include <TH1F.h>
+#include <TMath.h>
 #include <TRandom.h>
 #include <TSystem.h>
-#include <TMath.h>
 
 // clang-format off
     R__LOAD_LIBRARY(ParticleType_cpp.so)
@@ -27,20 +27,33 @@ void random_generation()
 
   gRandom->SetSeed();
 
-  TH1F* histo_particles          = new TH1F("histo_particles", "Particles Distribution", 7, 7, 7);
+  TH1F* histo_particles = new TH1F("histo_particles", "Particles Distribution", 7, 7, 7);
+  histo_particles->GetXaxis()->SetBinLabel(1, "Pi+");
+  histo_particles->GetXaxis()->SetBinLabel(2, "Pi-");
+  histo_particles->GetXaxis()->SetBinLabel(3, "K+");
+  histo_particles->GetXaxis()->SetBinLabel(4, "K-");
+  histo_particles->GetXaxis()->SetBinLabel(5, "P+");
+  histo_particles->GetXaxis()->SetBinLabel(6, "P-");
+  histo_particles->GetXaxis()->SetBinLabel(7, "K*");
   TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 7, 7, 7);
   TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 7, 7, 7);
   TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution", 7, 7, 7);
   TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 7, 7, 7);
   TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution", 7, 7, 7);
   TH1F* histo_invmass            = new TH1F("histo_invmass", "Invariant Mass Distribution", 7, 7, 7);
-  TH1F* histo_invmass_disc       = new TH1F("histo_invmass_disc", "Discordant Invariant Mass Distribution", 7, 7, 7);
-  TH1F* histo_invmass_conc       = new TH1F("histo_invmass_conc", "Concordant Invariant Mass Distribution", 7, 7, 7);
+  histo_invmass->Sumw2();
+  TH1F* histo_invmass_disc = new TH1F("histo_invmass_disc", "Discordant Invariant Mass Distribution", 7, 7, 7);
+  histo_invmass_disc->Sumw2();
+  TH1F* histo_invmass_conc = new TH1F("histo_invmass_conc", "Concordant Invariant Mass Distribution", 7, 7, 7);
+  histo_invmass_conc->Sumw2();
   TH1F* histo_invmass_Pi_K_disc =
       new TH1F("histo_invmass_Pi_K_disc", "Pion and Kaon Discordant Invariant Mass Distribution", 7, 7, 7);
+  histo_invmass_Pi_K_disc->Sumw2();
   TH1F* histo_invmass_Pi_K_conc =
       new TH1F("histo_invmass_Pi_K_conc", "Pion and Kaon Concordant Invariant Mass Distribution", 7, 7, 7);
+  histo_invmass_Pi_K_conc->Sumw2();
   TH1F* histo_invmass_Ks_prod = new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution", 7, 7, 7);
+  histo_invmass_Ks_prod->Sumw2();
 
   Particle* EventParticle[Nmax];
   for (int i = 1; i < nGen; i++) {
@@ -61,25 +74,69 @@ void random_generation()
       // double chPart = gRandom->Rndm();
       if (chPart < 0.4) {
         EventParticle[j]->SetIndex("Pi+");
+        histo_particles->Fill(1);
       } else if (chPart >= 0.4 && chPart < 0.8) {
         EventParticle[j]->SetIndex("Pi-");
+        histo_particles->Fill(2);
       } else if (chPart >= 0.8 && chPart < 0.85) {
         EventParticle[j]->SetIndex("K+");
+        histo_particles->Fill(3);
       } else if (chPart >= 0.85 && chPart < 0.9) {
         EventParticle[j]->SetIndex("K-");
+        histo_particles->Fill(4);
       } else if (chPart >= 0.9 && chPart < 0.945) {
         EventParticle[j]->SetIndex("P+");
+        histo_particles->Fill(5);
       } else if (chPart >= 0.945 && chPart < 0.99) {
         EventParticle[j]->SetIndex("P-");
+        histo_particles->Fill(6);
       } else if (chPart >= 0.99) {
         EventParticle[j]->SetIndex("K*");
         // Part 4
         EventParticle[j]->Decay2body(EventParticle[Decay_index]; EventParticle[Decay_index+1]); //TO SEE colpa di quel birichino di GIULIO
         Decay_index+=2;
+        histo_particles->Fill(7);
       }
-      
+
+      histo_azimutal->Fill(phi);
+      histo_polar->Fill(theta);
+      histo_impulse->Fill(impulse);
+      histo_trasverse_impulse->Fll(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
+      histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
 
-    // Part 5 fill the histograms
+    for (int j = 0; j < Nbase; j++) {
+      for (int k = j + 1; k < Nbase; k++) {
+        histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+
+        EventParticle[j]->GetCharge() * EventParticle[k]->GetCharge() > 0
+            ? histo_invmass_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]))
+            : histo_invmass_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+
+        if ((EventParticle[j]->GetMass() == fParticleType[0]->GetMass()
+             && EventParticle[k]->GetIndex() == fParticleType[3]->GetMass())
+            || (EventParticle[j]->GetIndex() == fParticleType[3]->GetMass()
+                && EventParticle[k]->GetIndex() == fParticleType[0]->GetMass())) {
+          EventParticle[j]->GetCharge() * EventParticle[m]->GetCharge() > 0
+              ? histo_invmass_Pi_K_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]))
+              : histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+        }
+      }
+    }
   }
+
+  TFile file("histograms.root", "RECREATE");
+  histo_particles->Write();
+  histo_azimutal->Write();
+  histo_polar->Write();
+  histo_impulse->Write();
+  histo_transverse_impulse->Write();
+  histo_energy->Write();
+  histo_invmass->Write();
+  histo_invmass_disc->Write();
+  histo_invmass_conc->Write();
+  histo_invmass_Pi_K_disc->Write();
+  histo_invmass_Pi_K_conc->Write();
+  histo_invmass_Ks_prod->Write();
+  file.Close();
 }
