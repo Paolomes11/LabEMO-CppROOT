@@ -56,9 +56,9 @@ void random_generation()
   histo_invmass_Ks_prod->Sumw2();
 
   Particle* EventParticle[Nmax];
-  for (int i = 1; i < nGen; i++) {
+  for (Int_t i = 1; i < nGen; i++) {
     Int_t Decay_index = Nbase;
-    for (int j = 0; j < Nbase; j++) {
+    for (Int_t j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");
       // Part 2 set random impulse
       double phi       = gRandom->Uniform(0, TMath::TwoPi());
@@ -93,9 +93,11 @@ void random_generation()
       } else if (chPart >= 0.99) {
         EventParticle[j]->SetIndex("K*");
         // Part 4
-        EventParticle[j]->Decay2body(EventParticle[Decay_index]; EventParticle[Decay_index+1]); //TO SEE colpa di quel birichino di GIULIO
-        Decay_index+=2;
+        EventParticle[j]->Decay2body(EventParticle[Decay_index];
+                                     EventParticle[Decay_index + 1]); // TO SEE colpa di quel birichino di GIULIO
         histo_particles->Fill(7);
+        histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
+        Decay_index += 2;
       }
 
       histo_azimutal->Fill(phi);
@@ -105,8 +107,8 @@ void random_generation()
       histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
 
-    for (int j = 0; j < Nbase; j++) {
-      for (int k = j + 1; k < Nbase; k++) {
+    for (Int_t j = 0; j < Nmax; j++) {
+      for (Int_t k = j + 1; k < Nmax; k++) {
         histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
 
         EventParticle[j]->GetCharge() * EventParticle[k]->GetCharge() > 0
