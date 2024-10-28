@@ -115,7 +115,7 @@ int Particle::PrintParticleProperties()
   }
 }
 
-// getters for impulse
+// getters
 double Particle::GetPx() const
 {
   return fIndex != -1 ? fPx : (std::cerr << "ERROR: The given particle doesn't exist (Px)" << std::endl, -1);
@@ -134,9 +134,19 @@ double Particle::GetPz() const
 double Particle::GetMass() const
 {
   if (fIndex != -1) {
-    return fParticleType[fIndex]->GetMass(); // TO TEST
+    return fParticleType[fIndex]->GetMass();
   } else {
     std::cerr << "ERROR: The given particle doesn't exist (Mass)" << '\n' << '\n';
+    return -1;
+  }
+}
+
+int Particle::GetIndex() const
+{
+  if (fIndex != -1) {
+    return fIndex;
+  } else {
+    std::cerr << "ERROR: The given particle doesn't exist (Index)" << '\n' << '\n';
     return -1;
   }
 }

@@ -104,28 +104,45 @@ void random_generation()
       histo_azimutal->Fill(phi);
       histo_polar->Fill(theta);
       histo_impulse->Fill(impulse);
-      histo_trasverse_impulse->Fll(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
+      histo_transverse_impulse->Fll(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
       histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
 
     for (Int_t j = 0; j < Nmax; j++) {
-      if (EventParticle[j]->GetMass() != fParticleType[6]->GetMass()) {
+      if (EventParticle[j]->GetIndex() != 6) {
         for (Int_t k = j + 1; k < Nmax; k++) {
-          if (EventParticle[k]->GetMass() != fParticleType[6]->GetMass()) {
+          if (EventParticle[k]->GetIndex() != 6) {
             histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
-
-            EventParticle[j]->GetCharge() * EventParticle[k]->GetCharge() > 0
-                ? histo_invmass_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]))
-                : histo_invmass_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
-
-            if ((EventParticle[j]->GetMass() == fParticleType[0]->GetMass()
-                 && EventParticle[k]->GetIndex() == fParticleType[2]->GetMass())
-                || (EventParticle[j]->GetIndex() == fParticleType[2]->GetMass()
-                    && EventParticle[k]->GetIndex() == fParticleType[0]->GetMass())) {
-              EventParticle[j]->GetCharge() * EventParticle[m]->GetCharge() > 0
-                  ? histo_invmass_Pi_K_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]))
-                  : histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            
+            // da testare la velocità di esecuzione in confronto all'opzione di esplicitare tutte le combinazioni
+            if (((EventParticle[j]->GetIndex()== 0 || EventParticle[j]->GetIndex()== 2 || EventParticle[j]->GetIndex()== 4) 
+                  && (EventParticle[k]->GetIndex()== 0 || EventParticle[k]->GetIndex()== 2 || EventParticle[k]->GetIndex()== 4))
+                || ((EventParticle[j]->GetIndex()== 1 || EventParticle[j]->GetIndex()== 3 || EventParticle[j]->GetIndex()== 5) 
+                  && (EventParticle[k]->GetIndex()== 1 || EventParticle[k]->GetIndex()== 3 || EventParticle[k]->GetIndex()== 5))) {
+              histo_invmass_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
             }
+
+            if (((EventParticle[j]->GetIndex()== 0 || EventParticle[j]->GetIndex()== 2 || EventParticle[j]->GetIndex()== 4) 
+                  && (EventParticle[k]->GetIndex()== 1 || EventParticle[k]->GetIndex()== 3 || EventParticle[k]->GetIndex()== 5))
+                || ((EventParticle[j]->GetIndex()== 1 || EventParticle[j]->GetIndex()== 3 || EventParticle[j]->GetIndex()== 5) 
+                  && (EventParticle[k]->GetIndex()== 0 || EventParticle[k]->GetIndex()== 2 || EventParticle[k]->GetIndex()== 4))) {
+              histo_invmass_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            }
+
+            if ((EventParticle[j]->GetIndex() == 0 && EventParticle[k]->GetIndex() == 2)
+                || (EventParticle[j]->GetIndex() == 2 && EventParticle[k]->GetMass() == 0)
+                || (EventParticle[j]->GetIndex() == 1 && EventParticle[k]->GetIndex() == 3)
+                || (EventParticle[j]->GetIndex() == 3 && EventParticle[k]->GetMass() == 1)) {
+              histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            }
+
+            if ((EventParticle[j]->GetIndex() == 0 && EventParticle[k]->GetIndex() == 3)
+                || (EventParticle[j]->GetIndex() == 3 && EventParticle[k]->GetMass() == 0)
+                || (EventParticle[j]->GetIndex() == 1 && EventParticle[k]->GetIndex() == 2)
+                || (EventParticle[j]->GetIndex() == 2 && EventParticle[k]->GetMass() == 1)) {
+              histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            }
+
           } else {
             continue;
           }

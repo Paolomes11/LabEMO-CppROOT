@@ -27,11 +27,13 @@ TEST_CASE("Tests of Particle")
     CHECK(particle[0]->GetPy() == doctest::Approx(1.));
     CHECK(particle[0]->GetPz() == doctest::Approx(2.));
     CHECK(particle[0]->GetMass() == doctest::Approx(18.34));
+    CHECK(particle[0]->GetIndex()== 0);
 
     CHECK(particle[1]->GetPx() == doctest::Approx(1.1));
     CHECK(particle[1]->GetPy() == doctest::Approx(0.5));
     CHECK(particle[1]->GetPz() == doctest::Approx(3.7));
     CHECK(particle[1]->GetMass() == doctest::Approx(1.34));
+    CHECK(particle[1]->GetIndex()== 2);
   }
 
   SUBCASE("Test of Energy and Invariant functions")
@@ -197,6 +199,17 @@ TEST_CASE("Test of Errors launch")
 
     std::cerr.rdbuf(old);
     CHECK(buffer.str() == "ERROR: particle type 'd' not found!\nERROR: The given particle doesn't exist (Mass)\n\n");
+  }
+  SUBCASE("GetIndex Error")
+  {
+    std::stringstream buffer;
+    std::streambuf* old = std::cerr.rdbuf(buffer.rdbuf());
+
+    std::unique_ptr<Particle> particle = std::make_unique<Particle>("d", 0., 1., 2.);
+    CHECK(particle->GetIndex() == -1);
+
+    std::cerr.rdbuf(old);
+    CHECK(buffer.str() == "ERROR: particle type 'd' not found!\nERROR: The given particle doesn't exist (Index)\n\n");
   }
   SUBCASE("Decay2body Errors")
   {

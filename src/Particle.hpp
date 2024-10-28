@@ -29,6 +29,7 @@ class Particle
   double GetPy() const;
   double GetPz() const;
   double GetMass() const;
+  int GetIndex() const;
 
   // function for decaying 1
   int Decay2body(Particle& dau1, Particle& dau2) const;
