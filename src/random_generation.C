@@ -108,21 +108,29 @@ void random_generation()
     }
 
     for (Int_t j = 0; j < Nmax; j++) {
-      for (Int_t k = j + 1; k < Nmax; k++) {
-        histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+      if (EventParticle[j]->GetMass() != fParticleType[6]->GetMass()) {
+        for (Int_t k = j + 1; k < Nmax; k++) {
+          if (EventParticle[k]->GetMass() != fParticleType[6]->GetMass()) {
+            histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
 
-        EventParticle[j]->GetCharge() * EventParticle[k]->GetCharge() > 0
-            ? histo_invmass_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]))
-            : histo_invmass_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            EventParticle[j]->GetCharge() * EventParticle[k]->GetCharge() > 0
+                ? histo_invmass_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]))
+                : histo_invmass_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
 
-        if ((EventParticle[j]->GetMass() == fParticleType[0]->GetMass()
-             && EventParticle[k]->GetIndex() == fParticleType[3]->GetMass())
-            || (EventParticle[j]->GetIndex() == fParticleType[3]->GetMass()
-                && EventParticle[k]->GetIndex() == fParticleType[0]->GetMass())) {
-          EventParticle[j]->GetCharge() * EventParticle[m]->GetCharge() > 0
-              ? histo_invmass_Pi_K_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]))
-              : histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            if ((EventParticle[j]->GetMass() == fParticleType[0]->GetMass()
+                 && EventParticle[k]->GetIndex() == fParticleType[2]->GetMass())
+                || (EventParticle[j]->GetIndex() == fParticleType[2]->GetMass()
+                    && EventParticle[k]->GetIndex() == fParticleType[0]->GetMass())) {
+              EventParticle[j]->GetCharge() * EventParticle[m]->GetCharge() > 0
+                  ? histo_invmass_Pi_K_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]))
+                  : histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            }
+          } else {
+            continue;
+          }
         }
+      } else {
+        continue;
       }
     }
   }
