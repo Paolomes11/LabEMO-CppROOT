@@ -94,8 +94,8 @@ void random_generation()
       } else if (chPart >= 0.99) {
         EventParticle[j]->SetIndex("K*");
         // Part 4
-        EventParticle[j]->Decay2body(EventParticle[Decay_index];
-                                     EventParticle[Decay_index + 1]); // TO SEE colpa di quel birichino di GIULIO
+        EventParticle[j]->Decay2body(*EventParticle[Decay_index],
+                                     *EventParticle[Decay_index + 1]); // TO SEE colpa di quel birichino di GIULIO
         histo_particles->Fill(7);
         histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
         Decay_index += 2;
@@ -166,5 +166,5 @@ void random_generation()
   histo_invmass_Pi_K_disc->Write();
   histo_invmass_Pi_K_conc->Write();
   histo_invmass_Ks_prod->Write();
-  file.Close();
+  file->Close();
 }
