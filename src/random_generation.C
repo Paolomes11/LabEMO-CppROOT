@@ -1,3 +1,4 @@
+#include <TFile.h>
 #include <TH1F.h>
 #include <TMath.h>
 #include <TRandom.h>
@@ -135,7 +136,7 @@ void random_generation()
     }
   }
 
-  TFile file("histograms.root", "RECREATE");
+  TFile* file("histograms.root", "RECREATE");
   histo_particles->Write();
   histo_azimutal->Write();
   histo_polar->Write();
