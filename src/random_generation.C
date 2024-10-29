@@ -104,7 +104,7 @@ void random_generation()
       histo_azimutal->Fill(phi);
       histo_polar->Fill(theta);
       histo_impulse->Fill(impulse);
-      histo_transverse_impulse->Fll(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
+      histo_transverse_impulse->Fill(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
       histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
 
