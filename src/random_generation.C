@@ -106,7 +106,7 @@ void random_generation()
         // Part 4
 
         EventParticle[j]->Decay2body(*EventParticle[Decay_index],
-                                     *EventParticle[Decay_index + 1]); // TO SEE colpa di quel birichino di GIULIO
+                                     *EventParticle[Decay_index + 1]);
         histo_particles->Fill(7);
         histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
         Decay_index += 2;
