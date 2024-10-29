@@ -120,9 +120,9 @@ void random_generation()
     }
 
     for (Int_t j = 0; j < Nmax; j++) {
-      if (EventParticle[j]->GetIndex() != 6) {
+      if (EventParticle[j]->GetIndex() != 6 && EventParticle[j] != nullptr) {
         for (Int_t k = j + 1; k < Nmax; k++) {
-          if (EventParticle[k]->GetIndex() != 6) {
+          if (EventParticle[k]->GetIndex() != 6 && EventParticle[j] != nullptr) {
             histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
 
             // da testare la velocità di esecuzione in confronto all'opzione di esplicitare tutte le combinazioni
