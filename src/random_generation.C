@@ -93,7 +93,18 @@ void random_generation()
         histo_particles->Fill(6);
       } else if (chPart >= 0.99) {
         EventParticle[j]->SetIndex("K*");
+
+        double kdecay = gRandom->Uniform(0, 1);
+        if (kdecay <= 0.5) {
+          EventParticle[Decay_index]     = new Particle("K+");
+          EventParticle[Decay_index + 1] = new Particle("Pi-");
+        } else {
+          EventParticle[Decay_index]     = new Particle("K-");
+          EventParticle[Decay_index + 1] = new Particle("Pi+");
+        }
+
         // Part 4
+
         EventParticle[j]->Decay2body(*EventParticle[Decay_index],
                                      *EventParticle[Decay_index + 1]); // TO SEE colpa di quel birichino di GIULIO
         histo_particles->Fill(7);
@@ -113,19 +124,27 @@ void random_generation()
         for (Int_t k = j + 1; k < Nmax; k++) {
           if (EventParticle[k]->GetIndex() != 6) {
             histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
-            
+
             // da testare la velocità di esecuzione in confronto all'opzione di esplicitare tutte le combinazioni
-            if (((EventParticle[j]->GetIndex()== 0 || EventParticle[j]->GetIndex()== 2 || EventParticle[j]->GetIndex()== 4) 
-                  && (EventParticle[k]->GetIndex()== 0 || EventParticle[k]->GetIndex()== 2 || EventParticle[k]->GetIndex()== 4))
-                || ((EventParticle[j]->GetIndex()== 1 || EventParticle[j]->GetIndex()== 3 || EventParticle[j]->GetIndex()== 5) 
-                  && (EventParticle[k]->GetIndex()== 1 || EventParticle[k]->GetIndex()== 3 || EventParticle[k]->GetIndex()== 5))) {
+            if (((EventParticle[j]->GetIndex() == 0 || EventParticle[j]->GetIndex() == 2
+                  || EventParticle[j]->GetIndex() == 4)
+                 && (EventParticle[k]->GetIndex() == 0 || EventParticle[k]->GetIndex() == 2
+                     || EventParticle[k]->GetIndex() == 4))
+                || ((EventParticle[j]->GetIndex() == 1 || EventParticle[j]->GetIndex() == 3
+                     || EventParticle[j]->GetIndex() == 5)
+                    && (EventParticle[k]->GetIndex() == 1 || EventParticle[k]->GetIndex() == 3
+                        || EventParticle[k]->GetIndex() == 5))) {
               histo_invmass_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
             }
 
-            if (((EventParticle[j]->GetIndex()== 0 || EventParticle[j]->GetIndex()== 2 || EventParticle[j]->GetIndex()== 4) 
-                  && (EventParticle[k]->GetIndex()== 1 || EventParticle[k]->GetIndex()== 3 || EventParticle[k]->GetIndex()== 5))
-                || ((EventParticle[j]->GetIndex()== 1 || EventParticle[j]->GetIndex()== 3 || EventParticle[j]->GetIndex()== 5) 
-                  && (EventParticle[k]->GetIndex()== 0 || EventParticle[k]->GetIndex()== 2 || EventParticle[k]->GetIndex()== 4))) {
+            if (((EventParticle[j]->GetIndex() == 0 || EventParticle[j]->GetIndex() == 2
+                  || EventParticle[j]->GetIndex() == 4)
+                 && (EventParticle[k]->GetIndex() == 1 || EventParticle[k]->GetIndex() == 3
+                     || EventParticle[k]->GetIndex() == 5))
+                || ((EventParticle[j]->GetIndex() == 1 || EventParticle[j]->GetIndex() == 3
+                     || EventParticle[j]->GetIndex() == 5)
+                    && (EventParticle[k]->GetIndex() == 0 || EventParticle[k]->GetIndex() == 2
+                        || EventParticle[k]->GetIndex() == 4))) {
               histo_invmass_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
             }
 
@@ -153,7 +172,7 @@ void random_generation()
     }
   }
 
-  TFile* file("histograms.root", "RECREATE");
+  TFile* file = new TFile("histograms.root", "RECREATE"); // TO ADD CRASH CHECK
   histo_particles->Write();
   histo_azimutal->Write();
   histo_polar->Write();
@@ -167,4 +186,5 @@ void random_generation()
   histo_invmass_Pi_K_conc->Write();
   histo_invmass_Ks_prod->Write();
   file->Close();
+  delete file;
 }
