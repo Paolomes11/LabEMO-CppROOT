@@ -13,11 +13,10 @@
 // clang-format on
 
 #include "Particle.hpp"
-
 void random_generation()
 {
   Int_t Nbase = 100;
-  Int_t Nmax  = 120;
+  Int_t Nmax  = 140;
   Int_t nGen  = 1E5;
 
   Particle::AddParticleType("Pi+", 0.13957, 1.);
@@ -58,10 +57,10 @@ void random_generation()
   TH1F* histo_invmass_Ks_prod = new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution", 7, 7, 7);
   histo_invmass_Ks_prod->Sumw2();
 
-  Particle* EventParticle[Nmax];
   for (Int_t i = 1; i < nGen; i++) {
+    Particle* EventParticle[Nmax];
     Int_t Decay_index = Nbase;
-    
+
     // Generate event
     for (Int_t j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");
@@ -124,12 +123,23 @@ void random_generation()
         Decay_index += 2;
       }
 
+      for (int i = 0; i < Nmax; i++) {
+        std::cout << "Array element " << i << ": " << EventParticle[i] << std::endl;
+      } // to debug
+
       histo_azimutal->Fill(phi);
       histo_polar->Fill(theta);
       histo_impulse->Fill(impulse);
       histo_transverse_impulse->Fill(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
       histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
+
+    for (int i = 0; i < Nmax; i++) {
+      std::cout << "Array element " << i << ": " << EventParticle[i] << std::endl;
+      if (EventParticle[i] != nullptr) {
+        std::cout << "Array element " << i << ": " << EventParticle[i]->GetIndex() << std::endl;
+      }
+    } // to debug
 
     for (Int_t j = 0; j < Nmax; j++) { //-1 TO SEE
       if (EventParticle[j] != nullptr && EventParticle[j]->GetIndex() != 6) {
