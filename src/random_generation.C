@@ -4,6 +4,8 @@
 #include <TRandom.h>
 #include <TSystem.h>
 
+#include <iostream> // to test
+
 // clang-format off
     R__LOAD_LIBRARY(ParticleType_cpp.so)
     R__LOAD_LIBRARY(ResonanceType_cpp.so)
@@ -59,9 +61,13 @@ void random_generation()
   Particle* EventParticle[Nmax];
   for (Int_t i = 1; i < nGen; i++) {
     Int_t Decay_index = Nbase;
+    
+    // Generate event
     for (Int_t j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");
-      // Part 2 set random impulse
+      std::cout << "EventParticle[" << j << "] = " << EventParticle[j] << std::endl; // to debug
+
+      // Set random impulse
       double phi       = gRandom->Uniform(0, TMath::TwoPi());
       double theta     = gRandom->Uniform(0, TMath::Pi());
       double impulse   = gRandom->Exp(1); // 1GeV
@@ -70,29 +76,36 @@ void random_generation()
       double impulse_z = impulse * TMath::Cos(theta);
       EventParticle[j]->SetP(impulse_x, impulse_y, impulse_z);
 
-      // Part 3 Set type with probability
+      // Set type with probability
       double chPart = gRandom->Uniform(0, 1);
       // double chPart = gRandom->Rndm();
       if (chPart < 0.4) {
         EventParticle[j]->SetIndex("Pi+");
+        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(1);
       } else if (chPart >= 0.4 && chPart < 0.8) {
         EventParticle[j]->SetIndex("Pi-");
+        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(2);
       } else if (chPart >= 0.8 && chPart < 0.85) {
         EventParticle[j]->SetIndex("K+");
+        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(3);
       } else if (chPart >= 0.85 && chPart < 0.9) {
         EventParticle[j]->SetIndex("K-");
+        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(4);
       } else if (chPart >= 0.9 && chPart < 0.945) {
         EventParticle[j]->SetIndex("P+");
+        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(5);
       } else if (chPart >= 0.945 && chPart < 0.99) {
         EventParticle[j]->SetIndex("P-");
+        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(6);
       } else if (chPart >= 0.99) {
         EventParticle[j]->SetIndex("K*");
+        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
 
         double kdecay = gRandom->Uniform(0, 1);
         if (kdecay <= 0.5) {
@@ -105,8 +118,7 @@ void random_generation()
 
         // Part 4
 
-        EventParticle[j]->Decay2body(*EventParticle[Decay_index],
-                                     *EventParticle[Decay_index + 1]);
+        EventParticle[j]->Decay2body(*EventParticle[Decay_index], *EventParticle[Decay_index + 1]);
         histo_particles->Fill(7);
         histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
         Decay_index += 2;
@@ -119,10 +131,10 @@ void random_generation()
       histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
 
-    for (Int_t j = 0; j < Nmax; j++) {
-      if (EventParticle[j]->GetIndex() != 6 && EventParticle[j] != nullptr) {
+    for (Int_t j = 0; j < Nmax; j++) { //-1 TO SEE
+      if (EventParticle[j] != nullptr && EventParticle[j]->GetIndex() != 6) {
         for (Int_t k = j + 1; k < Nmax; k++) {
-          if (EventParticle[k]->GetIndex() != 6 && EventParticle[j] != nullptr) {
+          if (EventParticle[k] != nullptr && EventParticle[k]->GetIndex() != 6) {
             histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
 
             // da testare la velocità di esecuzione in confronto all'opzione di esplicitare tutte le combinazioni
