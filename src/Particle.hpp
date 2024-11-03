@@ -7,6 +7,7 @@ class Particle
 {
  public:
   Particle(const char* name, double px = 0., double py = 0., double pz = 0.);
+  ~Particle();
 
   // setter
   int SetIndex(const char* name);
@@ -16,6 +17,8 @@ class Particle
   // static
   static int AddParticleType(const char* name, double mass, int charge, double width = 0.);
   static int PrintParticleTypes();
+  static int GetNParticles();
+  static void SetNParticles(int n);
 
   // printer of particle properties
   int PrintParticleProperties();
@@ -43,6 +46,7 @@ class Particle
   // calculate the squared module of a vector
   double fModule2(double x, double y, double z) const;
 
+  static int fNParticles;
   static const int fMaxNumParticleType = 10;
   static ParticleType* fParticleType[fMaxNumParticleType];
   static int fNParticleType;

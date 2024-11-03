@@ -29,6 +29,7 @@ void random_generation()
 
   gRandom->SetSeed();
 
+  // Histograms
   TH1F* histo_particles = new TH1F("histo_particles", "Particles Distribution", 7, 7, 7);
   histo_particles->GetXaxis()->SetBinLabel(1, "Pi+");
   histo_particles->GetXaxis()->SetBinLabel(2, "Pi-");
@@ -57,14 +58,15 @@ void random_generation()
   TH1F* histo_invmass_Ks_prod = new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution", 7, 7, 7);
   histo_invmass_Ks_prod->Sumw2();
 
+  // Generate events
   for (Int_t i = 1; i < nGen; i++) {
     Particle* EventParticle[Nmax];
     Int_t Decay_index = Nbase;
+    Particle::SetNParticles(0);
 
-    // Generate event
+    // Generate particles in event
     for (Int_t j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");
-      std::cout << "EventParticle[" << j << "] = " << EventParticle[j] << std::endl; // to debug
 
       // Set random impulse
       double phi       = gRandom->Uniform(0, TMath::TwoPi());
@@ -80,52 +82,45 @@ void random_generation()
       // double chPart = gRandom->Rndm();
       if (chPart < 0.4) {
         EventParticle[j]->SetIndex("Pi+");
-        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(1);
       } else if (chPart >= 0.4 && chPart < 0.8) {
         EventParticle[j]->SetIndex("Pi-");
-        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(2);
       } else if (chPart >= 0.8 && chPart < 0.85) {
         EventParticle[j]->SetIndex("K+");
-        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(3);
       } else if (chPart >= 0.85 && chPart < 0.9) {
         EventParticle[j]->SetIndex("K-");
-        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(4);
       } else if (chPart >= 0.9 && chPart < 0.945) {
         EventParticle[j]->SetIndex("P+");
-        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(5);
       } else if (chPart >= 0.945 && chPart < 0.99) {
         EventParticle[j]->SetIndex("P-");
-        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
         histo_particles->Fill(6);
       } else if (chPart >= 0.99) {
         EventParticle[j]->SetIndex("K*");
-        std::cout << "EventParticle[" << j << "] = " << EventParticle[j]->GetIndex() << std::endl; // to debug
+        histo_particles->Fill(7);
 
         double kdecay = gRandom->Uniform(0, 1);
         if (kdecay <= 0.5) {
           EventParticle[Decay_index]     = new Particle("K+");
           EventParticle[Decay_index + 1] = new Particle("Pi-");
+          histo_particles->Fill(2);
+          histo_particles->Fill(3);
         } else {
           EventParticle[Decay_index]     = new Particle("K-");
           EventParticle[Decay_index + 1] = new Particle("Pi+");
+          histo_particles->Fill(1);
+          histo_particles->Fill(4);
         }
-
-        // Part 4
-
         EventParticle[j]->Decay2body(*EventParticle[Decay_index], *EventParticle[Decay_index + 1]);
-        histo_particles->Fill(7);
-        histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
+
+        // histo_invmass_Ks_prod->Fill(
+        //     EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1])); // PROBABLY A DOUBLE
+
         Decay_index += 2;
       }
-
-      for (int i = 0; i < Nmax; i++) {
-        std::cout << "Array element " << i << ": " << EventParticle[i] << std::endl;
-      } // to debug
 
       histo_azimutal->Fill(phi);
       histo_polar->Fill(theta);
@@ -134,16 +129,17 @@ void random_generation()
       histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
 
-    for (int i = 0; i < Nmax; i++) {
-      std::cout << "Array element " << i << ": " << EventParticle[i] << std::endl;
-      if (EventParticle[i] != nullptr) {
-        std::cout << "Array element " << i << ": " << EventParticle[i]->GetIndex() << std::endl;
-      }
-    } // to debug
+    //   std::cout << "Number of Particles: " << Particle::GetNParticles() << std::endl;
+    // for (int i = 0; i < Particle::GetNParticles(); i++) {
+    //   std::cout << "Array element " << i << ": " << EventParticle[i] << std::endl;
+    //   // if (EventParticle[i] != nullptr) {
+    //   std::cout << "Array element " << i << ": " << EventParticle[i]->GetIndex() << std::endl;
+    //   // }
+    // } // to debug
 
-    for (Int_t j = 0; j < Nmax; j++) { //-1 TO SEE
+    for (Int_t j = 0; j < Particle::GetNParticles(); j++) { //-1 TO SEE
       if (EventParticle[j] != nullptr && EventParticle[j]->GetIndex() != 6) {
-        for (Int_t k = j + 1; k < Nmax; k++) {
+        for (Int_t k = j + 1; k < Particle::GetNParticles(); k++) {
           if (EventParticle[k] != nullptr && EventParticle[k]->GetIndex() != 6) {
             histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
 
@@ -184,12 +180,8 @@ void random_generation()
               histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
             }
 
-          } else {
-            continue;
           }
         }
-      } else {
-        continue;
       }
     }
   }

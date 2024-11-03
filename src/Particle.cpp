@@ -6,6 +6,7 @@
 
 ParticleType* Particle::fParticleType[fMaxNumParticleType] = {nullptr};
 int Particle::fNParticleType                               = 0;
+int Particle::fNParticles                                  = 0;
 
 Particle::Particle(const char* name, double px, double py, double pz)
     : fPx(px)
@@ -18,6 +19,15 @@ Particle::Particle(const char* name, double px, double py, double pz)
   if (fIndex == -1 && std::strcmp("buffer", name) != 0) {
     std::cerr << "ERROR: particle type '" << name << "' not found!" << std::endl;
   }
+
+  // add one particle (avoid nullptr)
+  fNParticles++;
+}
+
+// remove one particle
+Particle::~Particle()
+{
+  --fNParticles;
 }
 
 int Particle::FindParticle(const char* name)
@@ -149,6 +159,16 @@ int Particle::GetIndex() const
     std::cerr << "ERROR: The given particle doesn't exist (Index)" << '\n' << '\n';
     return -1;
   }
+}
+
+int Particle::GetNParticles()
+{
+  return fNParticles;
+}
+
+void Particle::SetNParticles(int n)
+{
+  fNParticles = n;
 }
 
 // Impulse setters
