@@ -127,7 +127,7 @@ void random_generation()
       histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
 
-    for (Int_t j = 0; j < Nmax; j++) {
+    for (Int_t j = 0; j < Particle::GetNParticles(); j++) {
       int idx_j    = EventParticle[j] ? EventParticle[j]->GetIndex() : 6;
       bool valid_j = (EventParticle[j] != nullptr) & (idx_j != 6);
       for (Int_t k = j + 1; k < Particle::GetNParticles(); k++) {
