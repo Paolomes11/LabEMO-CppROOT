@@ -3,7 +3,7 @@
 #include <TMath.h>
 #include <TRandom.h>
 #include <TSystem.h>
-
+#include <array>
 #include <iostream> // to test
 
 // clang-format off
@@ -116,9 +116,7 @@ void random_generation()
         }
         EventParticle[j]->Decay2body(*EventParticle[Decay_index], *EventParticle[Decay_index + 1]);
 
-        // histo_invmass_Ks_prod->Fill(
-        //     EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1])); // PROBABLY A DOUBLE
-
+        histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
         Decay_index += 2;
       }
 
@@ -129,59 +127,28 @@ void random_generation()
       histo_energy->Fill(EventParticle[j]->GetEnergy());
     }
 
-    //   std::cout << "Number of Particles: " << Particle::GetNParticles() << std::endl;
-    // for (int i = 0; i < Particle::GetNParticles(); i++) {
-    //   std::cout << "Array element " << i << ": " << EventParticle[i] << std::endl;
-    //   // if (EventParticle[i] != nullptr) {
-    //   std::cout << "Array element " << i << ": " << EventParticle[i]->GetIndex() << std::endl;
-    //   // }
-    // } // to debug
+    for (Int_t j = 0; j < Nmax; j++) {
+      int idx_j    = EventParticle[j] ? EventParticle[j]->GetIndex() : 6;
+      bool valid_j = (EventParticle[j] != nullptr) & (idx_j != 6);
+      for (Int_t k = j + 1; k < Particle::GetNParticles(); k++) {
+        int idx_k    = EventParticle[k] ? EventParticle[k]->GetIndex() : 6;
+        bool valid_k = (EventParticle[k] != nullptr) & (idx_k != 6);
+        double inv_mass{EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k)};
+        histo_invmass->Fill(inv_mass);
 
-    for (Int_t j = 0; j < Particle::GetNParticles(); j++) { //-1 TO SEE
-      if (EventParticle[j] != nullptr && EventParticle[j]->GetIndex() != 6) {
-        for (Int_t k = j + 1; k < Particle::GetNParticles(); k++) {
-          if (EventParticle[k] != nullptr && EventParticle[k]->GetIndex() != 6) {
-            histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+        // da testare la velocità di esecuzione
+        bool is_even_j{EventParticle[j]->GetIndex() % 2 == 0};
+        bool is_even_k{EventParticle[k]->GetIndex() % 2 == 0};
+        histo_invmass_conc->Fill(inv_mass * (is_even_j == is_even_k));
+        histo_invmass_disc->Fill(inv_mass * (is_even_j == is_even_k));
 
-            // da testare la velocità di esecuzione in confronto all'opzione di esplicitare tutte le combinazioni
-            if (((EventParticle[j]->GetIndex() == 0 || EventParticle[j]->GetIndex() == 2
-                  || EventParticle[j]->GetIndex() == 4)
-                 && (EventParticle[k]->GetIndex() == 0 || EventParticle[k]->GetIndex() == 2
-                     || EventParticle[k]->GetIndex() == 4))
-                || ((EventParticle[j]->GetIndex() == 1 || EventParticle[j]->GetIndex() == 3
-                     || EventParticle[j]->GetIndex() == 5)
-                    && (EventParticle[k]->GetIndex() == 1 || EventParticle[k]->GetIndex() == 3
-                        || EventParticle[k]->GetIndex() == 5))) {
-              histo_invmass_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
-            }
+        bool cond_Pi_K_conc = ((idx_j == 0) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 0))
+                            | ((idx_j == 1) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 1));
+        histo_invmass_Pi_K_conc->Fill(inv_mass * cond_Pi_K_conc);
 
-            if (((EventParticle[j]->GetIndex() == 0 || EventParticle[j]->GetIndex() == 2
-                  || EventParticle[j]->GetIndex() == 4)
-                 && (EventParticle[k]->GetIndex() == 1 || EventParticle[k]->GetIndex() == 3
-                     || EventParticle[k]->GetIndex() == 5))
-                || ((EventParticle[j]->GetIndex() == 1 || EventParticle[j]->GetIndex() == 3
-                     || EventParticle[j]->GetIndex() == 5)
-                    && (EventParticle[k]->GetIndex() == 0 || EventParticle[k]->GetIndex() == 2
-                        || EventParticle[k]->GetIndex() == 4))) {
-              histo_invmass_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
-            }
-
-            if ((EventParticle[j]->GetIndex() == 0 && EventParticle[k]->GetIndex() == 2)
-                || (EventParticle[j]->GetIndex() == 2 && EventParticle[k]->GetMass() == 0)
-                || (EventParticle[j]->GetIndex() == 1 && EventParticle[k]->GetIndex() == 3)
-                || (EventParticle[j]->GetIndex() == 3 && EventParticle[k]->GetMass() == 1)) {
-              histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
-            }
-
-            if ((EventParticle[j]->GetIndex() == 0 && EventParticle[k]->GetIndex() == 3)
-                || (EventParticle[j]->GetIndex() == 3 && EventParticle[k]->GetMass() == 0)
-                || (EventParticle[j]->GetIndex() == 1 && EventParticle[k]->GetIndex() == 2)
-                || (EventParticle[j]->GetIndex() == 2 && EventParticle[k]->GetMass() == 1)) {
-              histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
-            }
-
-          }
-        }
+        bool cond_Pi_K_disc = ((idx_j == 0) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 0))
+                            | ((idx_j == 1) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 1));
+        histo_invmass_Pi_K_disc->Fill(inv_mass * cond_Pi_K_disc);
       }
     }
   }
