@@ -38,14 +38,14 @@ set(SOURCES
 )
 
 # Eseguibili di test
-# add_executable(test1 tests/main_test1.cpp ${SOURCES})
-# add_executable(test.t tests/test_file.cpp ${SOURCES})
-add_executable(testRand src/test.cpp ${SOURCES})
+add_executable(test1 tests/main_test1.cpp ${SOURCES})
+add_executable(test.t tests/test_file.cpp ${SOURCES})
+# add_executable(testRand src/test.cpp ${SOURCES})
 
 # Definisci il test associato a test.t se i test sono abilitati
-# if(BUILD_TESTING)
-#       add_test(NAME test.t COMMAND test.t)
-# endif()
+if(BUILD_TESTING)
+      add_test(NAME test.t COMMAND test.t)
+endif()
 
 # # Trova il pacchetto ROOT per il file random_generation.C
 # find_package(ROOT REQUIRED)
