@@ -38,24 +38,24 @@ void random_generation()
   histo_particles->GetXaxis()->SetBinLabel(5, "P+");
   histo_particles->GetXaxis()->SetBinLabel(6, "P-");
   histo_particles->GetXaxis()->SetBinLabel(7, "K*");
-  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 7, 7, 7);
-  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 7, 7, 7);
-  TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution", 7, 7, 7);
-  TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 7, 7, 7);
-  TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution", 7, 7, 7);
-  TH1F* histo_invmass            = new TH1F("histo_invmass", "Invariant Mass Distribution", 7, 7, 7);
+  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 100, 7, 7);
+  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 100, 7, 7);
+  TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution", 100, 7, 7);
+  TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 100, 7, 7);
+  TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution", 100, 7, 7);
+  TH1F* histo_invmass            = new TH1F("histo_invmass", "Invariant Mass Distribution", 100, 7, 7);
   histo_invmass->Sumw2();
-  TH1F* histo_invmass_disc = new TH1F("histo_invmass_disc", "Discordant Invariant Mass Distribution", 7, 7, 7);
+  TH1F* histo_invmass_disc = new TH1F("histo_invmass_disc", "Discordant Invariant Mass Distribution", 100, 7, 7);
   histo_invmass_disc->Sumw2();
-  TH1F* histo_invmass_conc = new TH1F("histo_invmass_conc", "Concordant Invariant Mass Distribution", 7, 7, 7);
+  TH1F* histo_invmass_conc = new TH1F("histo_invmass_conc", "Concordant Invariant Mass Distribution", 100, 7, 7);
   histo_invmass_conc->Sumw2();
   TH1F* histo_invmass_Pi_K_disc =
-      new TH1F("histo_invmass_Pi_K_disc", "Pion and Kaon Discordant Invariant Mass Distribution", 7, 7, 7);
+      new TH1F("histo_invmass_Pi_K_disc", "Pion and Kaon Discordant Invariant Mass Distribution", 100, 7, 7);
   histo_invmass_Pi_K_disc->Sumw2();
   TH1F* histo_invmass_Pi_K_conc =
-      new TH1F("histo_invmass_Pi_K_conc", "Pion and Kaon Concordant Invariant Mass Distribution", 7, 7, 7);
+      new TH1F("histo_invmass_Pi_K_conc", "Pion and Kaon Concordant Invariant Mass Distribution", 100, 7, 7);
   histo_invmass_Pi_K_conc->Sumw2();
-  TH1F* histo_invmass_Ks_prod = new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution", 7, 7, 7);
+  TH1F* histo_invmass_Ks_prod = new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution", 100, 7, 7);
   histo_invmass_Ks_prod->Sumw2();
 
   // Generate events
