@@ -30,7 +30,7 @@ void random_generation()
   gRandom->SetSeed();
 
   // Histograms
-  TH1F* histo_particles = new TH1F("histo_particles", "Particles Distribution", 7, 7, 7);
+  TH1F* histo_particles = new TH1F("histo_particles", "Particles Distribution", 7, 0, 7);
   histo_particles->GetXaxis()->SetBinLabel(1, "Pi+");
   histo_particles->GetXaxis()->SetBinLabel(2, "Pi-");
   histo_particles->GetXaxis()->SetBinLabel(3, "K+");
@@ -38,8 +38,8 @@ void random_generation()
   histo_particles->GetXaxis()->SetBinLabel(5, "P+");
   histo_particles->GetXaxis()->SetBinLabel(6, "P-");
   histo_particles->GetXaxis()->SetBinLabel(7, "K*");
-  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 100, 7, 7);
-  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 100, 7, 7);
+  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 100, 0, TMath::TwoPi());
+  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 100, 0, TMath::Pi());
   TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution", 100, 7, 7);
   TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 100, 7, 7);
   TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution", 100, 7, 7);
@@ -80,37 +80,28 @@ void random_generation()
       // Set type with probability
       double chPart = gRandom->Uniform(0, 1);
       // double chPart = gRandom->Rndm();
-      int rangeIndex = (chPart >= 0.4) + (chPart >= 0.8) + (chPart >= 0.85) + (chPart >= 0.9) + (chPart >= 0.945)
-                     + (chPart >= 0.99) + (chPart >= 1.0);
-
-      switch (rangeIndex) {
-      case 0:
+      if (chPart < 0.4) {
         EventParticle[j]->SetIndex("Pi+");
         histo_particles->Fill(1);
-        break;
-      case 1:
+      } else if (chPart >= 0.4 && chPart < 0.8) {
         EventParticle[j]->SetIndex("Pi-");
         histo_particles->Fill(2);
-        break;
-      case 2:
+      } else if (chPart >= 0.8 && chPart < 0.85) {
         EventParticle[j]->SetIndex("K+");
         histo_particles->Fill(3);
-        break;
-      case 3:
+      } else if (chPart >= 0.85 && chPart < 0.9) {
         EventParticle[j]->SetIndex("K-");
         histo_particles->Fill(4);
-        break;
-      case 4:
+      } else if (chPart >= 0.9 && chPart < 0.945) {
         EventParticle[j]->SetIndex("P+");
         histo_particles->Fill(5);
-        break;
-      case 5:
+      } else if (chPart >= 0.945 && chPart < 0.99) {
         EventParticle[j]->SetIndex("P-");
         histo_particles->Fill(6);
-        break;
-      case 6:
+      } else if (chPart >= 0.99) {
         EventParticle[j]->SetIndex("K*");
         histo_particles->Fill(7);
+
         double kdecay = gRandom->Uniform(0, 1);
         if (kdecay <= 0.5) {
           EventParticle[Decay_index]     = new Particle("K+");
@@ -127,8 +118,6 @@ void random_generation()
 
         histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
         Decay_index += 2;
-        break;
-      default:
       }
 
       histo_azimutal->Fill(phi);
