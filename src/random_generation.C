@@ -30,7 +30,7 @@ void random_generation()
   gRandom->SetSeed();
 
   // Histograms
-  TH1F* histo_particles = new TH1F("histo_particles", "Particles Distribution", 7, 0, 7);
+  TH1F* histo_particles = new TH1F("histo_particles", "Particles Distribution", 7, 1, 8);
   histo_particles->GetXaxis()->SetBinLabel(1, "Pi+");
   histo_particles->GetXaxis()->SetBinLabel(2, "Pi-");
   histo_particles->GetXaxis()->SetBinLabel(3, "K+");
@@ -38,8 +38,8 @@ void random_generation()
   histo_particles->GetXaxis()->SetBinLabel(5, "P+");
   histo_particles->GetXaxis()->SetBinLabel(6, "P-");
   histo_particles->GetXaxis()->SetBinLabel(7, "K*");
-  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 100, 0, TMath::TwoPi());
-  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 100, 0, TMath::Pi());
+  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 100, 0, 7);
+  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 100, 0, 4);
   TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution", 100, 7, 7);
   TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 100, 7, 7);
   TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution", 100, 7, 7);
@@ -59,7 +59,7 @@ void random_generation()
   histo_invmass_Ks_prod->Sumw2();
 
   // Generate events
-  for (Int_t i = 1; i < nGen; i++) {
+  for (Int_t i = 0; i < nGen; i++) {
     Particle* EventParticle[Nmax];
     Int_t Decay_index = Nbase;
     Particle::SetNParticles(0);
@@ -128,7 +128,6 @@ void random_generation()
         histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
         Decay_index += 2;
         break;
-      default:
       }
 
       histo_azimutal->Fill(phi);
