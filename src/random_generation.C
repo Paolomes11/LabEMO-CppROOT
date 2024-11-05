@@ -80,28 +80,37 @@ void random_generation()
       // Set type with probability
       double chPart = gRandom->Uniform(0, 1);
       // double chPart = gRandom->Rndm();
-      if (chPart < 0.4) {
+      int rangeIndex = (chPart >= 0.4) + (chPart >= 0.8) + (chPart >= 0.85) + (chPart >= 0.9) + (chPart >= 0.945)
+                     + (chPart >= 0.99) + (chPart >= 1.0);
+
+      switch (rangeIndex) {
+      case 0:
         EventParticle[j]->SetIndex("Pi+");
         histo_particles->Fill(1);
-      } else if (chPart >= 0.4 && chPart < 0.8) {
+        break;
+      case 1:
         EventParticle[j]->SetIndex("Pi-");
         histo_particles->Fill(2);
-      } else if (chPart >= 0.8 && chPart < 0.85) {
+        break;
+      case 2:
         EventParticle[j]->SetIndex("K+");
         histo_particles->Fill(3);
-      } else if (chPart >= 0.85 && chPart < 0.9) {
+        break;
+      case 3:
         EventParticle[j]->SetIndex("K-");
         histo_particles->Fill(4);
-      } else if (chPart >= 0.9 && chPart < 0.945) {
+        break;
+      case 4:
         EventParticle[j]->SetIndex("P+");
         histo_particles->Fill(5);
-      } else if (chPart >= 0.945 && chPart < 0.99) {
+        break;
+      case 5:
         EventParticle[j]->SetIndex("P-");
         histo_particles->Fill(6);
-      } else if (chPart >= 0.99) {
+        break;
+      case 6:
         EventParticle[j]->SetIndex("K*");
         histo_particles->Fill(7);
-
         double kdecay = gRandom->Uniform(0, 1);
         if (kdecay <= 0.5) {
           EventParticle[Decay_index]     = new Particle("K+");
@@ -118,6 +127,8 @@ void random_generation()
 
         histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
         Decay_index += 2;
+        break;
+      default:
       }
 
       histo_azimutal->Fill(phi);
