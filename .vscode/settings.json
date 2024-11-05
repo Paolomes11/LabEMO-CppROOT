@@ -60,6 +60,7 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "random_generation.C": "cpp"
+        "random_generation.C": "cpp",
+        "TestFile.C": "cpp"
     }
 }

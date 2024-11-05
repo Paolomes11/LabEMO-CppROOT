@@ -4,7 +4,6 @@
 #include <TRandom.h>
 #include <TSystem.h>
 #include <array>
-#include <iostream> // to test
 
 // clang-format off
     R__LOAD_LIBRARY(ParticleType_cpp.so)
