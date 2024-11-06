@@ -7,7 +7,6 @@ class Particle
 {
  public:
   Particle(const char* name, double px = 0., double py = 0., double pz = 0.);
-  ~Particle();
 
   // setter
   int SetIndex(const char* name);

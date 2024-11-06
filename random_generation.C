@@ -6,9 +6,9 @@
 #include <array>
 
 // clang-format off
-    R__LOAD_LIBRARY(ParticleType_cpp.so)
-    R__LOAD_LIBRARY(ResonanceType_cpp.so)
-    R__LOAD_LIBRARY(Particle_cpp.so)
+    R__LOAD_LIBRARY(root_files/ParticleType_cpp.so)
+    R__LOAD_LIBRARY(root_files/ResonanceType_cpp.so)
+    R__LOAD_LIBRARY(root_files/Particle_cpp.so)
 // clang-format on
 
 #include "Particle.hpp"
@@ -62,7 +62,7 @@ void random_generation()
     Particle* EventParticle[Nmax];
     Int_t Decay_index = Nbase;
     Particle::SetNParticles(0);
-
+    
     // Generate particles in event
     for (Int_t j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");

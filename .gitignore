@@ -43,3 +43,6 @@ Thumbs.db
 
 # Backup files
 *~
+
+# Root files
+root_files/

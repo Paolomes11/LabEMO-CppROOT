@@ -7,7 +7,7 @@
 int TestFile()
 {
   // Apri il file ROOT
-  TFile* file = new TFile("src/histograms.root");
+  TFile* file = new TFile("histograms.root");
 
   TH1F* MyHist[12];
 
@@ -44,7 +44,7 @@ int TestFile()
   myCanvas->Print("Histograms.gif");
 
   // Mantieni la finestra aperta fino a quando non viene chiusa dall'utente
-  gApplication->Run();
+  // gApplication->Run();
 
   // Chiudi il file
   file->Close();

@@ -24,12 +24,6 @@ Particle::Particle(const char* name, double px, double py, double pz)
   fNParticles++;
 }
 
-// remove one particle
-Particle::~Particle()
-{
-  --fNParticles;
-}
-
 int Particle::FindParticle(const char* name)
 {
   for (int i = 0; i < fMaxNumParticleType; ++i) {

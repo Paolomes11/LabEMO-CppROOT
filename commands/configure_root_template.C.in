@@ -1,0 +1,11 @@
+#include <TROOT.h>
+
+void configure_root() {
+    // Carica i file
+    gROOT->LoadMacro("${CMAKE_SOURCE_DIR}/root_files/ParticleType.cpp+");
+    gROOT->LoadMacro("${CMAKE_SOURCE_DIR}/root_files/ResonanceType.cpp+");
+    gROOT->LoadMacro("${CMAKE_SOURCE_DIR}/root_files/Particle.cpp+");
+
+    // Esci da ROOT
+    gROOT->ProcessLine(".q");
+}

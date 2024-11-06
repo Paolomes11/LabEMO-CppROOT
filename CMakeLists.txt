@@ -38,29 +38,65 @@ set(SOURCES
 )
 
 # Eseguibili di test
-add_executable(test1 tests/main_test1.cpp ${SOURCES})
 add_executable(test.t tests/test_file.cpp ${SOURCES})
-# add_executable(testRand src/test.cpp ${SOURCES})
 
 # Definisci il test associato a test.t se i test sono abilitati
 if(BUILD_TESTING)
       add_test(NAME test.t COMMAND test.t)
 endif()
 
-# # Trova il pacchetto ROOT per il file random_generation.C
-# find_package(ROOT REQUIRED)
 
-# include_directories(${ROOT_INCLUDE_DIRS})
-# link_directories(${ROOT_LIBRARY_DIR})
+# Scripts per settaggio impostazioni e avvio programma
 
-# # Definisci l'output directory per i file .so
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/myRoot)
+# find ROOT
+find_package(ROOT REQUIRED)
 
-# # Crea le librerie condivise (.so)
-# add_library(Particle SHARED src/Particle.cpp)
-# add_library(ParticleType SHARED src/ParticleType.cpp)
-# add_library(ResonanceType SHARED src/ResonanceType.cpp)
+# Imposta le directory include e link per ROOT
+include_directories(${ROOT_INCLUDE_DIRS})
+link_directories(${ROOT_LIBRARY_DIRS})
 
-# # Linka ROOT solo a random_generation.C
-# add_executable(random_generation myRoot/random_generation.C)
-# target_link_libraries(random_generation ${ROOT_LIBRARIES})
+# Crea una cartella 'myRoot' per i file generati
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/root_files)
+
+# Genera il file root_commands.C dinamicamente
+configure_file(${CMAKE_SOURCE_DIR}/commands/configure_root_template.C.in
+      ${CMAKE_BINARY_DIR}/commands/configure_root.C)
+
+add_custom_target(configure_root
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/root_files
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/*.hpp ${CMAKE_SOURCE_DIR}/root_files
+      COMMENT "Muovendo i file cpp e hpp generati in root_files"
+)
+
+# Comando personalizzato per eseguire ROOT
+add_custom_command(TARGET configure_root POST_BUILD
+      COMMAND ${ROOT_EXECUTABLE} -l -q ${CMAKE_BINARY_DIR}/commands/configure_root.C
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/root_files
+      COMMENT "Eseguendo comandi ROOT"
+)
+
+# Comando per avviare il programma automaticamente
+configure_file(${CMAKE_SOURCE_DIR}/commands/program_run_template.C.in
+      ${CMAKE_BINARY_DIR}/commands/program_run.C)
+
+add_custom_target(program_run
+      COMMAND ${ROOT_EXECUTABLE} -l -q ${CMAKE_BINARY_DIR}/commands/program_run.C
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/
+      COMMENT "Eseguendo comandi per il programma"
+)
+
+# Test per file.root
+configure_file(${CMAKE_SOURCE_DIR}/commands/test_histogram_template.C.in
+      ${CMAKE_BINARY_DIR}/commands/test_histogram.C)
+
+add_custom_target(test_histogram
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/histograms.root ${CMAKE_SOURCE_DIR}/tests
+      COMMENT "Muovendo l'istogramma in tests"
+)
+
+add_custom_command(TARGET test_histogram POST_BUILD
+      COMMAND ${ROOT_EXECUTABLE} -l -q ${CMAKE_BINARY_DIR}/commands/test_histogram.C
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/
+      COMMENT "Eseguendo il test per l'istorogramma"
+)
+

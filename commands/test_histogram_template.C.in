@@ -1,0 +1,9 @@
+void test_histogram() {
+    // Carica macro
+    gROOT->ProcessLine(".L tests/TestFile.C");
+
+    // Esegue macro
+    gROOT->ProcessLine("TestFile()");
+
+    
+}
