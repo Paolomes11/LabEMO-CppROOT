@@ -170,7 +170,6 @@ void random_generation()
         // bool charge_corr = (is_even_j == is_even_k);
         // bool charge_corr        = ((EventParticle[j]->GetIndex() & 1) == (EventParticle[k]->GetIndex() & 1));
         bool j_even             = ((EventParticle[j]->GetIndex() & 1) == 0);
-        std::cout << j_even << std::endl;
         bool k_even             = ((EventParticle[k]->GetIndex() & 1) == 0);
         bool charge_correlation = (j_even == k_even);
         if (charge_correlation == true) {
