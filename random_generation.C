@@ -3,8 +3,8 @@
 #include <TMath.h>
 #include <TRandom.h>
 #include <TSystem.h>
-#include <iostream>
 #include <cstring>
+#include <iostream>
 
 // clang-format off
     R__LOAD_LIBRARY(root_files/ParticleType_cpp.so)
@@ -164,19 +164,26 @@ void random_generation()
         double inv_mass = (EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k));
         histo_invmass->Fill(inv_mass);
 
-        // da testare la velocità di esecuzione
-        // bool is_even_j   = (EventParticle[j]->GetIndex() % 2 == 0);
-        // bool is_even_k   = (EventParticle[k]->GetIndex() % 2 == 0);
-        // bool charge_corr = (is_even_j == is_even_k);
-        // bool charge_corr        = ((EventParticle[j]->GetIndex() & 1) == (EventParticle[k]->GetIndex() & 1));
-        bool j_even             = ((EventParticle[j]->GetIndex() & 1) == 0);
-        std::cout << j_even << std::endl;
-        bool k_even             = ((EventParticle[k]->GetIndex() & 1) == 0);
-        bool charge_correlation = (j_even == k_even);
-        if (charge_correlation == true) {
+        bool mega_bool_conc =
+            ((idx_j == 0) & (idx_k == 4)) | ((idx_j == 2) & (idx_k == 4)) | ((idx_j == 4) & (idx_k == 2))
+            | ((idx_j == 4) & (idx_k == 0)) | ((idx_j == 1) & (idx_k == 5)) | ((idx_j == 3) & (idx_k == 5))
+            | ((idx_j == 5) & (idx_k == 1)) | ((idx_j == 5) & (idx_k == 3)) | ((idx_j == 0) & (idx_k == 0))
+            | ((idx_j == 2) & (idx_k == 2)) | ((idx_j == 4) & (idx_k == 4)) | ((idx_j == 1) & (idx_k == 1))
+            | ((idx_j == 3) & (idx_k == 3)) | ((idx_j == 5) & (idx_k == 5));
+
+        if (mega_bool_conc == true) {
 #pragma omp critical
           histo_invmass_conc->Fill(inv_mass);
-        } else {
+        }
+
+        bool mega_bool_disc =
+            ((idx_j == 0) & (idx_k == 1)) | ((idx_j == 0) & (idx_k == 5)) | ((idx_j == 1) & (idx_k == 0))
+            | ((idx_j == 1) & (idx_k == 4)) | ((idx_j == 2) & (idx_k == 3)) | ((idx_j == 2) & (idx_k == 5))
+            | ((idx_j == 3) & (idx_k == 2)) | ((idx_j == 3) & (idx_k == 4)) | ((idx_j == 4) & (idx_k == 1))
+            | ((idx_j == 4) & (idx_k == 3)) | ((idx_j == 4) & (idx_k == 5)) | ((idx_j == 5) & (idx_k == 0))
+            | ((idx_j == 5) & (idx_k == 2)) | ((idx_j == 5) & (idx_k == 4));
+
+        if (mega_bool_disc == true) {
 #pragma omp critical
           histo_invmass_disc->Fill(inv_mass);
         }
@@ -186,13 +193,20 @@ void random_generation()
 
         if (cond_Pi_K_conc == true) {
 #pragma omp critical
-          histo_invmass_Pi_K_conc->Fill(inv_mass);
+          {
+            histo_invmass_conc->Fill(inv_mass);
+            histo_invmass_Pi_K_conc->Fill(inv_mass);
+          }
         }
         bool cond_Pi_K_disc = ((idx_j == 0) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 0))
                             | ((idx_j == 1) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 1));
+
         if (cond_Pi_K_disc == true) {
 #pragma omp critical
-          histo_invmass_Pi_K_disc->Fill(inv_mass);
+          {
+            histo_invmass_disc->Fill(inv_mass);
+            histo_invmass_Pi_K_disc->Fill(inv_mass);
+          }
         }
       }
     }
