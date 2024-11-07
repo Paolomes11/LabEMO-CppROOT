@@ -7,15 +7,13 @@ ResonanceType::ResonanceType(const char* Name, double Mass, int Charge, double W
     : ParticleType(Name, Mass, Charge)
     , fWidth(Width) {};
 
-// dtro
-
-// getter
+// Getter
 double ResonanceType::GetWidth() const
 {
   return fWidth;
 }
 
-// printer ovveride
+// Printer ovveride
 void ResonanceType::Print() const
 {
   ParticleType::Print();

@@ -1,10 +1,10 @@
 void program_run() {
-    // Carica macro
+    // Load macro
     gROOT->ProcessLine(".L random_generation.C");
 
-    // Esegue macro
+    // Run macro
     gROOT->ProcessLine("random_generation()");
 
-    // Esce da root
+    // Exit from root
     gROOT->ProcessLine(".q");
 }

@@ -9,7 +9,7 @@ ParticleType::ParticleType(const char* name, double mass, int charge)
     , fCharge(charge)
 {}
 
-// getters
+// Getters
 int ParticleType::GetCharge() const
 {
   return fCharge;
@@ -30,7 +30,7 @@ double ParticleType::GetWidth() const
   return 0;
 }
 
-// printer
+// Printer
 void ParticleType::Print() const
 {
   std::cout << '\n'

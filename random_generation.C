@@ -3,6 +3,8 @@
 #include <TMath.h>
 #include <TRandom.h>
 #include <TSystem.h>
+#include <iostream>
+#include <cstring>
 
 // clang-format off
     R__LOAD_LIBRARY(root_files/ParticleType_cpp.so)
@@ -157,33 +159,54 @@ void random_generation()
       int idx_j    = EventParticle[j] ? EventParticle[j]->GetIndex() : 6;
       bool valid_j = (EventParticle[j] != nullptr) & (idx_j != 6);
       for (Int_t k = j + 1; k < Particle::GetNParticles(); k++) {
-        int idx_k    = EventParticle[k] ? EventParticle[k]->GetIndex() : 6;
-        bool valid_k = (EventParticle[k] != nullptr) & (idx_k != 6);
-        double inv_mass{EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k)};
+        int idx_k       = EventParticle[k] ? EventParticle[k]->GetIndex() : 6;
+        bool valid_k    = (EventParticle[k] != nullptr) & (idx_k != 6);
+        double inv_mass = (EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k));
         histo_invmass->Fill(inv_mass);
 
         // da testare la velocità di esecuzione
-        bool is_even_j{EventParticle[j]->GetIndex() % 2 == 0};
-        bool is_even_k{EventParticle[k]->GetIndex() % 2 == 0};
+        // bool is_even_j   = (EventParticle[j]->GetIndex() % 2 == 0);
+        // bool is_even_k   = (EventParticle[k]->GetIndex() % 2 == 0);
+        // bool charge_corr = (is_even_j == is_even_k);
+        // bool charge_corr        = ((EventParticle[j]->GetIndex() & 1) == (EventParticle[k]->GetIndex() & 1));
+        bool j_even             = ((EventParticle[j]->GetIndex() & 1) == 0);
+        std::cout << j_even << std::endl;
+        bool k_even             = ((EventParticle[k]->GetIndex() & 1) == 0);
+        bool charge_correlation = (j_even == k_even);
+        if (charge_correlation == true) {
 #pragma omp critical
-        {
-          histo_invmass_conc->Fill(inv_mass * (is_even_j == is_even_k));
-          histo_invmass_disc->Fill(inv_mass * (is_even_j == is_even_k));
+          histo_invmass_conc->Fill(inv_mass);
+        } else {
+#pragma omp critical
+          histo_invmass_disc->Fill(inv_mass);
         }
+
         bool cond_Pi_K_conc = ((idx_j == 0) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 0))
                             | ((idx_j == 1) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 1));
-#pragma omp critical
-        histo_invmass_Pi_K_conc->Fill(inv_mass * cond_Pi_K_conc);
 
+        if (cond_Pi_K_conc == true) {
+#pragma omp critical
+          histo_invmass_Pi_K_conc->Fill(inv_mass);
+        }
         bool cond_Pi_K_disc = ((idx_j == 0) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 0))
                             | ((idx_j == 1) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 1));
+        if (cond_Pi_K_disc == true) {
 #pragma omp critical
-        histo_invmass_Pi_K_disc->Fill(inv_mass * cond_Pi_K_disc);
+          histo_invmass_Pi_K_disc->Fill(inv_mass);
+        }
       }
     }
   }
 
-  TFile* file = new TFile("histograms.root", "RECREATE"); // TO ADD CRASH CHECK
+  TFile* file = new TFile("histograms.root", "RECREATE");
+
+  // Crash check
+  if (!file || file->IsZombie()) {
+    std::cerr << "Error: Failed to open histograms.root!" << std::endl;
+  } else {
+    std::cout << "File histograms.root opened successfully!" << std::endl;
+  }
+
   histo_particles->Write();
   histo_azimutal->Write();
   histo_polar->Write();
