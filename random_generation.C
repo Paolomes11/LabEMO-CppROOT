@@ -3,7 +3,6 @@
 #include <TMath.h>
 #include <TRandom.h>
 #include <TSystem.h>
-#include <array>
 
 // clang-format off
     R__LOAD_LIBRARY(root_files/ParticleType_cpp.so)
@@ -57,12 +56,13 @@ void random_generation()
   TH1F* histo_invmass_Ks_prod = new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution", 100, 7, 7);
   histo_invmass_Ks_prod->Sumw2();
 
-  // Generate events
+// Generate events
+#pragma omp parallel for
   for (Int_t i = 0; i < nGen; i++) {
     Particle* EventParticle[Nmax];
     Int_t Decay_index = Nbase;
     Particle::SetNParticles(0);
-    
+
     // Generate particles in event
     for (Int_t j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");
@@ -85,55 +85,72 @@ void random_generation()
       switch (rangeIndex) {
       case 0:
         EventParticle[j]->SetIndex("Pi+");
+#pragma omp critical
         histo_particles->Fill(1);
         break;
       case 1:
         EventParticle[j]->SetIndex("Pi-");
+#pragma omp critical
         histo_particles->Fill(2);
         break;
       case 2:
         EventParticle[j]->SetIndex("K+");
+#pragma omp critical
         histo_particles->Fill(3);
         break;
       case 3:
         EventParticle[j]->SetIndex("K-");
+#pragma omp critical
         histo_particles->Fill(4);
         break;
       case 4:
         EventParticle[j]->SetIndex("P+");
+#pragma omp critical
         histo_particles->Fill(5);
         break;
       case 5:
         EventParticle[j]->SetIndex("P-");
+#pragma omp critical
         histo_particles->Fill(6);
         break;
       case 6:
         EventParticle[j]->SetIndex("K*");
+#pragma omp critical
         histo_particles->Fill(7);
         double kdecay = gRandom->Uniform(0, 1);
         if (kdecay <= 0.5) {
           EventParticle[Decay_index]     = new Particle("K+");
           EventParticle[Decay_index + 1] = new Particle("Pi-");
-          histo_particles->Fill(2);
-          histo_particles->Fill(3);
+#pragma omp critical
+          {
+            histo_particles->Fill(2);
+            histo_particles->Fill(3);
+          }
         } else {
           EventParticle[Decay_index]     = new Particle("K-");
           EventParticle[Decay_index + 1] = new Particle("Pi+");
-          histo_particles->Fill(1);
-          histo_particles->Fill(4);
+#pragma omp critical
+          {
+            histo_particles->Fill(1);
+            histo_particles->Fill(4);
+          }
         }
         EventParticle[j]->Decay2body(*EventParticle[Decay_index], *EventParticle[Decay_index + 1]);
 
+#pragma omp critical
         histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
         Decay_index += 2;
         break;
       }
 
-      histo_azimutal->Fill(phi);
-      histo_polar->Fill(theta);
-      histo_impulse->Fill(impulse);
-      histo_transverse_impulse->Fill(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
-      histo_energy->Fill(EventParticle[j]->GetEnergy());
+#pragma omp critical
+      {
+        histo_azimutal->Fill(phi);
+        histo_polar->Fill(theta);
+        histo_impulse->Fill(impulse);
+        histo_transverse_impulse->Fill(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
+        histo_energy->Fill(EventParticle[j]->GetEnergy());
+      }
     }
 
     for (Int_t j = 0; j < Particle::GetNParticles(); j++) {
@@ -148,15 +165,19 @@ void random_generation()
         // da testare la velocità di esecuzione
         bool is_even_j{EventParticle[j]->GetIndex() % 2 == 0};
         bool is_even_k{EventParticle[k]->GetIndex() % 2 == 0};
-        histo_invmass_conc->Fill(inv_mass * (is_even_j == is_even_k));
-        histo_invmass_disc->Fill(inv_mass * (is_even_j == is_even_k));
-
+#pragma omp critical
+        {
+          histo_invmass_conc->Fill(inv_mass * (is_even_j == is_even_k));
+          histo_invmass_disc->Fill(inv_mass * (is_even_j == is_even_k));
+        }
         bool cond_Pi_K_conc = ((idx_j == 0) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 0))
                             | ((idx_j == 1) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 1));
+#pragma omp critical
         histo_invmass_Pi_K_conc->Fill(inv_mass * cond_Pi_K_conc);
 
         bool cond_Pi_K_disc = ((idx_j == 0) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 0))
                             | ((idx_j == 1) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 1));
+#pragma omp critical
         histo_invmass_Pi_K_disc->Fill(inv_mass * cond_Pi_K_disc);
       }
     }
