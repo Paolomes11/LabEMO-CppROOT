@@ -27,13 +27,15 @@ TEST_CASE("Tests of Particle")
     CHECK(particle[0]->GetPy() == doctest::Approx(1.));
     CHECK(particle[0]->GetPz() == doctest::Approx(2.));
     CHECK(particle[0]->GetMass() == doctest::Approx(18.34));
-    CHECK(particle[0]->GetIndex()== 0);
+    CHECK(particle[0]->GetIndex() == 0);
 
     CHECK(particle[1]->GetPx() == doctest::Approx(1.1));
     CHECK(particle[1]->GetPy() == doctest::Approx(0.5));
     CHECK(particle[1]->GetPz() == doctest::Approx(3.7));
     CHECK(particle[1]->GetMass() == doctest::Approx(1.34));
-    CHECK(particle[1]->GetIndex()== 2);
+    CHECK(particle[1]->GetIndex() == 2);
+
+    CHECK(Particle::GetNParticles() == 2);
   }
 
   SUBCASE("Test of Energy and Invariant functions")
@@ -69,6 +71,9 @@ TEST_CASE("Tests of Particle")
     CHECK(particle[1]->GetPx() == doctest::Approx(0.));
     CHECK(particle[1]->GetPy() == doctest::Approx(1.5));
     CHECK(particle[1]->GetPz() == doctest::Approx(2.));
+
+    Particle::SetNParticles(0);
+    CHECK(Particle::GetNParticles() == 0);
   }
 
   SUBCASE("Test of Printers functions")
