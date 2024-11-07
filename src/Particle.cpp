@@ -15,12 +15,12 @@ Particle::Particle(const char* name, double px, double py, double pz)
 {
   fIndex = FindParticle(name);
 
-  // a buffer name for random_generation
+  // A buffer name for random_generation
   if (fIndex == -1 && std::strcmp("buffer", name) != 0) {
     std::cerr << "ERROR: particle type '" << name << "' not found!" << std::endl;
   }
 
-  // add one particle (avoid nullptr)
+  // Add one particle (avoid nullptr)
   fNParticles++;
 }
 
@@ -60,10 +60,10 @@ int Particle::AddParticleType(const char* name, double mass, int charge, double 
       return 0;
     }
   }
-  return 2; // per evitare il warning del compilatore
+  return 2; // To avoid compilator warning
 }
 
-// setter
+// Setter
 int Particle::SetIndex(int index)
 {
   if (index < 10 && fParticleType[index] != nullptr) {
@@ -119,7 +119,7 @@ int Particle::PrintParticleProperties()
   }
 }
 
-// getters
+// Getters
 double Particle::GetPx() const
 {
   return fIndex != -1 ? fPx : (std::cerr << "ERROR: The given particle doesn't exist (Px)" << std::endl, -1);
@@ -180,14 +180,14 @@ double Particle::GetEnergy() const // TO TEST
   return sqrt(pow(fParticleType[fIndex]->GetMass(), 2) + fModule2(fPx, fPy, fPz));
 }
 
-double Particle::InvMass(Particle& p) const // TO TEST
+double Particle::InvMass(Particle& p) const
 {
   return sqrt(pow(GetEnergy() + p.GetEnergy(), 2) - fModule2(fPx + p.fPx, fPy + p.fPy, fPz + p.fPz));
 }
 
 // Squared module
 double Particle::fModule2(double x, double y, double z) const
-{ // TO TEST
+{
   return x * x + y * y + z * z;
 }
 
@@ -203,7 +203,7 @@ int Particle::Decay2body(Particle& dau1, Particle& dau2) const
   double massDau1 = dau1.GetMass();
   double massDau2 = dau2.GetMass();
 
-  if (fIndex > -1) { // add width effect
+  if (fIndex > -1) { // Add width effect
 
     // gaussian random numbers
 
@@ -211,12 +211,12 @@ int Particle::Decay2body(Particle& dau1, Particle& dau2) const
 
     double invnum = 1. / RAND_MAX;
     do {
-      x1 = 2.0 * rand() * invnum - 1.0; // warning double to float
-      x2 = 2.0 * rand() * invnum - 1.0; // warning double to float
+      x1 = 2.0 * rand() * invnum - 1.0; // Warning double to float
+      x2 = 2.0 * rand() * invnum - 1.0; // Warning double to float
       w  = x1 * x1 + x2 * x2;
     } while (w >= 1.0);
 
-    w  = sqrt((-2.0 * log(w)) / w); // warning double to float
+    w  = sqrt((-2.0 * log(w)) / w); // Warning double to float
     y1 = x1 * w;
 
     massMot += fParticleType[fIndex]->GetWidth() * y1;

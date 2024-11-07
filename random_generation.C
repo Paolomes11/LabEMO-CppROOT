@@ -3,6 +3,8 @@
 #include <TMath.h>
 #include <TRandom.h>
 #include <TSystem.h>
+#include <iostream>
+#include <cstring>
 
 // clang-format off
     R__LOAD_LIBRARY(root_files/ParticleType_cpp.so)
@@ -153,37 +155,91 @@ void random_generation()
       }
     }
 
-    for (Int_t j = 0; j < Particle::GetNParticles(); j++) {
-      int idx_j    = EventParticle[j] ? EventParticle[j]->GetIndex() : 6;
-      bool valid_j = (EventParticle[j] != nullptr) & (idx_j != 6);
-      for (Int_t k = j + 1; k < Particle::GetNParticles(); k++) {
-        int idx_k    = EventParticle[k] ? EventParticle[k]->GetIndex() : 6;
-        bool valid_k = (EventParticle[k] != nullptr) & (idx_k != 6);
-        double inv_mass{EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k)};
-        histo_invmass->Fill(inv_mass);
+    //     for (Int_t j = 0; j < Particle::GetNParticles(); j++) {
+    //       int idx_j    = EventParticle[j] ? EventParticle[j]->GetIndex() : 6;
+    //       bool valid_j = (EventParticle[j] != nullptr) & (idx_j != 6);
+    //       for (Int_t k = j + 1; k < Particle::GetNParticles(); k++) {
+    //         int idx_k    = EventParticle[k] ? EventParticle[k]->GetIndex() : 6;
+    //         bool valid_k = (EventParticle[k] != nullptr) & (idx_k != 6);
+    //         double inv_mass{EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k)};
+    // #pragma omp critical
+    //         histo_invmass->Fill(inv_mass);
 
-        // da testare la velocità di esecuzione
-        bool is_even_j{EventParticle[j]->GetIndex() % 2 == 0};
-        bool is_even_k{EventParticle[k]->GetIndex() % 2 == 0};
+    //         bool is_even_j{EventParticle[j]->GetIndex() % 2 == 0};
+    //         bool is_even_k{EventParticle[k]->GetIndex() % 2 == 0};
+    // #pragma omp critical
+    //         {
+    //           histo_invmass_conc->Fill(inv_mass * (is_even_j == is_even_k));
+    //           histo_invmass_disc->Fill(inv_mass * (is_even_j != is_even_k));
+    //         }
+    //         bool cond_Pi_K_conc = ((idx_j == 0) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 0))
+    //                             | ((idx_j == 1) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 1));
+    // #pragma omp critical
+    //         histo_invmass_Pi_K_conc->Fill(inv_mass * cond_Pi_K_conc);
+
+    //         bool cond_Pi_K_disc = ((idx_j == 0) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 0))
+    //                             | ((idx_j == 1) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 1));
+    // #pragma omp critical
+    //         histo_invmass_Pi_K_disc->Fill(inv_mass * cond_Pi_K_disc);
+    //       }
+    //     }
+    for (Int_t j = 0; j < Particle::GetNParticles(); j++) { //-1 TO SEE
+      if (EventParticle[j] != nullptr && EventParticle[j]->GetIndex() != 6) {
+        for (Int_t k = j + 1; k < Particle::GetNParticles(); k++) {
+          if (EventParticle[k] != nullptr && EventParticle[k]->GetIndex() != 6) {
 #pragma omp critical
-        {
-          histo_invmass_conc->Fill(inv_mass * (is_even_j == is_even_k));
-          histo_invmass_disc->Fill(inv_mass * (is_even_j == is_even_k));
+            histo_invmass->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            if (((EventParticle[j]->GetIndex() == 0 || EventParticle[j]->GetIndex() == 2
+                  || EventParticle[j]->GetIndex() == 4)
+                 && (EventParticle[k]->GetIndex() == 0 || EventParticle[k]->GetIndex() == 2
+                     || EventParticle[k]->GetIndex() == 4))
+                || ((EventParticle[j]->GetIndex() == 1 || EventParticle[j]->GetIndex() == 3
+                     || EventParticle[j]->GetIndex() == 5)
+                    && (EventParticle[k]->GetIndex() == 1 || EventParticle[k]->GetIndex() == 3
+                        || EventParticle[k]->GetIndex() == 5))) {
+#pragma omp critical
+              histo_invmass_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            }
+            if (((EventParticle[j]->GetIndex() == 0 || EventParticle[j]->GetIndex() == 2
+                  || EventParticle[j]->GetIndex() == 4)
+                 && (EventParticle[k]->GetIndex() == 1 || EventParticle[k]->GetIndex() == 3
+                     || EventParticle[k]->GetIndex() == 5))
+                || ((EventParticle[j]->GetIndex() == 1 || EventParticle[j]->GetIndex() == 3
+                     || EventParticle[j]->GetIndex() == 5)
+                    && (EventParticle[k]->GetIndex() == 0 || EventParticle[k]->GetIndex() == 2
+                        || EventParticle[k]->GetIndex() == 4))) {
+#pragma omp critical
+              histo_invmass_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            }
+            if ((EventParticle[j]->GetIndex() == 0 && EventParticle[k]->GetIndex() == 2)
+                || (EventParticle[j]->GetIndex() == 2 && EventParticle[k]->GetMass() == 0)
+                || (EventParticle[j]->GetIndex() == 1 && EventParticle[k]->GetIndex() == 3)
+                || (EventParticle[j]->GetIndex() == 3 && EventParticle[k]->GetMass() == 1)) {
+#pragma omp critical
+              histo_invmass_Pi_K_conc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            }
+            if ((EventParticle[j]->GetIndex() == 0 && EventParticle[k]->GetIndex() == 3)
+                || (EventParticle[j]->GetIndex() == 3 && EventParticle[k]->GetMass() == 0)
+                || (EventParticle[j]->GetIndex() == 1 && EventParticle[k]->GetIndex() == 2)
+                || (EventParticle[j]->GetIndex() == 2 && EventParticle[k]->GetMass() == 1)) {
+#pragma omp critical
+              histo_invmass_Pi_K_disc->Fill(EventParticle[j]->InvMass(*EventParticle[k]));
+            }
+          }
         }
-        bool cond_Pi_K_conc = ((idx_j == 0) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 0))
-                            | ((idx_j == 1) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 1));
-#pragma omp critical
-        histo_invmass_Pi_K_conc->Fill(inv_mass * cond_Pi_K_conc);
-
-        bool cond_Pi_K_disc = ((idx_j == 0) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 0))
-                            | ((idx_j == 1) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 1));
-#pragma omp critical
-        histo_invmass_Pi_K_disc->Fill(inv_mass * cond_Pi_K_disc);
       }
     }
   }
 
-  TFile* file = new TFile("histograms.root", "RECREATE"); // TO ADD CRASH CHECK
+  TFile* file = new TFile("histograms.root", "RECREATE");
+
+  // Crash check
+  if (!file || file->IsZombie()) {
+    std::cerr << "Error: Failed to open histograms.root!" << std::endl;
+  } else {
+    std::cout << "File histograms.root opened successfully!" << std::endl;
+  }
+
   histo_particles->Write();
   histo_azimutal->Write();
   histo_polar->Write();

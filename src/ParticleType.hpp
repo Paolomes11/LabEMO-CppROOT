@@ -7,13 +7,13 @@ class ParticleType
   ParticleType(const char* name, double mass, int charge); // ctor
   virtual ~ParticleType() = default;
 
-  // getters
+  // Getters
   const char* GetName() const;
   double GetMass() const;
   int GetCharge() const;
   virtual double GetWidth() const;
 
-  // print attributes
+  // Print attributes
   virtual void Print() const;
 
  private:
