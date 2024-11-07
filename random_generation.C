@@ -3,6 +3,8 @@
 #include <TMath.h>
 #include <TRandom.h>
 #include <TSystem.h>
+#include <iostream>
+#include <cstring>
 
 // clang-format off
     R__LOAD_LIBRARY(root_files/ParticleType_cpp.so)
@@ -196,7 +198,15 @@ void random_generation()
     }
   }
 
-  TFile* file = new TFile("histograms.root", "RECREATE"); // TO ADD CRASH CHECK
+  TFile* file = new TFile("histograms.root", "RECREATE");
+
+  // Crash check
+  if (!file || file->IsZombie()) {
+    std::cerr << "Error: Failed to open histograms.root!" << std::endl;
+  } else {
+    std::cout << "File histograms.root opened successfully!" << std::endl;
+  }
+
   histo_particles->Write();
   histo_azimutal->Write();
   histo_polar->Write();

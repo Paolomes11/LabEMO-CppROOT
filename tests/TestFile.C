@@ -6,12 +6,12 @@
 
 int TestFile()
 {
-  // Apri il file ROOT
+  // Open ROOT file
   TFile* file = new TFile("histograms.root");
 
   TH1F* MyHist[12];
 
-  // Leggi l'istogramma dal file
+  // Read the histogram fro file
   MyHist[0]  = (TH1F*)file->Get("histo_particles");
   MyHist[1]  = (TH1F*)file->Get("histo_azimutal");
   MyHist[2]  = (TH1F*)file->Get("histo_polar");
@@ -25,7 +25,7 @@ int TestFile()
   MyHist[10] = (TH1F*)file->Get("histo_invmass_Pi_K_conc");
   MyHist[11] = (TH1F*)file->Get("histo_invmass_Ks_prod");
 
-  // Verifica se l'istogramma è stato letto correttamente
+  // Test if the histogram was read correctly
   for (Int_t i = 0; i < 12; i++) {
     if (MyHist[i] == nullptr) {
       std::cerr << "Errore: impossibile leggere l'istogramma" << i << std::endl;
@@ -43,10 +43,10 @@ int TestFile()
 
   myCanvas->Print("Histograms.gif");
 
-  // Mantieni la finestra aperta fino a quando non viene chiusa dall'utente
-  // gApplication->Run();
+  // Maintain open the window until i decide to close it
+  gPad->WaitPrimitive();
 
-  // Chiudi il file
+  // Close the file
   file->Close();
 
   return 0;
