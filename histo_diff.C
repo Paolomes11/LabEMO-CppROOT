@@ -5,6 +5,11 @@
 #include <TLegend.h>
 #include <iostream>
 
+double compare_means(double mean1, double err1, double ndf1, double mean2, double err2, double ndf2)
+{
+    
+}
+
 void analisis()
 {
   TFile* file = TFile::Open("histograms.root");
@@ -13,13 +18,13 @@ void analisis()
     return;
   }
 
-    TH1F* histograms[5];
+  TH1F* histograms[5];
 
-  histograms[0]  = (TH1F*)file->Get("histo_invmass_disc");
-  histograms[1]  = (TH1F*)file->Get("histo_invmass_conc");
-  histograms[2]  = (TH1F*)file->Get("histo_invmass_Pi_K_disc");
-  histograms[3]  = (TH1F*)file->Get("histo_invmass_Pi_K_conc");
-  histograms[4]  = (TH1F*)file->Get("histo_invmass_Ks_prod");
+  histograms[0] = (TH1F*)file->Get("histo_invmass_disc");
+  histograms[1] = (TH1F*)file->Get("histo_invmass_conc");
+  histograms[2] = (TH1F*)file->Get("histo_invmass_Pi_K_disc");
+  histograms[3] = (TH1F*)file->Get("histo_invmass_Pi_K_conc");
+  histograms[4] = (TH1F*)file->Get("histo_invmass_Ks_prod");
 
   if (histograms[0]->GetNbinsX() != histograms[1]->GetNbinsX()
       || histograms[2]->GetNbinsX() != histograms[3]->GetNbinsX()) {

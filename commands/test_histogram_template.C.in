@@ -1,7 +1,11 @@
 void test_histogram() {
     // Load macro
-    gROOT->ProcessLine(".L tests/TestFile.C");
+    gROOT->ProcessLine(".x tests/TestFile.C");
 
     // Run macro
-    gROOT->ProcessLine("TestFile()");
+    //gROOT->ProcessLine("TestFile()");
+
+    // std::cout << "Premi Enter per chiudere...\n";
+    // std::cin.get();
+
 }

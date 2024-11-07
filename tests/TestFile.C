@@ -2,16 +2,20 @@
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TH1F.h"
-#include "iostream"
+#include "TSystem.h"
+#include <iostream>
 
 int TestFile()
 {
-  // Open ROOT file
+  // Apri il file ROOT
   TFile* file = new TFile("histograms.root");
+  if (!file || file->IsZombie()) {
+    std::cerr << "Errore: impossibile aprire il file ROOT." << std::endl;
+    return 1;
+  }
 
+  // Inizializza gli istogrammi
   TH1F* MyHist[12];
-
-  // Read the histogram fro file
   MyHist[0]  = (TH1F*)file->Get("histo_particles");
   MyHist[1]  = (TH1F*)file->Get("histo_azimutal");
   MyHist[2]  = (TH1F*)file->Get("histo_polar");
@@ -25,14 +29,15 @@ int TestFile()
   MyHist[10] = (TH1F*)file->Get("histo_invmass_Pi_K_conc");
   MyHist[11] = (TH1F*)file->Get("histo_invmass_Ks_prod");
 
-  // Test if the histogram was read correctly
+  // Verifica se gli istogrammi sono stati letti correttamente
   for (Int_t i = 0; i < 12; i++) {
     if (MyHist[i] == nullptr) {
-      std::cerr << "Errore: impossibile leggere l'istogramma" << i << std::endl;
+      std::cerr << "Errore: impossibile leggere l'istogramma " << i << std::endl;
       return 1;
     }
   }
 
+  // Crea il canvas e disegna gli istogrammi
   TCanvas* myCanvas = new TCanvas("myCanvas", "All histograms", 0, 0, 1600, 1200);
   myCanvas->Divide(4, 3);
 
@@ -41,12 +46,12 @@ int TestFile()
     MyHist[i]->Draw();
   }
 
+  // Salva il canvas come immagine
   myCanvas->Print("Histograms.gif");
 
-  // Maintain open the window until i decide to close it
   gPad->WaitPrimitive();
 
-  // Close the file
+  // Chiudi il file
   file->Close();
 
   return 0;
