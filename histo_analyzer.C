@@ -127,7 +127,9 @@ void histo_analyzer()
 
   TH1F* result3_4 = (TH1F*)histograms_invmass[3]->Clone("result3");
   result3_4->Add(histograms_invmass[4], -1);
-
+  //Chi2 test
+  Double_t chi2comparison = result1_2->Chi2Test(result3_4);
+  //valurazione p-value TO SEE
   // Gaussian Fits
   TF1* gaussianFit1_2 =
       new TF1("gaussianFit1_2", "gaus", result1_2->GetXaxis()->GetXmin(), result1_2->GetXaxis()->GetXmax());
