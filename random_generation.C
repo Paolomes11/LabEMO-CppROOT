@@ -2,8 +2,6 @@
 #include <TH1F.h>
 #include <TMath.h>
 #include <TRandom.h>
-#include <TSystem.h>
-#include <cstring>
 #include <iostream>
 
 // clang-format off

@@ -1,8 +1,6 @@
-#include "TApplication.h"
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TH1F.h"
-#include "TSystem.h"
 #include <iostream>
 
 int TestFile()

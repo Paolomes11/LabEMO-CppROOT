@@ -1,8 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "Particle.hpp"
 #include "doctest.h"
-#include <memory>
-#include <sstream>
 
 TEST_CASE("Tests of Particle")
 {
