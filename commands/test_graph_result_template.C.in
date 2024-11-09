@@ -1,9 +1,9 @@
-void test_histogram() {
+void test_graph_result() {
     // Load macro
-    gROOT->ProcessLine(".x tests/TestFile.C");
+    gROOT->ProcessLine(".L TestFile.C");
 
     // Run macro
-    //gROOT->ProcessLine("TestFile()");
+    gROOT->ProcessLine("TestFile()");
 
     // std::cout << "Premi Enter per chiudere...\n";
     // std::cin.get();

@@ -160,6 +160,8 @@ void random_generation()
         int idx_k       = EventParticle[k] ? EventParticle[k]->GetIndex() : 6;
         bool valid_k    = (EventParticle[k] != nullptr) & (idx_k != 6);
         double inv_mass = (EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k));
+        
+#pragma omp critical
         histo_invmass->Fill(inv_mass);
 
         bool mega_bool_conc =
