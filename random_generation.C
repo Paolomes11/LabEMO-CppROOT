@@ -66,6 +66,7 @@ void random_generation()
     // Generate particles in event
     for (Int_t j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");
+      // std::cout << "Filled 1 " << Particle::GetNParticles() << std::endl; //TO TEST
 
       // Set random impulse
       double phi       = gRandom->Uniform(0, TMath::TwoPi());
@@ -136,12 +137,14 @@ void random_generation()
             {
               histo_particles->Fill(2);
               histo_particles->Fill(3);
+              // std::cout << "Filled 2 " << Particle::GetNParticles() << std::endl; //TO TEST
             }
           } else if (decay > 0.5) {
 #pragma omp critical
             {
               histo_particles->Fill(1);
               histo_particles->Fill(4);
+              // std::cout << "Filled 2 " << Particle::GetNParticles() << std::endl; //TO TEST
             }
           }
 #pragma omp critical
@@ -151,6 +154,7 @@ void random_generation()
           delete EventParticle[Decay_index];
           delete EventParticle[Decay_index + 1];
           Particle::RemNParticles(2);
+          // std::cout << "Removed 2 " << Particle::GetNParticles() << std::endl; //TO TEST
         }
 
         break;
