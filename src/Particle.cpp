@@ -3,7 +3,7 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
-
+ 
 ParticleType* Particle::fParticleType[fMaxNumParticleType] = {nullptr};
 int Particle::fNParticleType                               = 0;
 int Particle::fNParticles                                  = 0;
@@ -165,6 +165,11 @@ void Particle::SetNParticles(int n)
   fNParticles = n;
 }
 
+void Particle::RemNParticles(int n)
+{
+  fNParticles -= n;
+}
+
 // Impulse setters
 int Particle::SetP(double px, double py, double pz)
 {
@@ -175,7 +180,7 @@ int Particle::SetP(double px, double py, double pz)
 }
 
 // Energy and invariant mass
-double Particle::GetEnergy() const // TO TEST
+double Particle::GetEnergy() const
 {
   return sqrt(pow(fParticleType[fIndex]->GetMass(), 2) + fModule2(fPx, fPy, fPz));
 }

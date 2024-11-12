@@ -28,10 +28,16 @@ TEST_CASE("Tests for Histograms")
 
   SUBCASE("Test for num of entries")
   {
+    std::cout << "Num of particles: " << MyHist[0]->GetEntries() << '\n';
     CHECK(abs(MyHist[0]->GetEntries() - 1E7 - 2*1E5) < 1E5); // STATIC CAST?
     for (int i = 1; i < 6; i++) {
       CHECK(MyHist[i]->GetEntries() == 1E7);
     }
+    std::cout << "Total Entries: " << MyHist[6]->GetEntries() << '\n';
+    std::cout << "Entries for first 2 invMass: " << MyHist[7]->GetEntries() << '\n';
+    std::cout << "Entries for first 2 invMass: " << MyHist[8]->GetEntries() << '\n';
+    std::cout << "Entries for second 2 invMass: " << MyHist[9]->GetEntries() << '\n';
+    std::cout << "Entries for second 2 invMass: " << MyHist[10]->GetEntries() << '\n';
   }
 
   file->Close();

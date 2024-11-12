@@ -117,29 +117,42 @@ void random_generation()
         EventParticle[j]->SetIndex("K*");
 #pragma omp critical
         histo_particles->Fill(7);
+
+        // Branchless?
         double kdecay = gRandom->Uniform(0, 1);
         if (kdecay <= 0.5) {
           EventParticle[Decay_index]     = new Particle("K+");
           EventParticle[Decay_index + 1] = new Particle("Pi-");
-#pragma omp critical
-          {
-            histo_particles->Fill(2);
-            histo_particles->Fill(3);
-          }
         } else {
           EventParticle[Decay_index]     = new Particle("K-");
           EventParticle[Decay_index + 1] = new Particle("Pi+");
-#pragma omp critical
-          {
-            histo_particles->Fill(1);
-            histo_particles->Fill(4);
-          }
         }
-        EventParticle[j]->Decay2body(*EventParticle[Decay_index], *EventParticle[Decay_index + 1]);
 
+        int decay = EventParticle[j]->Decay2body(*EventParticle[Decay_index], *EventParticle[Decay_index + 1]);
+
+        if (decay == 0) {
+          if (kdecay <= 0.5) {
 #pragma omp critical
-        histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
-        Decay_index += 2;
+            {
+              histo_particles->Fill(2);
+              histo_particles->Fill(3);
+            }
+          } else if (decay > 0.5) {
+#pragma omp critical
+            {
+              histo_particles->Fill(1);
+              histo_particles->Fill(4);
+            }
+          }
+#pragma omp critical
+          histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
+          Decay_index += 2;
+        } else {
+          delete EventParticle[Decay_index];
+          delete EventParticle[Decay_index + 1];
+          Particle::RemNParticles(2);
+        }
+
         break;
       }
 
@@ -160,7 +173,7 @@ void random_generation()
         int idx_k       = EventParticle[k] ? EventParticle[k]->GetIndex() : 6;
         bool valid_k    = (EventParticle[k] != nullptr) & (idx_k != 6);
         double inv_mass = (EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k));
-        
+
 #pragma omp critical
         histo_invmass->Fill(inv_mass);
 

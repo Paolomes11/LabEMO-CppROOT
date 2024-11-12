@@ -18,6 +18,7 @@ class Particle
   static int PrintParticleTypes();
   static int GetNParticles();
   static void SetNParticles(int n);
+  static void RemNParticles(int n);
 
   // Printer of particle properties
   int PrintParticleProperties();
