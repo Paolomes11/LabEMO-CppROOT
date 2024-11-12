@@ -3,7 +3,6 @@
 #include <TFile.h>
 #include <TH1F.h>
 #include <TMath.h>
-#include <memory>
 
 TEST_CASE("Tests for Histograms")
 {
