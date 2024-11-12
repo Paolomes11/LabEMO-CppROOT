@@ -101,6 +101,16 @@ add_custom_command(TARGET program_run POST_BUILD
       COMMENT "Muovendo l'istogramma in tests e eliminandolo dal main"
 )
 
+# Comando per avviare l'analisi automaticamente
+configure_file(${CMAKE_SOURCE_DIR}/commands/analyzer_run_template.C.in
+      ${CMAKE_BINARY_DIR}/commands/analyzer_run.C)
+
+add_custom_target(analyzer_run
+      COMMAND ${ROOT_EXECUTABLE} -l -q ${CMAKE_BINARY_DIR}/commands/analyzer_run.C
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/
+      COMMENT "Analizzando il file.root"
+)
+
 # Test per file.root
 configure_file(${CMAKE_SOURCE_DIR}/commands/test_graph_result_template.C.in
       ${CMAKE_BINARY_DIR}/commands/test_graph_result.C)
