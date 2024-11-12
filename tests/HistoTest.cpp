@@ -1,7 +1,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "TFile.h"
-#include "TH1F.h"
 #include "doctest.h"
+#include <TFile.h>
+#include <TH1F.h>
+#include <TMath.h>
 
 TEST_CASE("Tests for Histograms")
 {
@@ -28,16 +29,38 @@ TEST_CASE("Tests for Histograms")
 
   SUBCASE("Test for num of entries")
   {
-    std::cout << "Num of particles: " << MyHist[0]->GetEntries() << '\n';
-    CHECK(abs(MyHist[0]->GetEntries() - 1E7 - 2*1E5) < 1E5); // STATIC CAST?
+    CHECK(abs(MyHist[0]->GetEntries() - 1E7 - 1E5) <= 1E5); // (1E7 + 1E5) +- 1E3
+
     for (int i = 1; i < 6; i++) {
       CHECK(MyHist[i]->GetEntries() == 1E7);
     }
-    std::cout << "Total Entries: " << MyHist[6]->GetEntries() << '\n';
-    std::cout << "Entries for first 2 invMass: " << MyHist[7]->GetEntries() << '\n';
-    std::cout << "Entries for first 2 invMass: " << MyHist[8]->GetEntries() << '\n';
-    std::cout << "Entries for second 2 invMass: " << MyHist[9]->GetEntries() << '\n';
-    std::cout << "Entries for second 2 invMass: " << MyHist[10]->GetEntries() << '\n';
+
+    CHECK(4.950E8 <= MyHist[6]->GetEntries());
+    CHECK(MyHist[6]->GetEntries() <= 5.778E8);
+
+    for (int i = 1; i <= 2; i++) {
+      CHECK(2.427E8 <= MyHist[6 + i]->GetEntries());
+      CHECK(MyHist[6 + i]->GetEntries() <= 2.833E8);
+      CHECK(4.227E7 <= MyHist[8 + i]->GetEntries());
+      CHECK(MyHist[8 + i]->GetEntries() <= 4.934E7);
+    }
+
+    CHECK(99051 <= MyHist[11]->GetEntries());
+    CHECK(MyHist[11]->GetEntries() <= 100949);
+  }
+
+  SUBCASE("Test for correct percentage")
+  {
+    int nBins          = MyHist[0]->GetNbinsX();
+    double nEntries    = MyHist[0]->GetEntries();
+    double prob[nBins] = {0.4, 0.4, 0.05, 0.05, 0.045, 0.045, 0.01};
+
+    for (int i = 1; i <= nBins; ++i) {
+      double iEntries  = MyHist[0]->GetBinContent(i);
+      double iError    = 3 * MyHist[0]->GetBinError(i); // 3 for 99%
+      double iRelative = iError / iEntries;
+      CHECK(prob[i - 1] * nEntries == doctest::Approx(iEntries).epsilon(iRelative));
+    }
   }
 
   file->Close();
