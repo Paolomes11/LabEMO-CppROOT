@@ -1,0 +1,10 @@
+void analyzer_run() {
+    // Load macro
+    gROOT->ProcessLine(".L histo_analyzer.C");
+
+    // Run macro
+    gROOT->ProcessLine("histo_analyzer()");
+
+    // Exit from root
+    gROOT->ProcessLine(".q");
+}

@@ -112,6 +112,18 @@ TEST_CASE("Test of ResonanceType")
   CHECK(RT.GetWidth() == doctest::Approx(1.1));
 }
 
+TEST_CASE("Test of RemNParticles")
+{
+  Particle::SetNParticles(0);
+  std::unique_ptr<Particle> particle[3];
+  particle[0] = std::make_unique<Particle>("Pi+", 0., 1., 2.);
+  particle[1] = std::make_unique<Particle>("K+", 0., 0., 0.);
+  particle[2] = std::make_unique<Particle>("P+", 0., 0., 0.);
+
+  Particle::RemNParticles(2);
+  CHECK(Particle::GetNParticles() == 1);
+}
+
 TEST_CASE("Test of Errors launch")
 {
   SUBCASE("Constructor Error")
