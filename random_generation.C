@@ -132,21 +132,6 @@ void random_generation()
         int decay = EventParticle[j]->Decay2body(*EventParticle[Decay_index], *EventParticle[Decay_index + 1]);
 
         if (decay == 0) {
-          if (kdecay <= 0.5) {
-#pragma omp critical
-            {
-              histo_particles->Fill(2);
-              histo_particles->Fill(3);
-              // std::cout << "Filled 2 " << Particle::GetNParticles() << std::endl; //TO TEST
-            }
-          } else if (decay > 0.5) {
-#pragma omp critical
-            {
-              histo_particles->Fill(1);
-              histo_particles->Fill(4);
-              // std::cout << "Filled 2 " << Particle::GetNParticles() << std::endl; //TO TEST
-            }
-          }
 #pragma omp critical
           histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
           Decay_index += 2;
