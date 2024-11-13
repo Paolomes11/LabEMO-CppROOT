@@ -55,11 +55,12 @@ void histo_analyzer()
 
   for (int i = 0; i < 3; i++) {
     if (i < 2) {
-      Fits[i] = new TF1(Fits_name[i], "pol0", histograms[i + 1]->GetXaxis()->GetXmin(),
-                        histograms[i + 1]->GetXaxis()->GetXmax());
+      Fits[i] = new TF1(Fits_name[i], "pol0",
+                        histograms[i + 1]->GetXaxis()->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
+                        histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
     } else {
-      Fits[i] = new TF1(Fits_name[i], "expo", histograms[i + 1]->GetXaxis()->GetXmin(),
-                        histograms[i + 1]->GetXaxis()->GetXmax());
+      Fits[i] = new TF1(Fits_name[i], "expo", histograms[i + 1]->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
+                        histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
     }
 
     histograms[i + 1]->Fit(Fits[i], "R");
