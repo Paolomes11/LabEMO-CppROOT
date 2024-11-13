@@ -17,45 +17,49 @@ void random_generation()
   Int_t Nmax  = 140;
   Int_t nGen  = 1E5;
 
-  Particle::AddParticleType("Pi+", 0.13957, 1.);
-  Particle::AddParticleType("Pi-", 0.13957, -1.);
-  Particle::AddParticleType("K+", 0.49367, 1.);
-  Particle::AddParticleType("K-", 0.49367, -1.);
-  Particle::AddParticleType("P+", 0.93827, 1.);
-  Particle::AddParticleType("P-", 0.93827, -1.);
-  Particle::AddParticleType("K*", 0.89166, 0., 0.050);
+  TString particle_names[7] = {"Pi+", "Pi-", "K+", "K-", "P+", "P-", "K*"};
+  double masses[7]          = {0.13957, 0.13957, 0.49367, 0.49367, 0.93827, 0.93827, 0.89166};
+  double charges[7]         = {1., -1., 1., -1., 1., -1., 0.};
+  // Values for histograms
+  TString histo_names[12] = {"histo_particles",         "histo_azimutal",           "histo_polar",
+                             "histo_impulse",           "histo_transverse_impulse", "histo_energy",
+                             "histo_invmass",           "histo_invmass_disc",       "histo_invmass_conc",
+                             "histo_invmass_Pi_K_disc", "histo_invmass_Pi_K_conc",  "histo_invmass_Ks_prod"};
+  TString histo_desc[12]  = {"Particles Distribution",
+                             "Azimutal Angle Distribution",
+                             "Polar Angle Distribution",
+                             "Impulse Distribution",
+                             "Transverse Impulse Distribution",
+                             "Energy Distribution",
+                             "Invariant Mass Distribution",
+                             "Discordant Invariant Mass Distribution",
+                             "Concordant Invariant Mass Distribution",
+                             "Pion and Kaon Discordant Invariant Mass Distribution",
+                             "Pion and Kaon Concordant Invariant Mass Distribution",
+                             "K* Products Invariant Mass Distribution"};
+  int histo_bins[12]      = {7, 100, 100, 100, 100, 100, 200, 1000, 1000, 1000, 1000, 100};
+  double min_bin[12]      = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.7};
+  double max_bin[12]      = {8, 7, 3.5, 7, 8, 6, 7, 7, 7, 7, 7, 1.1};
+
+  TH1F* AllHist[12];
+  for(int i = 0; i < 12; ++i) {
+    AllHist[i] = new TH1F(histo_names[i], histo_desc[i], histo_bins[i], min_bin[i], max_bin[i]);
+
+    if(i > 5){
+      AllHist[i]->Sumw2();
+    }
+  }
+
+  for (int i = 0; i < 7; ++i) {
+    if (i < 6) {
+      Particle::AddParticleType(particle_names[i], masses[i], charges[i]);
+    } else {
+      Particle::AddParticleType(particle_names[i], masses[i], charges[i], 0.050);
+    }
+    AllHist[0]->GetXaxis()->SetBinLabel(i + 1, particle_names[i]);
+  }
 
   gRandom->SetSeed();
-
-  // Histograms
-  TH1F* histo_particles = new TH1F("histo_particles", "Particles Distribution", 7, 1, 8);
-  histo_particles->GetXaxis()->SetBinLabel(1, "Pi+");
-  histo_particles->GetXaxis()->SetBinLabel(2, "Pi-");
-  histo_particles->GetXaxis()->SetBinLabel(3, "K+");
-  histo_particles->GetXaxis()->SetBinLabel(4, "K-");
-  histo_particles->GetXaxis()->SetBinLabel(5, "P+");
-  histo_particles->GetXaxis()->SetBinLabel(6, "P-");
-  histo_particles->GetXaxis()->SetBinLabel(7, "K*");
-  TH1F* histo_azimutal           = new TH1F("histo_azimutal", "Azimutal Angle Distribution", 100, 0, 7);
-  TH1F* histo_polar              = new TH1F("histo_polar", "Polar Angle Distribution", 100, 0, 3.5);
-  TH1F* histo_impulse            = new TH1F("histo_impulse", "Impulse Distribution", 100, 0, 7);
-  TH1F* histo_transverse_impulse = new TH1F("histo_transverse_impulse", "Transverse Impulse Distribution", 100, 0, 8);
-  TH1F* histo_energy             = new TH1F("histo_energy", "Energy Distribution", 100, 0, 6);
-  TH1F* histo_invmass            = new TH1F("histo_invmass", "Invariant Mass Distribution", 200, 0, 7);
-  histo_invmass->Sumw2();
-  TH1F* histo_invmass_disc = new TH1F("histo_invmass_disc", "Discordant Invariant Mass Distribution", 1000, 0, 7);
-  histo_invmass_disc->Sumw2();
-  TH1F* histo_invmass_conc = new TH1F("histo_invmass_conc", "Concordant Invariant Mass Distribution", 1000, 0, 7);
-  histo_invmass_conc->Sumw2();
-  TH1F* histo_invmass_Pi_K_disc =
-      new TH1F("histo_invmass_Pi_K_disc", "Pion and Kaon Discordant Invariant Mass Distribution", 1000, 0, 7);
-  histo_invmass_Pi_K_disc->Sumw2();
-  TH1F* histo_invmass_Pi_K_conc =
-      new TH1F("histo_invmass_Pi_K_conc", "Pion and Kaon Concordant Invariant Mass Distribution", 1000, 0, 7);
-  histo_invmass_Pi_K_conc->Sumw2();
-  TH1F* histo_invmass_Ks_prod =
-      new TH1F("histo_invmass_Ks_prod", "K* Products Invariant Mass Distribution", 100, 0.7, 1.1);
-  histo_invmass_Ks_prod->Sumw2();
 
 // Generate events
 #pragma omp parallel for
@@ -67,7 +71,6 @@ void random_generation()
     // Generate particles in event
     for (Int_t j = 0; j < Nbase; j++) {
       EventParticle[j] = new Particle("buffer");
-      // std::cout << "Filled 1 " << Particle::GetNParticles() << std::endl; //TO TEST
 
       // Set random impulse
       double phi       = gRandom->Uniform(0, TMath::TwoPi());
@@ -79,7 +82,7 @@ void random_generation()
       EventParticle[j]->SetP(impulse_x, impulse_y, impulse_z);
 
       // Set type with probability
-      double chPart = gRandom->Uniform(0, 1);
+      double chPart  = gRandom->Uniform(0, 1);
       int rangeIndex = (chPart >= 0.4) + (chPart >= 0.8) + (chPart >= 0.85) + (chPart >= 0.9) + (chPart >= 0.945)
                      + (chPart >= 0.99) + (chPart >= 1.0);
 
@@ -87,39 +90,38 @@ void random_generation()
       case 0:
         EventParticle[j]->SetIndex("Pi+");
 #pragma omp critical
-        histo_particles->Fill(1);
+        AllHist[0]->Fill(1);
         break;
       case 1:
         EventParticle[j]->SetIndex("Pi-");
 #pragma omp critical
-        histo_particles->Fill(2);
+        AllHist[0]->Fill(2);
         break;
       case 2:
         EventParticle[j]->SetIndex("K+");
 #pragma omp critical
-        histo_particles->Fill(3);
+        AllHist[0]->Fill(3);
         break;
       case 3:
         EventParticle[j]->SetIndex("K-");
 #pragma omp critical
-        histo_particles->Fill(4);
+        AllHist[0]->Fill(4);
         break;
       case 4:
         EventParticle[j]->SetIndex("P+");
 #pragma omp critical
-        histo_particles->Fill(5);
+        AllHist[0]->Fill(5);
         break;
       case 5:
         EventParticle[j]->SetIndex("P-");
 #pragma omp critical
-        histo_particles->Fill(6);
+        AllHist[0]->Fill(6);
         break;
       case 6:
         EventParticle[j]->SetIndex("K*");
 #pragma omp critical
-        histo_particles->Fill(7);
+        AllHist[0]->Fill(7);
 
-        // Branchless?
         double kdecay = gRandom->Uniform(0, 1);
         if (kdecay <= 0.5) {
           EventParticle[Decay_index]     = new Particle("K+");
@@ -133,13 +135,12 @@ void random_generation()
 
         if (decay == 0) {
 #pragma omp critical
-          histo_invmass_Ks_prod->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
+          AllHist[11]->Fill(EventParticle[Decay_index]->InvMass(*EventParticle[Decay_index + 1]));
           Decay_index += 2;
         } else {
           delete EventParticle[Decay_index];
           delete EventParticle[Decay_index + 1];
           Particle::RemNParticles(2);
-          // std::cout << "Removed 2 " << Particle::GetNParticles() << std::endl; //TO TEST
         }
 
         break;
@@ -147,11 +148,11 @@ void random_generation()
 
 #pragma omp critical
       {
-        histo_azimutal->Fill(phi);
-        histo_polar->Fill(theta);
-        histo_impulse->Fill(impulse);
-        histo_transverse_impulse->Fill(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
-        histo_energy->Fill(EventParticle[j]->GetEnergy());
+        AllHist[1]->Fill(phi);
+        AllHist[2]->Fill(theta);
+        AllHist[3]->Fill(impulse);
+        AllHist[4]->Fill(TMath::Sqrt(TMath::Power(impulse_x, 2) + TMath::Power(impulse, 2)));
+        AllHist[5]->Fill(EventParticle[j]->GetEnergy());
       }
     }
 
@@ -164,7 +165,7 @@ void random_generation()
         double inv_mass = (EventParticle[j]->InvMass(*EventParticle[k]) * (valid_j & valid_k));
 
 #pragma omp critical
-        histo_invmass->Fill(inv_mass);
+        AllHist[6]->Fill(inv_mass);
 
         bool mega_bool_conc =
             ((idx_j == 0) & (idx_k == 4)) | ((idx_j == 2) & (idx_k == 4)) | ((idx_j == 4) & (idx_k == 2))
@@ -175,7 +176,7 @@ void random_generation()
 
         if (mega_bool_conc == true) {
 #pragma omp critical
-          histo_invmass_conc->Fill(inv_mass);
+          AllHist[8]->Fill(inv_mass);
         }
 
         bool mega_bool_disc =
@@ -187,7 +188,7 @@ void random_generation()
 
         if (mega_bool_disc == true) {
 #pragma omp critical
-          histo_invmass_disc->Fill(inv_mass);
+          AllHist[7]->Fill(inv_mass);
         }
 
         bool cond_Pi_K_conc = ((idx_j == 0) & (idx_k == 2)) | ((idx_j == 2) & (idx_k == 0))
@@ -196,8 +197,8 @@ void random_generation()
         if (cond_Pi_K_conc == true) {
 #pragma omp critical
           {
-            histo_invmass_conc->Fill(inv_mass);
-            histo_invmass_Pi_K_conc->Fill(inv_mass);
+            AllHist[8]->Fill(inv_mass);
+            AllHist[10]->Fill(inv_mass);
           }
         }
         bool cond_Pi_K_disc = ((idx_j == 0) & (idx_k == 3)) | ((idx_j == 3) & (idx_k == 0))
@@ -206,8 +207,8 @@ void random_generation()
         if (cond_Pi_K_disc == true) {
 #pragma omp critical
           {
-            histo_invmass_disc->Fill(inv_mass);
-            histo_invmass_Pi_K_disc->Fill(inv_mass);
+            AllHist[7]->Fill(inv_mass);
+            AllHist[9]->Fill(inv_mass);
           }
         }
       }
@@ -223,18 +224,11 @@ void random_generation()
     std::cout << "File histograms.root opened successfully!" << std::endl;
   }
 
-  histo_particles->Write();
-  histo_azimutal->Write();
-  histo_polar->Write();
-  histo_impulse->Write();
-  histo_transverse_impulse->Write();
-  histo_energy->Write();
-  histo_invmass->Write();
-  histo_invmass_disc->Write();
-  histo_invmass_conc->Write();
-  histo_invmass_Pi_K_disc->Write();
-  histo_invmass_Pi_K_conc->Write();
-  histo_invmass_Ks_prod->Write();
+  // Write histograms
+  for(int i = 0; i < 12; ++i) {
+    AllHist[i]->Write();
+  }
+  
   file->Close();
   delete file;
 }

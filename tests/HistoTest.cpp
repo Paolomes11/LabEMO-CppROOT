@@ -3,7 +3,6 @@
 #include <TFile.h>
 #include <TH1F.h>
 #include <TMath.h>
-#include <TROOT.h>
 
 TEST_CASE("Tests for Histograms")
 {
@@ -14,19 +13,14 @@ TEST_CASE("Tests for Histograms")
   }
 
   // Inizializza gli istogrammi
+  TString names[12] = {"histo_particles",         "histo_azimutal",           "histo_polar",
+                       "histo_impulse",           "histo_transverse_impulse", "histo_energy",
+                       "histo_invmass",           "histo_invmass_disc",       "histo_invmass_conc",
+                       "histo_invmass_Pi_K_disc", "histo_invmass_Pi_K_conc",  "histo_invmass_Ks_prod"};
   TH1F* MyHist[12];
-  MyHist[0]  = (TH1F*)file->Get("histo_particles");
-  MyHist[1]  = (TH1F*)file->Get("histo_azimutal");
-  MyHist[2]  = (TH1F*)file->Get("histo_polar");
-  MyHist[3]  = (TH1F*)file->Get("histo_impulse");
-  MyHist[4]  = (TH1F*)file->Get("histo_transverse_impulse");
-  MyHist[5]  = (TH1F*)file->Get("histo_energy");
-  MyHist[6]  = (TH1F*)file->Get("histo_invmass");
-  MyHist[7]  = (TH1F*)file->Get("histo_invmass_disc");
-  MyHist[8]  = (TH1F*)file->Get("histo_invmass_conc");
-  MyHist[9]  = (TH1F*)file->Get("histo_invmass_Pi_K_disc");
-  MyHist[10] = (TH1F*)file->Get("histo_invmass_Pi_K_conc");
-  MyHist[11] = (TH1F*)file->Get("histo_invmass_Ks_prod");
+  for (int i = 0; i < 12; i++) {
+    MyHist[i] = (TH1F*)file->Get(names[i]);
+  }
 
   SUBCASE("Test for num of entries")
   {
