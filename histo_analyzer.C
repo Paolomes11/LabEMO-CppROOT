@@ -109,26 +109,27 @@ void histo_analyzer()
       << chi2comparison_3 << std::endl;
 
   //  Gaussian Fits
+  TString gaussian_names[2] = {"gaussianFits1_2", "gaussianFits[1]"};
+  TF1* gaussianFits[2];
 
-  TF1* gaussianFit1_2 =
-      new TF1("gaussianFit1_2", "gaus", results[0]->GetXaxis()->GetXmin(), results[0]->GetXaxis()->GetXmax());
-  results[0]->Fit(gaussianFit1_2, "R");
-  TF1* gaussianFit3_4 =
-      new TF1("gaussianFit3_4", "gaus", results[1]->GetXaxis()->GetXmin(), results[1]->GetXaxis()->GetXmax());
-  results[1]->Fit(gaussianFit3_4, "R");
+  for (int i = 0; i < 2; i++) {
+    gaussianFits[i] =
+        new TF1(gaussian_names[i], "gaus", results[i]->GetXaxis()->GetXmin(), results[i]->GetXaxis()->GetXmax());
+    results[i]->Fit(gaussianFits[i], "R");
 
-  std::cout << "Results of Fit on Histogram Difference Concordant and Discordant Particle Invariant Mass" << std::endl;
-  std::cout << "Mass of K*: " << gaussianFit1_2->GetParameter(1) << " GeV" << std::endl;
-  std::cout << "Width of K*: " << gaussianFit1_2->GetParameter(2) << " GeV" << std::endl;
-  std::cout << "Chi2/NDF: " << gaussianFit1_2->GetChisquare() / gaussianFit1_2->GetNDF() << std::endl;
-  std::cout << "Probability of fit: " << gaussianFit1_2->GetProb() << '\n' << std::endl;
+    if (i == 0) {
+      std::cout << "Results of Fit on Histogram Difference Concordant and Discordant Particle Invariant Mass"
+                << std::endl;
+    } else {
+      std::cout << "Results of Fit on Histogram Difference Concordant and Discordant Particle Pi-K Invariant Mass"
+                << std::endl;
+    }
 
-  std::cout << "Results of Fit on Histogram Difference Concordant and Discordant Particle Pi-K Invariant Mass"
-            << std::endl;
-  std::cout << "Mass of K*: " << gaussianFit3_4->GetParameter(1) << " GeV" << std::endl;
-  std::cout << "Width of K*: " << gaussianFit3_4->GetParameter(2) << " GeV" << std::endl;
-  std::cout << "Chi2/NDF: " << gaussianFit3_4->GetChisquare() / gaussianFit3_4->GetNDF() << std::endl;
-  std::cout << "Probability of fit: " << gaussianFit3_4->GetProb() << '\n' << std::endl;
+    std::cout << "Mass of K*: " << gaussianFits[i]->GetParameter(1) << " GeV" << std::endl;
+    std::cout << "Width of K*: " << gaussianFits[i]->GetParameter(2) << " GeV" << std::endl;
+    std::cout << "Chi2/NDF: " << gaussianFits[i]->GetChisquare() / gaussianFits[i]->GetNDF() << std::endl;
+    std::cout << "Probability of fit: " << gaussianFits[i]->GetProb() << '\n' << std::endl;
+  }
 
   // Canvas1
   TCanvas* canvas1 = new TCanvas("canvas1", "Particle Types", 800, 600);
@@ -201,12 +202,12 @@ void histo_analyzer()
   results[0]->SetTitle("Difference Concordant and Discordant Particle Invariant Mass");
   canvas10->cd(1);
   results[0]->Draw();
-  gaussianFit1_2->Draw("SAME");
+  gaussianFits[0]->Draw("SAME");
   results[1]->SetLineColor(kBlue);
   results[1]->SetTitle("Difference Concordant and Discordant Particle Pi-K Invariant Mass");
   canvas10->cd(2);
   results[1]->Draw();
-  gaussianFit3_4->Draw("SAME");
+  gaussianFits[1]->Draw("SAME");
   histograms_invmass[5]->SetLineColor(kGreen);
   canvas10->cd(3);
   histograms_invmass[5]->Draw();
