@@ -16,10 +16,10 @@ void histo_analyzer()
   }
 
   // Some starter values
-  const char* names[6]    = {"histo_particles", "histo_azimutal",           "histo_polar",
-                             "histo_impulse",   "histo_transverse_impulse", "histo_energy"};
-  const char* invnames[6] = {"histo_invmass",           "histo_invmass_disc",      "histo_invmass_conc",
-                             "histo_invmass_Pi_K_disc", "histo_invmass_Pi_K_conc", "histo_invmass_Ks_prod"};
+  TString names[6]    = {"histo_particles", "histo_azimutal",           "histo_polar",
+                         "histo_impulse",   "histo_transverse_impulse", "histo_energy"};
+  TString invnames[6] = {"histo_invmass",           "histo_invmass_disc",      "histo_invmass_conc",
+                         "histo_invmass_Pi_K_disc", "histo_invmass_Pi_K_conc", "histo_invmass_Ks_prod"};
 
   // Get histograms
   TH1F* histograms[6];
@@ -72,7 +72,7 @@ void histo_analyzer()
       std::cout << "Results of Fit on Histogram histo_impulse" << std::endl;
     }
 
-    std::cout << "Uniform Fit Parameter: " << Fits[i]->GetParameter(0) << std::endl;
+    std::cout << "Fit Parameter: " << Fits[i]->GetParameter(0) << std::endl;
     std::cout << "Chi2/NDF: " << Fits[i]->GetChisquare() / Fits[i]->GetNDF() << std::endl;
     std::cout << "Probability of fit: " << Fits[i]->GetProb() << '\n' << std::endl;
   }
@@ -108,7 +108,6 @@ void histo_analyzer()
       << chi2comparison_3 << std::endl;
 
   //  Gaussian Fits
-  
 
   TF1* gaussianFit1_2 =
       new TF1("gaussianFit1_2", "gaus", results[0]->GetXaxis()->GetXmin(), results[0]->GetXaxis()->GetXmax());
