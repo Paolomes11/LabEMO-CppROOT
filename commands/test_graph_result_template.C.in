@@ -4,8 +4,4 @@ void test_graph_result() {
 
     // Run macro
     gROOT->ProcessLine("TestFile()");
-
-    // std::cout << "Premi Enter per chiudere...\n";
-    // std::cin.get();
-
 }

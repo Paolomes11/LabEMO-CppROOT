@@ -23,15 +23,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 string(APPEND CMAKE_CXX_FLAGS
       " -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion"
       " -Wshadow -Wimplicit-fallthrough -Wextra-semi") # -Wold-style-cast")
-# string(APPEND CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer")
-# string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
+# Add the directory 'src' and 'third_party' to the include directories
 
-# Aggiungi la directory 'src' e 'third_party' alle directory di inclusione
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/third_party)
 
-# Definisci i file sorgente comuni in una variabile
+# Define the source files in a variable
 set(SOURCES
       src/Particle.cpp
       src/ParticleType.cpp
@@ -41,16 +39,16 @@ set(SOURCES
 # find ROOT
 find_package(ROOT REQUIRED)
 
-# Imposta le directory include e link per ROOT
+# Set the ROOT include and library directories
 include_directories(${ROOT_INCLUDE_DIRS})
 link_directories(${ROOT_LIBRARY_DIRS})
 
-# Crea una cartella 'myRoot' per i file generati
+# Create a 'root_files' directory and others for generated files
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/root_files)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files/png_files)
 
-# Eseguibili di test
+# Test executables
 add_executable(test_particles.t tests/test_file.cpp ${SOURCES})
 
 add_executable(test_histo.t tests/HistoTest.cpp)
@@ -61,12 +59,12 @@ if(BUILD_TESTING)
       add_test(NAME test_particles.t COMMAND test_particles.t)
       add_test(NAME test_histo.t COMMAND test_histo.t)
 
-      # Configura AddressSanitizer per test_particles.t
+      # Configure AddressSanitizer for test_particles.t
       set_tests_properties(test_particles.t PROPERTIES
           COMPILE_FLAGS "-D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer"
           LINK_FLAGS "-fsanitize=address,undefined -fno-omit-frame-pointer")
 
-      # Configura Valgrind per test_histo.t
+      # Configure Valgrind for test_histo.t
       set(CTEST_MEMORYCHECK_COMMAND "valgrind")
       set(CTEST_MEMORYCHECK_OPTIONS "--leak-check=full --track-origins=yes")
 
@@ -75,10 +73,8 @@ if(BUILD_TESTING)
           MEMORYCHECK_COMMAND_OPTIONS ${CTEST_MEMORYCHECK_OPTIONS})
 endif()
 
-
-# Scripts per settaggio impostazioni e avvio programma
-
-# Genera il file root_commands.C dinamicamente
+# Scripts for settings and starting the program
+# Generate the file root_commands.C dynamically
 configure_file(${CMAKE_SOURCE_DIR}/commands/configure_root_template.C.in
       ${CMAKE_BINARY_DIR}/commands/configure_root.C)
 
@@ -88,14 +84,14 @@ add_custom_target(configure_root
       COMMENT "Muovendo i file cpp e hpp generati in root_files"
 )
 
-# Comando personalizzato per eseguire ROOT
+# Personalized command to execute root
 add_custom_command(TARGET configure_root POST_BUILD
       COMMAND ${ROOT_EXECUTABLE} -l -q ${CMAKE_BINARY_DIR}/commands/configure_root.C
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/root_files
       COMMENT "Eseguendo comandi ROOT"
 )
 
-# Comando per avviare il programma automaticamente
+# Command to execute the program automatically
 configure_file(${CMAKE_SOURCE_DIR}/commands/program_run_template.C.in
       ${CMAKE_BINARY_DIR}/commands/program_run.C)
 
@@ -113,7 +109,7 @@ add_custom_command(TARGET program_run POST_BUILD
       COMMENT "Muovendo l'istogramma in tests e eliminandolo dal main"
 )
 
-# Comando per avviare l'analisi automaticamente
+# Command to start the analyzer
 configure_file(${CMAKE_SOURCE_DIR}/commands/analyzer_run_template.C.in
       ${CMAKE_BINARY_DIR}/commands/analyzer_run.C)
 
@@ -123,7 +119,7 @@ add_custom_target(analyzer_run
       COMMENT "Analizzando il file.root"
 )
 
-# Test per file.root
+# Test for file.root
 configure_file(${CMAKE_SOURCE_DIR}/commands/test_graph_result_template.C.in
       ${CMAKE_BINARY_DIR}/commands/test_graph_result.C)
 

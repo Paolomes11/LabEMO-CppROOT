@@ -5,6 +5,8 @@
     - cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug
 - Configure the .iso file for root
     - gROOT->LoadMacro(“MyClass.cpp+”) // eseguire da root per creare file.so
+- If you are working in VSCode, add this line in the c_cpp_properties.json (ctrl-shift-p) to let VSCode read all the needed includes
+    - "includePath": ["${workspaceFolder}/**","/home/user/root/include"]
 
 ## Some rules to follow to change the program
 - All the files must be organized in folders.

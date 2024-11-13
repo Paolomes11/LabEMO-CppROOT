@@ -12,7 +12,7 @@ TEST_CASE("Tests for Histograms")
     return;
   }
 
-  // Inizializza gli istogrammi
+  // Initialize histograms
   TString names[12] = {"histo_particles",         "histo_azimutal",           "histo_polar",
                        "histo_impulse",           "histo_transverse_impulse", "histo_energy",
                        "histo_invmass",           "histo_invmass_disc",       "histo_invmass_conc",
@@ -24,7 +24,7 @@ TEST_CASE("Tests for Histograms")
 
   SUBCASE("Test for num of entries")
   {
-    CHECK(abs(MyHist[0]->GetEntries() - 1E7 - 1E5) <= 1E5); // (1E7 + 1E5) +- 1E3
+    CHECK(abs(MyHist[0]->GetEntries() - 1E7 - 1E5) <= 1E5); // (1E7 + 1E5) +- 1E5
 
     for (int i = 1; i < 6; i++) {
       CHECK(MyHist[i]->GetEntries() == 1E7);

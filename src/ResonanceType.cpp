@@ -2,7 +2,6 @@
 #include <iomanip>
 #include <iostream>
 
-// ctor
 ResonanceType::ResonanceType(const char* Name, double Mass, int Charge, double Width)
     : ParticleType(Name, Mass, Charge)
     , fWidth(Width) {};
