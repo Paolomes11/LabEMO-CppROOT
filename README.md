@@ -1,4 +1,4 @@
-# Some useful commands but implemented in Cmake
+## Some useful commands but implemented in Cmake
 - Compiling a cpp with basics warnings
     - g++ ParticleType.cpp ResonanceType.cpp Particle.cpp main_test1.cpp -Wall -Wextra -o test1
 - Build with Cmake in Debug mode 
