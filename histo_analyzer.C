@@ -53,10 +53,12 @@ void histo_analyzer()
 
   // Uniform Fits
   TF1* uniformFit1 =
-      new TF1("uniformFit1", "pol0", histograms[1]->GetXaxis()->GetXmin(), histograms[1]->GetXaxis()->GetXmax());
+      new TF1("uniformFit1", "pol0", histograms[1]->GetXaxis()->GetBinLowEdge(histograms[1]->FindFirstBinAbove(0)),
+              histograms[1]->GetXaxis()->GetBinUpEdge(histograms[1]->FindLastBinAbove(0)));
   histograms[1]->Fit(uniformFit1, "R");
   TF1* uniformFit2 =
-      new TF1("uniformFit1", "pol0", histograms[1]->GetXaxis()->GetXmin(), histograms[1]->GetXaxis()->GetXmax());
+      new TF1("uniformFit1", "pol0", histograms[2]->GetXaxis()->GetBinLowEdge(histograms[2]->FindFirstBinAbove(0)),
+              histograms[2]->GetXaxis()->GetBinUpEdge(histograms[2]->FindLastBinAbove(0)));
   histograms[2]->Fit(uniformFit2, "R");
 
   std::cout << "Results of Fit on Histogram histo_azimutal" << std::endl;
@@ -71,7 +73,8 @@ void histo_analyzer()
 
   // Exponential FIts
   TF1* expoFit =
-      new TF1("uniformFit1", "expo", histograms[3]->GetXaxis()->GetXmin(), histograms[3]->GetXaxis()->GetXmax());
+      new TF1("uniformFit1", "expo", histograms[3]->GetXaxis()->GetBinLowEdge(histograms[3]->FindFirstBinAbove(0)),
+              histograms[3]->GetXaxis()->GetBinUpEdge(histograms[3]->FindLastBinAbove(0)));
   histograms[3]->Fit(expoFit, "R");
 
   std::cout << "Results of Fit on Histogram histo_impulse" << std::endl;
@@ -108,10 +111,12 @@ void histo_analyzer()
 
   //  Gaussian Fits
   TF1* gaussianFit1_2 =
-      new TF1("gaussianFit1_2", "gaus", result1_2->GetXaxis()->GetXmin(), result1_2->GetXaxis()->GetXmax());
-  result3_4->Fit(gaussianFit1_2, "R");
+      new TF1("gaussianFit1_2", "gaus", result1_2->GetXaxis()->GetBinLowEdge(result1_2->FindFirstBinAbove(0)),
+              result1_2->GetXaxis()->GetBinUpEdge(result1_2->FindLastBinAbove(0)));
+  result1_2->Fit(gaussianFit1_2, "R");
   TF1* gaussianFit3_4 =
-      new TF1("gaussianFit3_4", "gaus", result3_4->GetXaxis()->GetXmin(), result3_4->GetXaxis()->GetXmax());
+      new TF1("gaussianFit3_4", "gaus", result3_4->GetXaxis()->GetBinLowEdge(result3_4->FindFirstBinAbove(0)),
+              result3_4->GetXaxis()->GetBinUpEdge(result3_4->FindLastBinAbove(0)));
   result3_4->Fit(gaussianFit3_4, "R");
 
   std::cout << "Results of Fit on Histogram Difference Concordant and Discordant Particle Invariant Mass" << std::endl;
