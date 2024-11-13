@@ -3,7 +3,7 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
- 
+
 ParticleType* Particle::fParticleType[fMaxNumParticleType] = {nullptr};
 int Particle::fNParticleType                               = 0;
 int Particle::fNParticles                                  = 0;
@@ -212,7 +212,7 @@ int Particle::Decay2body(Particle& dau1, Particle& dau2) const
 
     // gaussian random numbers
 
-    float x1, x2, w, y1;
+    double x1, x2, w, y1; // Double for warnings
 
     double invnum = 1. / RAND_MAX;
     do {

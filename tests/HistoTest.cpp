@@ -39,10 +39,10 @@ TEST_CASE("Tests for Histograms")
     CHECK(MyHist[6]->GetEntries() <= 5.778E8);
 
     for (int i = 1; i <= 2; i++) {
-      CHECK(2.427E8 <= MyHist[6 + i]->GetEntries());
-      CHECK(MyHist[6 + i]->GetEntries() <= 2.833E8);
-      CHECK(4.227E7 <= MyHist[8 + i]->GetEntries());
-      CHECK(MyHist[8 + i]->GetEntries() <= 4.934E7);
+      CHECK(2.428E8 <= MyHist[6 + i]->GetEntries());
+      CHECK(MyHist[6 + i]->GetEntries() <= 2.834E8);
+      CHECK(4.229E7 <= MyHist[8 + i]->GetEntries());
+      CHECK(MyHist[8 + i]->GetEntries() <= 4.936E7);
     }
 
     CHECK(99051 <= MyHist[11]->GetEntries());
