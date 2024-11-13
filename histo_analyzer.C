@@ -131,43 +131,43 @@ void histo_analyzer()
   TCanvas* canvas1 = new TCanvas("canvas1", "Particle Types", 800, 600);
   histograms[0]->SetLineColor(kBlue);
   histograms[0]->Draw();
-  canvas1->SaveAs("generated_files/particles_distribution.png");
+  canvas1->SaveAs("generated_files/png_files/particles_distribution.png");
 
   // Canvas2
   TCanvas* canvas2 = new TCanvas("canvas2", "Azimutal Angle", 800, 600);
   histograms[1]->SetLineColor(kBlue);
   histograms[1]->Draw();
-  canvas2->SaveAs("generated_files/azimutal_distribution.png");
+  canvas2->SaveAs("generated_files/png_files/azimutal_distribution.png");
 
   // Canvas3
   TCanvas* canvas3 = new TCanvas("canvas3", "Polar Angle", 800, 600);
   histograms[2]->SetLineColor(kBlue);
   histograms[2]->Draw();
-  canvas3->SaveAs("generated_files/polar_distribution.png");
+  canvas3->SaveAs("generated_files/png_files/polar_distribution.png");
 
   // Canvas4
   TCanvas* canvas4 = new TCanvas("canvas4", "Particle Impulses", 800, 600);
   histograms[3]->SetLineColor(kBlue);
   histograms[3]->Draw();
-  canvas4->SaveAs("generated_files/impulse_distribution.png");
+  canvas4->SaveAs("generated_files/png_files/impulse_distribution.png");
 
   // Canvas5
   TCanvas* canvas5 = new TCanvas("canvas5", "Particle Transverse Impulses", 800, 600);
   histograms[4]->SetLineColor(kBlue);
   histograms[4]->Draw();
-  canvas5->SaveAs("generated_files/transverse_impulse_distribution.png");
+  canvas5->SaveAs("generated_files/png_files/transverse_impulse_distribution.png");
 
   // Canvas6
   TCanvas* canvas6 = new TCanvas("canvas6", "Particle Energies", 800, 600);
   histograms[5]->SetLineColor(kBlue);
   histograms[5]->Draw();
-  canvas6->SaveAs("generated_files/energy_distribution.png");
+  canvas6->SaveAs("generated_files/png_files/energy_distribution.png");
 
   // Canvas7
   TCanvas* canvas7 = new TCanvas("canvas7", "Particle Invariant Masses", 800, 600);
   histograms_invmass[0]->SetLineColor(kBlue);
   histograms_invmass[0]->Draw();
-  canvas7->SaveAs("generated_files/invmass_distribution.png");
+  canvas7->SaveAs("generated_files/png_files/invmass_distribution.png");
 
   // Canvas8
   TCanvas* canvas8 = new TCanvas("canvas8", "Particle Concordant and Discordant Invariant Masses", 1200, 600);
@@ -178,7 +178,7 @@ void histo_analyzer()
   histograms_invmass[2]->SetLineColor(kGreen);
   canvas8->cd(2);
   histograms_invmass[2]->Draw();
-  canvas8->SaveAs("generated_files/conc_disc_invmass_distribution.png");
+  canvas8->SaveAs("generated_files/png_files/conc_disc_invmass_distribution.png");
 
   // Canvas9
   TCanvas* canvas9 = new TCanvas("canvas9", "Particle Concordant and Discordant Pi-K Invariant Masses", 1200, 600);
@@ -189,7 +189,7 @@ void histo_analyzer()
   histograms_invmass[4]->SetLineColor(kGreen);
   canvas9->cd(2);
   histograms_invmass[4]->Draw();
-  canvas9->SaveAs("generated_files/conc_disc_PiK_invmass_distribution.png");
+  canvas9->SaveAs("generated_files/png_files/conc_disc_PiK_invmass_distribution.png");
 
   // Canvas10
   TCanvas* canvas10 = new TCanvas("canvas10", "Analisis of K*", 1600, 600);
@@ -207,5 +207,5 @@ void histo_analyzer()
   histograms_invmass[5]->SetLineColor(kGreen);
   canvas10->cd(3);
   histograms_invmass[5]->Draw();
-  canvas10->SaveAs("generated_files/Ks_distribution_analysis.png");
+  canvas10->SaveAs("generated_files/png_files/Ks_distribution_analysis.png");
 }

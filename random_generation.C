@@ -80,7 +80,6 @@ void random_generation()
 
       // Set type with probability
       double chPart = gRandom->Uniform(0, 1);
-      // double chPart = gRandom->Rndm();
       int rangeIndex = (chPart >= 0.4) + (chPart >= 0.8) + (chPart >= 0.85) + (chPart >= 0.9) + (chPart >= 0.945)
                      + (chPart >= 0.99) + (chPart >= 1.0);
 

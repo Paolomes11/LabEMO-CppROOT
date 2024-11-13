@@ -48,6 +48,7 @@ link_directories(${ROOT_LIBRARY_DIRS})
 # Crea una cartella 'myRoot' per i file generati
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/root_files)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files)
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files/png_files)
 
 # Eseguibili di test
 add_executable(test_particles.t tests/test_file.cpp ${SOURCES})
