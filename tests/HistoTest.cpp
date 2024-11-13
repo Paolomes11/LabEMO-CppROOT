@@ -4,7 +4,6 @@
 #include <TH1F.h>
 #include <TMath.h>
 #include <TROOT.h>
-#include <memory>
 
 TEST_CASE("Tests for Histograms")
 {
