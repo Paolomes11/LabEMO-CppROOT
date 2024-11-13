@@ -7,7 +7,7 @@
 
 TEST_CASE("Tests for Histograms")
 {
-  std::unique_ptr<TFile> file = std::make_unique<TFile>(TFile::Open("generated_files/histograms.root"));
+  std::unique_ptr<TFile> file = std::make_unique<TFile>("generated_files/histograms.root", "READ");
   if (!file || file->IsZombie()) {
     std::cerr << "Error opening file!" << std::endl;
     return;
@@ -15,18 +15,18 @@ TEST_CASE("Tests for Histograms")
 
   // Inizializza gli istogrammi
   std::unique_ptr<TH1F> MyHist[12];
-  MyHist[0]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_particles"));
-  MyHist[1]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_azimutal"));
-  MyHist[2]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_polar"));
-  MyHist[3]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_impulse"));
-  MyHist[4]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_transverse_impulse"));
-  MyHist[5]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_energy"));
-  MyHist[6]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_invmass"));
-  MyHist[7]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_invmass_disc"));
-  MyHist[8]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_invmass_conc"));
-  MyHist[9]  = std::make_unique<TH1F>((TH1F*)file->Get("histo_invmass_Pi_K_disc"));
-  MyHist[10] = std::make_unique<TH1F>((TH1F*)file->Get("histo_invmass_Pi_K_conc"));
-  MyHist[11] = std::make_unique<TH1F>((TH1F*)file->Get("histo_invmass_Ks_prod"));
+  MyHist[0]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_particles"));
+  MyHist[1]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_azimutal"));
+  MyHist[2]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_polar"));
+  MyHist[3]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_impulse"));
+  MyHist[4]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_transverse_impulse"));
+  MyHist[5]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_energy"));
+  MyHist[6]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_invmass"));
+  MyHist[7]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_invmass_disc"));
+  MyHist[8]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_invmass_conc"));
+  MyHist[9]  = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_invmass_Pi_K_disc"));
+  MyHist[10] = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_invmass_Pi_K_conc"));
+  MyHist[11] = std::make_unique<TH1F>(*(TH1F*)file->Get("histo_invmass_Ks_prod"));
 
   SUBCASE("Test for num of entries")
   {
