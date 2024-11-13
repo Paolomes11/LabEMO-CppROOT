@@ -15,22 +15,20 @@ void histo_analyzer()
     return;
   }
 
-  // get histograms
-  TH1F* histograms[6];
-  histograms[0] = (TH1F*)file->Get("histo_particles");
-  histograms[1] = (TH1F*)file->Get("histo_azimutal");
-  histograms[2] = (TH1F*)file->Get("histo_polar");
-  histograms[3] = (TH1F*)file->Get("histo_impulse");
-  histograms[4] = (TH1F*)file->Get("histo_transverse_impulse");
-  histograms[5] = (TH1F*)file->Get("histo_energy");
+  // Some starter values
+  const char* names[6]    = {"histo_particles", "histo_azimutal",           "histo_polar",
+                             "histo_impulse",   "histo_transverse_impulse", "histo_energy"};
+  const char* invnames[6] = {"histo_invmass",           "histo_invmass_disc",      "histo_invmass_conc",
+                             "histo_invmass_Pi_K_disc", "histo_invmass_Pi_K_conc", "histo_invmass_Ks_prod"};
 
+  // Get histograms
+  TH1F* histograms[6];
   TH1F* histograms_invmass[6];
-  histograms_invmass[0] = (TH1F*)file->Get("histo_invmass");
-  histograms_invmass[1] = (TH1F*)file->Get("histo_invmass_disc");
-  histograms_invmass[2] = (TH1F*)file->Get("histo_invmass_conc");
-  histograms_invmass[3] = (TH1F*)file->Get("histo_invmass_Pi_K_disc");
-  histograms_invmass[4] = (TH1F*)file->Get("histo_invmass_Pi_K_conc");
-  histograms_invmass[5] = (TH1F*)file->Get("histo_invmass_Ks_prod");
+
+  for (int i = 0; i < 6; ++i) {
+    histograms[i]         = (TH1F*)file->Get(names[i]);
+    histograms_invmass[i] = (TH1F*)file->Get(invnames[i]);
+  }
 
   // Histos entries
   for (int i = 0; i < 12; ++i) {
@@ -51,73 +49,73 @@ void histo_analyzer()
   }
   std::cout << std::endl;
 
-  // Uniform Fits
-  TF1* uniformFit1 =
-      new TF1("uniformFit1", "pol0", histograms[1]->GetXaxis()->GetBinLowEdge(histograms[1]->FindFirstBinAbove(0)),
-              histograms[1]->GetXaxis()->GetBinUpEdge(histograms[1]->FindLastBinAbove(0)));
-  histograms[1]->Fit(uniformFit1, "R");
-  TF1* uniformFit2 =
-      new TF1("uniformFit1", "pol0", histograms[2]->GetXaxis()->GetBinLowEdge(histograms[2]->FindFirstBinAbove(0)),
-              histograms[2]->GetXaxis()->GetBinUpEdge(histograms[2]->FindLastBinAbove(0)));
-  histograms[2]->Fit(uniformFit2, "R");
+  // Uniform and Exponential Fits
+  TF1* Fits[2]; // 1-2 uniform, 3 exponential
+  TString Fits_name[3] = {"uniformFit1", "uniformFit2", "exponentialFit"};
 
-  std::cout << "Results of Fit on Histogram histo_azimutal" << std::endl;
-  std::cout << "Uniform Fit Parameter: " << uniformFit1->GetParameter(0) << std::endl;
-  std::cout << "Chi2/NDF: " << uniformFit1->GetChisquare() / uniformFit1->GetNDF() << std::endl;
-  std::cout << "Probability of fit: " << uniformFit1->GetProb() << '\n' << std::endl;
+  for (int i = 0; i < 3; i++) {
+    if (i < 2) {
+      Fits[i] = new TF1(Fits_name[i], "pol0", histograms[i + 1]->GetXaxis()->GetXmin(),
+                        histograms[i + 1]->GetXaxis()->GetXmax());
+    } else {
+      Fits[i] = new TF1(Fits_name[i], "expo", histograms[i + 1]->GetXaxis()->GetXmin(),
+                        histograms[i + 1]->GetXaxis()->GetXmax());
+    }
 
-  std::cout << "Results of Fit on Histogram histo_polar" << std::endl;
-  std::cout << "Uniform Fit Parameter: " << uniformFit2->GetParameter(0) << std::endl;
-  std::cout << "Chi2/NDF: " << uniformFit2->GetChisquare() / uniformFit2->GetNDF() << std::endl;
-  std::cout << "Probability of fit: " << uniformFit2->GetProb() << '\n' << std::endl;
+    histograms[i + 1]->Fit(Fits[i], "R");
 
-  // Exponential FIts
-  TF1* expoFit =
-      new TF1("uniformFit1", "expo", histograms[3]->GetXaxis()->GetBinLowEdge(histograms[3]->FindFirstBinAbove(0)),
-              histograms[3]->GetXaxis()->GetBinUpEdge(histograms[3]->FindLastBinAbove(0)));
-  histograms[3]->Fit(expoFit, "R");
+    if (i == 0) {
+      std::cout << "Results of Fit on Histogram histo_azimutal" << std::endl;
+    } else if (i == 1) {
+      std::cout << "Results of Fit on Histogram histo_polar" << std::endl;
+    } else {
+      std::cout << "Results of Fit on Histogram histo_impulse" << std::endl;
+    }
 
-  std::cout << "Results of Fit on Histogram histo_impulse" << std::endl;
-  std::cout << "Exponential Fit Tau: " << expoFit->GetParameter(1) << " GeV" << std::endl;
-  std::cout << "Chi2/NDF: " << expoFit->GetChisquare() / expoFit->GetNDF() << std::endl;
-  std::cout << "Probability of fit: " << expoFit->GetProb() << '\n' << std::endl;
+    std::cout << "Uniform Fit Parameter: " << Fits[i]->GetParameter(0) << std::endl;
+    std::cout << "Chi2/NDF: " << Fits[i]->GetChisquare() / Fits[i]->GetNDF() << std::endl;
+    std::cout << "Probability of fit: " << Fits[i]->GetProb() << '\n' << std::endl;
+  }
 
   // Inv_Mass Histos Subtraction
-  TH1F* result1_2 = (TH1F*)histograms_invmass[1]->Clone("result1_2");
-  result1_2->Add(histograms_invmass[2], -1);
+  TString result_names[2] = {"result1_2", "result3_4"};
+  TString clone_names[2]  = {"hist1_clone", "hist2_clone"};
+  TH1F* results[2];
+  TH1F* hist_clones[2];
 
-  TH1F* result3_4 = (TH1F*)histograms_invmass[3]->Clone("result3_4");
-  result3_4->Add(histograms_invmass[4], -1);
+  for (int i = 0; i < 2; i++) {
+    results[i] = (TH1F*)histograms_invmass[2 * i + 1]->Clone(result_names[i]);
+    results[i]->Add(histograms_invmass[2 * (i + 1)], -1);
+    // For Chi2 test
+    hist_clones[i] = (TH1F*)histograms_invmass[i]->Clone(clone_names[i]);
+    hist_clones[i]->SetBins(100, 0.7, 1.1);
+  }
 
-  // Chi2 test
-  TH1F* hist1_clone = (TH1F*)result1_2->Clone("hist1_clone");
-  TH1F* hist2_clone = (TH1F*)result3_4->Clone("hist2_clone");
-  hist1_clone->SetBins(100, 0.7, 1.1);
-  hist2_clone->SetBins(100, 0.7, 1.1);
-  Double_t chi2comparison_1 = hist1_clone->Chi2Test(hist2_clone, "CHI2/NDF");
-  Double_t chi2comparison_2 = hist1_clone->Chi2Test(histograms_invmass[5], "CHI2/NDF");
-  Double_t chi2comparison_3 = hist2_clone->Chi2Test(histograms_invmass[5], "CHI2/NDF");
+  // Chi2 Test
+  Double_t chi2comparison_1 = hist_clones[0]->Chi2Test(hist_clones[1], "CHI2/NDF");
+  Double_t chi2comparison_2 = hist_clones[0]->Chi2Test(histograms_invmass[5], "CHI2/NDF");
+  Double_t chi2comparison_3 = hist_clones[1]->Chi2Test(histograms_invmass[5], "CHI2/NDF");
 
   std::cout << "Chi Squared Test between Difference Concordant and Discordant Particle Invariant Mass and Difference "
                "Concorde and Discord Particle Pi-K Invariant Mass:"
             << chi2comparison_1 << std::endl;
   std::cout << "Chi Squared Test between Difference Concordant and Discordant Particle Invariant Mass and K* products "
                "Invariant Mass:"
-            << chi2comparison_1 << std::endl;
+            << chi2comparison_2 << std::endl;
   std::cout
       << "Chi Squared Test between Difference Concordant and Discordant Particle Pi-K Invariant Mass and K* products "
          "Invariant Mass:"
-      << chi2comparison_1 << std::endl;
+      << chi2comparison_3 << std::endl;
 
   //  Gaussian Fits
+  
+
   TF1* gaussianFit1_2 =
-      new TF1("gaussianFit1_2", "gaus", result1_2->GetXaxis()->GetBinLowEdge(result1_2->FindFirstBinAbove(0)),
-              result1_2->GetXaxis()->GetBinUpEdge(result1_2->FindLastBinAbove(0)));
-  result1_2->Fit(gaussianFit1_2, "R");
+      new TF1("gaussianFit1_2", "gaus", results[0]->GetXaxis()->GetXmin(), results[0]->GetXaxis()->GetXmax());
+  results[0]->Fit(gaussianFit1_2, "R");
   TF1* gaussianFit3_4 =
-      new TF1("gaussianFit3_4", "gaus", result3_4->GetXaxis()->GetBinLowEdge(result3_4->FindFirstBinAbove(0)),
-              result3_4->GetXaxis()->GetBinUpEdge(result3_4->FindLastBinAbove(0)));
-  result3_4->Fit(gaussianFit3_4, "R");
+      new TF1("gaussianFit3_4", "gaus", results[1]->GetXaxis()->GetXmin(), results[1]->GetXaxis()->GetXmax());
+  results[1]->Fit(gaussianFit3_4, "R");
 
   std::cout << "Results of Fit on Histogram Difference Concordant and Discordant Particle Invariant Mass" << std::endl;
   std::cout << "Mass of K*: " << gaussianFit1_2->GetParameter(1) << " GeV" << std::endl;
@@ -199,15 +197,15 @@ void histo_analyzer()
   // Canvas10
   TCanvas* canvas10 = new TCanvas("canvas10", "Analisis of K*", 1600, 600);
   canvas10->Divide(3, 1);
-  result1_2->SetLineColor(kBlue);
-  result1_2->SetTitle("Difference Concordant and Discordant Particle Invariant Mass");
+  results[0]->SetLineColor(kBlue);
+  results[0]->SetTitle("Difference Concordant and Discordant Particle Invariant Mass");
   canvas10->cd(1);
-  result1_2->Draw();
+  results[0]->Draw();
   gaussianFit1_2->Draw("SAME");
-  result3_4->SetLineColor(kBlue);
-  result3_4->SetTitle("Difference Concordant and Discordant Particle Pi-K Invariant Mass");
+  results[1]->SetLineColor(kBlue);
+  results[1]->SetTitle("Difference Concordant and Discordant Particle Pi-K Invariant Mass");
   canvas10->cd(2);
-  result3_4->Draw();
+  results[1]->Draw();
   gaussianFit3_4->Draw("SAME");
   histograms_invmass[5]->SetLineColor(kGreen);
   canvas10->cd(3);
