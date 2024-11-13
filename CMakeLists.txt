@@ -23,10 +23,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 string(APPEND CMAKE_CXX_FLAGS
       " -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion"
       " -Wshadow -Wimplicit-fallthrough -Wextra-semi") # -Wold-style-cast")
-
-# abilita asserzioni di debug (in gcc), l'address sanitizer e l'undefined-behaviour sanitizer in debug mode
-string(APPEND CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer")
-string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
+# string(APPEND CMAKE_CXX_FLAGS_DEBUG " -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer")
+# string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
 
 # Aggiungi la directory 'src' e 'third_party' alle directory di inclusione
@@ -50,17 +48,31 @@ link_directories(${ROOT_LIBRARY_DIRS})
 # Crea una cartella 'myRoot' per i file generati
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/root_files)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files)
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files/png_files)
 
 # Eseguibili di test
 add_executable(test_particles.t tests/test_file.cpp ${SOURCES})
 
 add_executable(test_histo.t tests/HistoTest.cpp)
 target_link_libraries(test_histo.t PRIVATE ${ROOT_LIBRARIES})
+target_compile_options(test_histo.t PRIVATE -Wno-sign-conversion -Wno-conversion -Wno-float-conversion -Wno-extra-semi -Wno-vla) # For root warnings
 
-# Definisci il test associato a test.t se i test sono abilitati
 if(BUILD_TESTING)
       add_test(NAME test_particles.t COMMAND test_particles.t)
       add_test(NAME test_histo.t COMMAND test_histo.t)
+
+      # Configura AddressSanitizer per test_particles.t
+      set_tests_properties(test_particles.t PROPERTIES
+          COMPILE_FLAGS "-D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-omit-frame-pointer"
+          LINK_FLAGS "-fsanitize=address,undefined -fno-omit-frame-pointer")
+
+      # Configura Valgrind per test_histo.t
+      set(CTEST_MEMORYCHECK_COMMAND "valgrind")
+      set(CTEST_MEMORYCHECK_OPTIONS "--leak-check=full --track-origins=yes")
+
+      set_tests_properties(test_histo.t PROPERTIES
+          MEMORYCHECK_COMMAND ${CTEST_MEMORYCHECK_COMMAND}
+          MEMORYCHECK_COMMAND_OPTIONS ${CTEST_MEMORYCHECK_OPTIONS})
 endif()
 
 

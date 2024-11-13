@@ -46,3 +46,5 @@ Thumbs.db
 
 # Root files
 root_files/
+generated_files/
+tests/Testing/
