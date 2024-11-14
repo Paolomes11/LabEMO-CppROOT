@@ -59,7 +59,7 @@ void histo_analyzer()
       Fits[i] = new TF1(Fits_name[i], "pol0",
                         histograms[i + 1]->GetXaxis()->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
                         histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
-      //Fits[i]->SetParLimits(0, 99684, 100316);
+      // Fits[i]->SetParLimits(0, 99684, 100316);
     } else {
       Fits[i] = new TF1(Fits_name[i], "expo", histograms[i + 1]->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
                         histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
@@ -96,9 +96,8 @@ void histo_analyzer()
     results[i]->Add(histograms_invmass[2 * (i + 1)], -1);
     // For Chi2 test
     hist_clones[i] = (TH1F*)histograms_invmass[i]->Clone(clone_names[i]);
-    hist_clones[i]->SetBins(
-        100, histograms_invmass[5]->GetXaxis()->GetBinLowEdge(histograms_invmass[5]->FindFirstBinAbove(0)),
-        histograms_invmass[5]->GetXaxis()->GetBinUpEdge(histograms_invmass[5]->FindLastBinAbove(0)));
+    hist_clones[i]->SetBins(100, histograms_invmass[5]->GetXaxis()->GetXmin(),
+                            histograms_invmass[5]->GetXaxis()->GetXmax());
   }
 
   // Chi2 Test
@@ -162,35 +161,49 @@ void histo_analyzer()
   TString titles[2] = {"Difference Concordant and Discordant Particle Invariant Mass",
                        "Difference Concordant and Discordant Particle Pi-K Invariant Mass"};
   TCanvas* canvases[10];
-  EColor colors[2] = {kBlue, kGreen};
+  EColor colors[3] = {kBlue, kGreen, kCyan};
 
   for (int i = 0; i < 10; i++) {
-    if (i < 7) {
+    if (i < 6) {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 800, 600);
-      histograms[i]->SetLineColor(kBlue);
+      histograms[i]->SetLineColor(colors[0]);
+      histograms[i]->SetFillColorAlpha(colors[2] - 9, 0.3);
+      histograms[i]->SetLineWidth(2);
+      histograms[i]->GetYaxis()->SetTitle("entries");
+      histograms[i]->GetXaxis()->SetTitle(canvas_des[i]);
+      histograms[i]->Smooth(1);
       histograms[i]->Draw();
+    } else if (i == 6) {
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 800, 600);
+      histograms_invmass[0]->SetLineColor(colors[0]);
+      histograms_invmass[0]->SetLineWidth(2);
+      histograms_invmass[0]->GetYaxis()->SetTitle("entries");
+      histograms_invmass[0]->GetXaxis()->SetTitle(canvas_des[i]);
+      histograms_invmass[0]->Draw();
     } else if (i == 7 || i == 8) {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1200, 600);
       canvases[i]->Divide(2, 1);
       for (int j = 0; j < 2; j++) {
-        histograms_invmass[(i - 7) * 2 + j + 1]->SetLineColor(colors[j]);
         canvases[i]->cd(j + 1);
+        histograms_invmass[(i - 7) * 2 + j + 1]->SetLineColor(colors[j]);
+        histograms_invmass[(i - 7) * 2 + j + 1]->SetLineWidth(2);
+        histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetTitle("entries");
+        histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetTitle(canvas_des[6]);
         histograms_invmass[(i - 7) * 2 + j + 1]->Draw();
       }
     } else {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1600, 600);
       canvases[i]->Divide(3, 1);
       for (int j = 0; j < 2; j++) {
-        results[j]->SetLineColor(colors[0]);
         results[j]->SetTitle(titles[j]);
         canvases[i]->cd(j + 1);
+        results[j]->SetLineColor(colors[0]);
         results[j]->Draw();
       }
       histograms_invmass[5]->SetLineColor(colors[1]);
       canvases[i]->cd(3);
       histograms_invmass[5]->Draw();
     }
-
     canvases[i]->SaveAs("generated_files/png_files/" + canvas_dow[i] + ".png");
   }
 }
