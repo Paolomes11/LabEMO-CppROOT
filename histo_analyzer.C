@@ -185,7 +185,6 @@ void histo_analyzer()
         results[j]->SetTitle(titles[j]);
         canvases[i]->cd(j + 1);
         results[j]->Draw();
-        gaussianFits[j]->Draw("SAME");
       }
       histograms_invmass[5]->SetLineColor(colors[1]);
       canvases[i]->cd(3);
