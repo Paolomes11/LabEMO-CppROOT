@@ -158,7 +158,6 @@ void histo_analyzer()
       }
       histograms[i]->GetXaxis()->SetTitleOffset(1.3);
       histograms[i]->GetXaxis()->SetLabelSize(0.04);
-      histograms[i]->Smooth(1);
       histograms[i]->Draw();
     } else if (i == 6) {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
