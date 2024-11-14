@@ -95,26 +95,22 @@ void histo_analyzer()
     results[i] = (TH1F*)histograms_invmass[2 * i + 1]->Clone(result_names[i]);
     results[i]->Add(histograms_invmass[2 * (i + 1)], -1);
     // For Chi2 test
-    hist_clones[i] = (TH1F*)histograms_invmass[i]->Clone(clone_names[i]);
-    hist_clones[i]->SetBins(100, histograms_invmass[5]->GetXaxis()->GetXmin(),
+    hist_clones[i] = (TH1F*)results[i]->Clone(clone_names[i]);
+    hist_clones[i]->SetBins(histograms_invmass[5]->GetNbinsX(), histograms_invmass[5]->GetXaxis()->GetXmin(),
                             histograms_invmass[5]->GetXaxis()->GetXmax());
   }
 
   // Chi2 Test
-  Double_t chi2comparison_1 = hist_clones[0]->Chi2Test(hist_clones[1], "CHI2/NDF");
-  Double_t chi2comparison_2 = hist_clones[0]->Chi2Test(histograms_invmass[5], "CHI2/NDF");
-  Double_t chi2comparison_3 = hist_clones[1]->Chi2Test(histograms_invmass[5], "CHI2/NDF");
+  Double_t chi2comparison_1 = hist_clones[0]->Chi2Test(histograms_invmass[5], "CHI2/NDF");
+  Double_t chi2comparison_2 = hist_clones[1]->Chi2Test(histograms_invmass[5], "CHI2/NDF");
 
-  std::cout << "Chi Squared Test between Difference Concordant and Discordant Particle Invariant Mass and Difference "
-               "Concorde and Discord Particle Pi-K Invariant Mass:"
-            << chi2comparison_1 << std::endl;
   std::cout << "Chi Squared Test between Difference Concordant and Discordant Particle Invariant Mass and K* products "
                "Invariant Mass:"
-            << chi2comparison_2 << std::endl;
+            << chi2comparison_1 << std::endl;
   std::cout
       << "Chi Squared Test between Difference Concordant and Discordant Particle Pi-K Invariant Mass and K* products "
          "Invariant Mass:"
-      << chi2comparison_3 << std::endl;
+      << chi2comparison_2 << std::endl;
 
   //  Gaussian Fits
   TString gaussian_names[2] = {"gaussianFits1_2", "gaussianFits3_4"};
