@@ -23,7 +23,7 @@
 2. To test the Mean of the Exponential Impulse Distribution; **giulio**
 3. To test the Maximum point of the Difference Histograms in corrispondence of K* mass; **giulio**
 4. (To understand how) To test the consistency of the Difference Histograms with the K* products histogram;
-5. Cosmetics of Histograms;
+5. Cosmetics of Histograms; (**Pango**)
 6. .C and .root histograms save;
 
 # Everything related to the histograms
