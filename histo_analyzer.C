@@ -78,8 +78,8 @@ void histo_analyzer()
       std::cout << "Fit Parameter: " << Fits[i]->GetParameter(0) << std::endl;
       std::cout << "Fit Parameter Error: " << Fits[i]->GetParError(0) << std::endl;
     } else {
-      std::cout << "Fit Mean: " << Fits[i]->GetParameter(1) << std::endl;
-      std::cout << "Fit Mean Error: " << Fits[i]->GetParError(1) << std::endl;
+      std::cout << "Fit Mean: " << Fits[i]->GetParameter(1) << "GeV" << std::endl;
+      std::cout << "Fit Mean Error: " << Fits[i]->GetParError(1) << "GeV" << std::endl;
     }
     std::cout << "Chi2/NDF: " << Fits[i]->GetChisquare() / Fits[i]->GetNDF() << std::endl;
     std::cout << "Probability of fit: " << Fits[i]->GetProb() << '\n' << std::endl;
