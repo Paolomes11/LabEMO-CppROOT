@@ -161,7 +161,7 @@ void histo_analyzer()
 
   for (int i = 0; i < 10; i++) {
     if (i < 6) {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 800, 600);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
       histograms[i]->SetLineColor(colors[0]);
       histograms[i]->SetFillColorAlpha(colors[2] - 9, 0.3);
       histograms[i]->SetLineWidth(2);
@@ -173,39 +173,61 @@ void histo_analyzer()
       } else {
         histograms[i]->GetXaxis()->SetTitle(canvas_des[i] + " (GeV)");
       }
-      histograms[i]->GetXaxis()->SetTitleOffset(1.1);
+      histograms[i]->GetXaxis()->SetTitleOffset(1.3);
       histograms[i]->GetXaxis()->SetLabelSize(0.04);
       histograms[i]->Smooth(1);
       histograms[i]->Draw();
     } else if (i == 6) {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 800, 600);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
       histograms_invmass[0]->SetLineColor(colors[0]);
       histograms_invmass[0]->SetLineWidth(2);
       histograms_invmass[0]->GetYaxis()->SetTitle("entries");
       histograms_invmass[0]->GetXaxis()->SetTitle(canvas_des[i] + " (GeV/c2)");
       histograms_invmass[0]->Draw();
     } else if (i == 7 || i == 8) {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1200, 600);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1700, 600);
       canvases[i]->Divide(2, 1);
       for (int j = 0; j < 2; j++) {
         canvases[i]->cd(j + 1);
         histograms_invmass[(i - 7) * 2 + j + 1]->SetLineColor(colors[j]);
         histograms_invmass[(i - 7) * 2 + j + 1]->SetLineWidth(2);
         histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetTitle("entries");
+        histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetTitleOffset(1.3);
+        histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetLabelSize(0.04);
         histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
+        histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetTitleOffset(1.3);
+        histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetLabelSize(0.04);
         histograms_invmass[(i - 7) * 2 + j + 1]->Draw();
       }
     } else {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1600, 600);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 5000, 800);
       canvases[i]->Divide(3, 1);
       for (int j = 0; j < 2; j++) {
-        results[j]->SetTitle(titles[j]);
         canvases[i]->cd(j + 1);
+        results[j]->SetTitle(titles[j]);
         results[j]->SetLineColor(colors[0]);
+        results[j]->SetLineWidth(2);
+        results[j]->GetYaxis()->SetTitle("entries");
+        results[j]->GetYaxis()->SetTitleOffset(1.5);
+        results[j]->GetYaxis()->SetTitleSize(0.03);
+        results[j]->GetYaxis()->SetLabelSize(0.03);
+        results[j]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
+        results[j]->GetXaxis()->SetTitleOffset(1.3);
+        results[j]->GetXaxis()->SetTitleSize(0.03);
+        results[j]->GetXaxis()->SetLabelSize(0.03);
         results[j]->Draw();
       }
-      histograms_invmass[5]->SetLineColor(colors[1]);
       canvases[i]->cd(3);
+      histograms_invmass[5]->SetLineColor(colors[1]);
+      histograms_invmass[5]->SetLineWidth(2);
+      histograms_invmass[5]->GetYaxis()->SetTitle("entries");
+      histograms_invmass[5]->GetYaxis()->SetTitleOffset(1.3);
+      histograms_invmass[5]->GetYaxis()->SetTitleSize(0.03);
+      histograms_invmass[5]->GetYaxis()->SetLabelSize(0.03);
+      histograms_invmass[5]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
+      histograms_invmass[5]->GetXaxis()->SetTitleOffset(1.3);
+      histograms_invmass[5]->GetXaxis()->SetTitleSize(0.03);
+      histograms_invmass[5]->GetXaxis()->SetLabelSize(0.03);
       histograms_invmass[5]->Draw();
     }
     canvases[i]->SaveAs("generated_files/png_files/" + canvas_dow[i] + ".png");
