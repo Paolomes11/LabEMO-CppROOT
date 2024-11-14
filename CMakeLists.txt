@@ -47,6 +47,7 @@ link_directories(${ROOT_LIBRARY_DIRS})
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/root_files)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files/png_files)
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/generated_files/root_files)
 
 # Test executables
 add_executable(test_particles.t tests/test_file.cpp ${SOURCES})

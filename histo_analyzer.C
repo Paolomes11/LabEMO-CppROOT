@@ -166,7 +166,15 @@ void histo_analyzer()
       histograms[i]->SetFillColorAlpha(colors[2] - 9, 0.3);
       histograms[i]->SetLineWidth(2);
       histograms[i]->GetYaxis()->SetTitle("entries");
-      histograms[i]->GetXaxis()->SetTitle(canvas_des[i]);
+      histograms[i]->GetYaxis()->SetTitleOffset(1.3);
+      histograms[i]->GetYaxis()->SetLabelSize(0.04);
+      if (i == 0 || i == 1 || i == 2) {
+        histograms[i]->GetXaxis()->SetTitle(canvas_des[i]);
+      } else {
+        histograms[i]->GetXaxis()->SetTitle(canvas_des[i] + " (GeV)");
+      }
+      histograms[i]->GetXaxis()->SetTitleOffset(1.1);
+      histograms[i]->GetXaxis()->SetLabelSize(0.04);
       histograms[i]->Smooth(1);
       histograms[i]->Draw();
     } else if (i == 6) {
@@ -174,7 +182,7 @@ void histo_analyzer()
       histograms_invmass[0]->SetLineColor(colors[0]);
       histograms_invmass[0]->SetLineWidth(2);
       histograms_invmass[0]->GetYaxis()->SetTitle("entries");
-      histograms_invmass[0]->GetXaxis()->SetTitle(canvas_des[i]);
+      histograms_invmass[0]->GetXaxis()->SetTitle(canvas_des[i] + " (GeV/c2)");
       histograms_invmass[0]->Draw();
     } else if (i == 7 || i == 8) {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1200, 600);
@@ -184,7 +192,7 @@ void histo_analyzer()
         histograms_invmass[(i - 7) * 2 + j + 1]->SetLineColor(colors[j]);
         histograms_invmass[(i - 7) * 2 + j + 1]->SetLineWidth(2);
         histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetTitle("entries");
-        histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetTitle(canvas_des[6]);
+        histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
         histograms_invmass[(i - 7) * 2 + j + 1]->Draw();
       }
     } else {
@@ -201,5 +209,6 @@ void histo_analyzer()
       histograms_invmass[5]->Draw();
     }
     canvases[i]->SaveAs("generated_files/png_files/" + canvas_dow[i] + ".png");
+    canvases[i]->SaveAs("generated_files/root_files/" + canvas_dow[i] + ".root");
   }
 }
