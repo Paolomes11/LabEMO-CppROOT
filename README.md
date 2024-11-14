@@ -19,8 +19,7 @@
 - The .gitignore **exists**.
 
 ## Some things to note or check in the program
-1. Maybe is possible to remove FindParticle() and use a similar function from the standard library;
-2. All the .C file were compacted but, if needed, we can decompact them;
+1. All the .C file were compacted but, if needed, we can decompact them;
 
 # Everything related to the histograms
 ## Numbers related to the single histogram and their names
