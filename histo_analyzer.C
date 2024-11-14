@@ -51,7 +51,7 @@ void histo_analyzer()
   std::cout << std::endl;
 
   // Uniform and Exponential Fits
-  TF1* Fits[2]; // 1-2 uniform, 3 exponential
+  TF1* Fits[3]; // 1-2 uniform, 3 exponential
   TString Fits_name[3] = {"uniformFit1", "uniformFit2", "exponentialFit"};
 
   for (int i = 0; i < 3; i++) {
