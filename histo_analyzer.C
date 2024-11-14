@@ -59,7 +59,6 @@ void histo_analyzer()
       Fits[i] = new TF1(Fits_name[i], "pol0",
                         histograms[i + 1]->GetXaxis()->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
                         histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
-      // Fits[i]->SetParLimits(0, 99684, 100316);
     } else {
       Fits[i] = new TF1(Fits_name[i], "expo", histograms[i + 1]->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
                         histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
@@ -142,7 +141,7 @@ void histo_analyzer()
                        "Difference Concordant and Discordant Particle Pi-K Invariant Mass"};
   TCanvas* canvases[10];
   EColor colors[3] = {kBlue, kGreen, kCyan};
-
+  
   for (int i = 0; i < 10; i++) {
     if (i < 6) {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
@@ -161,12 +160,6 @@ void histo_analyzer()
       histograms[i]->GetXaxis()->SetLabelSize(0.04);
       histograms[i]->Smooth(1);
       histograms[i]->Draw();
-
-      TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
-      legend->SetHeader("Legenda", "C");                                
-      legend->AddEntry(histograms[i], "Istogramma " + canvas_dow[i], "f"); 
-      legend->Draw();
-
     } else if (i == 6) {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
       histograms_invmass[0]->SetLineColor(colors[0]);
@@ -219,7 +212,9 @@ void histo_analyzer()
       histograms_invmass[5]->GetXaxis()->SetTitleSize(0.03);
       histograms_invmass[5]->GetXaxis()->SetLabelSize(0.03);
       histograms_invmass[5]->Draw();
+      gPad->WaitPrimitive();
     }
+    
     canvases[i]->SaveAs("generated_files/png_files/" + canvas_dow[i] + ".png");
     canvases[i]->SaveAs("generated_files/C_files/" + canvas_dow[i] + ".C");
     canvases[i]->SaveAs("generated_files/root_files/" + canvas_dow[i] + ".root");
