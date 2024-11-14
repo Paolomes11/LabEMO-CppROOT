@@ -20,9 +20,8 @@
 
 ## Some things to note or check in the program
 1. All the .C file were compacted but, if needed, we can decompact them; (**anyone in need**)
-2. (To understand how) To test the consistency of the Difference Histograms with the K* products histogram;
-3. Cosmetics of Histograms; (**Pango**)
-4. .C and .root histograms save;
+2. Cosmetics of Histograms; (**Pango**)
+3. .C and .root histograms save;
 
 # Everything related to the histograms
 ## Numbers related to the single histogram and their names
