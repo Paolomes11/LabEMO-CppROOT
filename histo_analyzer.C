@@ -163,9 +163,8 @@ void histo_analyzer()
       histograms[i]->Draw();
 
       TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
-      legend->SetHeader("Legenda", "C");                                // Aggiungi un'intestazione
-      legend->AddEntry(histograms[i], "Istogramma 1 (Gaussiano)", "f"); // "f" indica il riempimento
-      legend->AddEntry(histograms[i], "Istogramma 2 (Landau)", "f");    // "f" indica il riempimento
+      legend->SetHeader("Legenda", "C");                                
+      legend->AddEntry(histograms[i], "Istogramma " + canvas_dow[i], "f"); 
       legend->Draw();
 
     } else if (i == 6) {
