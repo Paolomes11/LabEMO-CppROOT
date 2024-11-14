@@ -11,21 +11,7 @@
 // clang-format on
 
 #include "Particle.hpp"
-/**
- * Generates random particle events and fills histograms with various distributions.
- *
- * This function simulates particle events and fills histograms representing different
- * distributions such as particle types, angles, impulses, energies, and invariant masses.
- * It uses random number generation to set particle properties and performs operations 
- * like decay and mass calculations. The histograms are then saved to a ROOT file.
- *
- * Key operations include:
- * - Initializing particle types and histograms.
- * - Generating random events with particles and assigning them random properties.
- * - Filling histograms with particle properties and invariant mass calculations.
- * - Handling K* particle decay into two-body events.
- * - Writing the filled histograms to a ROOT file.
- */
+
 void random_generation()
 {
   Int_t Nbase = 100;

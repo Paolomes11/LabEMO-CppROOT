@@ -7,19 +7,6 @@
 #include <iostream>
 // TO SEE INCLUDES
 
-/**
- * Analyzes histograms from a ROOT file and performs various operations.
- *
- * This function opens a ROOT file containing histograms and performs the following tasks:
- * - Retrieves and displays the number of entries for each histogram.
- * - Prints bin contents and errors for the "histo_particles" histogram.
- * - Fits uniform and exponential functions to specific histograms and prints fit results.
- * - Subtracts invariant mass histograms and fits Gaussian functions to the results, printing fit parameters.
- * - Creates and saves canvases displaying the histograms with various visual styles.
- * 
- * The function utilizes ROOT's TF1 for fitting and TCanvas for visualization. It handles errors in file opening and
- * ensures histograms are retrieved correctly from the file.
- */
 void histo_analyzer()
 {
   TFile* file = TFile::Open("generated_files/histograms.root");
