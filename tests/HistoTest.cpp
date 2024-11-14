@@ -1,5 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
+#include <TF1.h>
 #include <TFile.h>
 #include <TH1F.h>
 #include <TMath.h>
@@ -56,6 +57,18 @@ TEST_CASE("Tests for Histograms")
       double iRelative = iError / iEntries;
       CHECK(prob[i - 1] * nEntries == doctest::Approx(iEntries).epsilon(iRelative));
     }
+  }
+
+  SUBCASE("Testing the mean of the Exponential Impulse Distribution")
+  {
+    TF1* expo_fit = new TF1("exponentialFit", "expo", MyHist[3]->GetBinLowEdge(MyHist[3]->FindFirstBinAbove(0)),
+                            MyHist[3]->GetXaxis()->GetBinUpEdge(MyHist[3]->FindLastBinAbove(0)));
+    MyHist[3]->Fit(expo_fit, "R");
+
+    double mean       = expo_fit->GetParameter(1);
+    double mean_error = expo_fit->GetParError(1);
+
+    CHECK(abs(mean + 1) < mean_error);
   }
 
   file->Close();
