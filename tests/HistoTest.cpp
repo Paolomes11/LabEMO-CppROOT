@@ -1,5 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
+#include <TF1.h>
 #include <TFile.h>
 #include <TH1F.h>
 #include <TMath.h>
@@ -56,6 +57,37 @@ TEST_CASE("Tests for Histograms")
       double iRelative = iError / iEntries;
       CHECK(prob[i - 1] * nEntries == doctest::Approx(iEntries).epsilon(iRelative));
     }
+  }
+
+  SUBCASE("Testing the mean of the Exponential Impulse Distribution")
+  {
+    TF1* expo_fit = new TF1("exponentialFit", "expo", MyHist[3]->GetBinLowEdge(MyHist[3]->FindFirstBinAbove(0)),
+                            MyHist[3]->GetXaxis()->GetBinUpEdge(MyHist[3]->FindLastBinAbove(0)));
+    MyHist[3]->Fit(expo_fit, "R");
+
+    double mean       = expo_fit->GetParameter(1);
+    double mean_error = expo_fit->GetParError(1);
+
+    CHECK(abs(mean + 1) < mean_error);
+  }
+
+  SUBCASE("Testing the Maximum point of the Difference Histograms for K* mass")
+  {
+    TF1* gaus_fit =
+        new TF1("gaussianFit", "gaus", MyHist[11]->GetXaxis()->GetXmin(), MyHist[11]->GetXaxis()->GetXmax());
+    MyHist[11]->Fit(gaus_fit, "R");
+
+    double mean       = gaus_fit->GetParameter(1);
+    double mean_error = gaus_fit->GetParError(1);
+    double sigma      = gaus_fit->GetParameter(2);
+
+    CHECK(abs(mean - 0.89166) < mean_error * 3); // 3 for 99%
+
+    Int_t max       = MyHist[11]->GetMaximumBin();
+    double low_edge = MyHist[11]->GetXaxis()->GetBinLowEdge(max);
+    double max_edge = MyHist[11]->GetXaxis()->GetBinUpEdge(max);
+    CHECK(0.89166 > low_edge - 3 * sigma);
+    CHECK(0.89166 < max_edge + 3 * sigma);
   }
 
   file->Close();
