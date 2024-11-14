@@ -19,11 +19,11 @@
 - The .gitignore **exists**.
 
 ## Some things to note or check in the program
-1. All the .C file were compacted but, if needed, we can decompact them;
-2. To test the Mean of the Exponential Impulse Distribution;
-3. To test the Maxiumum poin of the Difference Histograms in corrispondence of K* mass;
+1. All the .C file were compacted but, if needed, we can decompact them; **anyone in need**
+2. To test the Mean of the Exponential Impulse Distribution; **giulio**
+3. To test the Maximum point of the Difference Histograms in corrispondence of K* mass; **giulio**
 4. (To understand how) To test the consistency of the Difference Histograms with the K* products histogram;
-5. Cosmetic of Histograms;
+5. Cosmetics of Histograms;
 6. .C and .root histograms save;
 
 # Everything related to the histograms
