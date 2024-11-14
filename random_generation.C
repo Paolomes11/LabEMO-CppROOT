@@ -37,7 +37,7 @@ void random_generation()
                              "Pion and Kaon Discordant Invariant Mass Distribution",
                              "Pion and Kaon Concordant Invariant Mass Distribution",
                              "K* Products Invariant Mass Distribution"};
-  int histo_bins[12]      = {7, 100, 100, 100, 100, 100, 200, 1000, 1000, 1000, 1000, 100};
+  int histo_bins[12]      = {7, 10000, 10000, 100, 100, 100, 200, 1000, 1000, 1000, 1000, 100};
   double min_bin[12]      = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.7};
   double max_bin[12]      = {8, 7, 3.5, 7, 8, 6, 7, 7, 7, 7, 7, 1.1};
 

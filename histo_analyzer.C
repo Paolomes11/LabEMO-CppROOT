@@ -3,8 +3,8 @@
 #include <TFile.h>
 #include <TH1F.h>
 #include <TLegend.h>
+#include <TMath.h>
 #include <iostream>
-
 // TO SEE INCLUDES
 
 void histo_analyzer()
@@ -59,11 +59,12 @@ void histo_analyzer()
       Fits[i] = new TF1(Fits_name[i], "pol0",
                         histograms[i + 1]->GetXaxis()->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
                         histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
+      //Fits[i]->SetParLimits(0, 99684, 100316);
     } else {
       Fits[i] = new TF1(Fits_name[i], "expo", histograms[i + 1]->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
                         histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
     }
-    histograms[i + 1]->Fit(Fits[i], "R");
+    histograms[i + 1]->Fit(Fits[i], "FR");
 
     if (i == 0) {
       std::cout << "\nResults of Fit on Histogram histo_azimutal:" << std::endl;
@@ -77,8 +78,8 @@ void histo_analyzer()
       std::cout << "Fit Parameter: " << Fits[i]->GetParameter(0) << std::endl;
       std::cout << "Fit Parameter Error: " << Fits[i]->GetParError(0) << std::endl;
     } else {
-      std::cout << "Fit Parameter: " << Fits[i]->GetParameter(1) << std::endl;
-      std::cout << "Fit Parameter Error: " << Fits[i]->GetParError(1) << std::endl;
+      std::cout << "Fit Mean: " << Fits[i]->GetParameter(1) << std::endl;
+      std::cout << "Fit Mean Error: " << Fits[i]->GetParError(1) << std::endl;
     }
     std::cout << "Chi2/NDF: " << Fits[i]->GetChisquare() / Fits[i]->GetNDF() << std::endl;
     std::cout << "Probability of fit: " << Fits[i]->GetProb() << '\n' << std::endl;
