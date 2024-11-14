@@ -163,8 +163,8 @@ void histo_analyzer()
       histograms[i]->Draw();
 
       TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
-      legend->SetHeader("Legenda", "C");                                
-      legend->AddEntry(histograms[i], "Istogramma " + canvas_dow[i], "f"); 
+      legend->SetHeader("Legenda", "C");
+      legend->AddEntry(histograms[i], "Istogramma " + canvas_dow[i], "f");
       legend->Draw();
 
     } else if (i == 6) {
@@ -220,6 +220,7 @@ void histo_analyzer()
       histograms_invmass[5]->GetXaxis()->SetLabelSize(0.03);
       histograms_invmass[5]->Draw();
     }
+
     canvases[i]->SaveAs("generated_files/png_files/" + canvas_dow[i] + ".png");
     canvases[i]->SaveAs("generated_files/C_files/" + canvas_dow[i] + ".C");
     canvases[i]->SaveAs("generated_files/root_files/" + canvas_dow[i] + ".root");
