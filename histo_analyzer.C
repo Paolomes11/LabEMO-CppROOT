@@ -184,7 +184,7 @@ void histo_analyzer()
         histograms_invmass[(i - 7) * 2 + j + 1]->Draw();
       }
     } else {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 5000, 800);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 3500, 800);
       canvases[i]->Divide(3, 1);
       for (int j = 0; j < 2; j++) {
         canvases[i]->cd(j + 1);
