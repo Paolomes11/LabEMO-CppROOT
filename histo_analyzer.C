@@ -78,11 +78,11 @@ void histo_analyzer()
       std::cout << "Fit Parameter: " << Fits[i]->GetParameter(0) << std::endl;
       std::cout << "Fit Parameter Error: " << Fits[i]->GetParError(0) << std::endl;
     } else {
-      std::cout << "Fit Mean: " << Fits[i]->GetParameter(1) << "GeV" << std::endl;
-      std::cout << "Fit Mean Error: " << Fits[i]->GetParError(1) << "GeV" << std::endl;
+      std::cout << "Fit Mean: " << Fits[i]->GetParameter(1) << " GeV" << std::endl;
+      std::cout << "Fit Mean Error: " << Fits[i]->GetParError(1) << " GeV" << std::endl;
     }
     std::cout << "Chi2/NDF: " << Fits[i]->GetChisquare() / Fits[i]->GetNDF() << std::endl;
-    std::cout << "Probability of fit: " << Fits[i]->GetProb() << '\n' << std::endl;
+    std::cout << "Probability of fit: " << Fits[i]->GetProb() * 100 << "%\n" << std::endl;
   }
 
   // Inv_Mass Histos Subtraction
@@ -118,7 +118,7 @@ void histo_analyzer()
     std::cout << "Width of K*: " << gaussianFits[i]->GetParameter(2) << " GeV/c2" << std::endl;
     std::cout << "Width of K* Error: " << gaussianFits[i]->GetParError(2) << " GeV/c2" << std::endl;
     std::cout << "Chi2/NDF: " << gaussianFits[i]->GetChisquare() / gaussianFits[i]->GetNDF() << std::endl;
-    std::cout << "Probability of fit: " << gaussianFits[i]->GetProb() << '\n' << std::endl;
+    std::cout << "Probability of fit: " << gaussianFits[i]->GetProb() * 100 << "%\n" << std::endl;
   }
 
   // Canvases
