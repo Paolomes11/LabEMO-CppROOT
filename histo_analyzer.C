@@ -174,6 +174,13 @@ void histo_analyzer()
       histograms[i]->GetXaxis()->SetLabelSize(0.04);
       histograms[i]->Smooth(1);
       histograms[i]->Draw();
+
+      TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
+      legend->SetHeader("Legenda", "C");                                // Aggiungi un'intestazione
+      legend->AddEntry(histograms[i], "Istogramma 1 (Gaussiano)", "f"); // "f" indica il riempimento
+      legend->AddEntry(histograms[i], "Istogramma 2 (Landau)", "f");    // "f" indica il riempimento
+      legend->Draw();
+
     } else if (i == 6) {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
       histograms_invmass[0]->SetLineColor(colors[0]);
@@ -228,6 +235,7 @@ void histo_analyzer()
       histograms_invmass[5]->Draw();
     }
     canvases[i]->SaveAs("generated_files/png_files/" + canvas_dow[i] + ".png");
+    canvases[i]->SaveAs("generated_files/C_files/" + canvas_dow[i] + ".C");
     canvases[i]->SaveAs("generated_files/root_files/" + canvas_dow[i] + ".root");
   }
 }
