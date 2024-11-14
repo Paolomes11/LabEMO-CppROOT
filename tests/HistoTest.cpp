@@ -90,5 +90,29 @@ TEST_CASE("Tests for Histograms")
     CHECK(0.89166 < max_edge + 3 * sigma);
   }
 
+  SUBCASE("Testing histo difference compability with K* mass")
+  {
+    TString dif_name  = "Diff_histo";
+    TString gaus_name = "gaussianFit";
+    TH1F* difference[2];
+    TF1* gaus_fits[2];
+    double means[2];
+    double means_error[2];
+
+    for (int i = 0; i < 2; ++i) {
+      difference[i] = (TH1F*)MyHist[7 + 2 * i]->Clone(dif_name + i + 1);
+      difference[i]->Add(MyHist[8 + 2 * i], -1);
+
+      gaus_fits[i] =
+          new TF1(gaus_name + i, "gaus", MyHist[11]->GetXaxis()->GetXmin(), MyHist[11]->GetXaxis()->GetXmax());
+      difference[i]->Fit(gaus_fits[i], "R");
+
+      means[i] = gaus_fits[i]->GetParameter(1);
+      means_error[i] = gaus_fits[i]->GetParError(1);
+
+      CHECK(abs(means[i] - 0.89166) < means_error[i] * 3);
+    }
+  }
+
   file->Close();
 }
