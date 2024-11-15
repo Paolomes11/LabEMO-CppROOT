@@ -1,4 +1,5 @@
 #include <TCanvas.h>
+#include <TColor.h>
 #include <TF1.h>
 #include <TFile.h>
 #include <TH1F.h>
@@ -140,13 +141,13 @@ void histo_analyzer()
   TString titles[2] = {"Difference Concordant and Discordant Particle Invariant Mass",
                        "Difference Concordant and Discordant Particle Pi-K Invariant Mass"};
   TCanvas* canvases[10];
-  EColor colors[3] = {kBlue, kGreen, kCyan};
-  
+  EColor colors[3]   = {kBlue, kGreen, kSpring};
+  int Cerulean_Color = TColor::GetColor(54, 126, 166);
   for (int i = 0; i < 10; i++) {
     if (i < 6) {
       canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
       histograms[i]->SetLineColor(colors[0]);
-      histograms[i]->SetFillColorAlpha(colors[2] - 9, 0.3);
+      histograms[i]->SetFillColorAlpha(Cerulean_Color, 0.1);
       histograms[i]->SetLineWidth(2);
       histograms[i]->GetYaxis()->SetTitle("entries");
       histograms[i]->GetYaxis()->SetTitleOffset(1.3);
@@ -182,7 +183,7 @@ void histo_analyzer()
         histograms_invmass[(i - 7) * 2 + j + 1]->Draw();
       }
     } else {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 3500, 800);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 2100, 800);
       canvases[i]->Divide(3, 1);
       for (int j = 0; j < 2; j++) {
         canvases[i]->cd(j + 1);
