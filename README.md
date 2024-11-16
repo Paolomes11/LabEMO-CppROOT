@@ -20,7 +20,7 @@
 
 ## Some things to note or check in the program
 1. All the .C file were compacted but, if needed, we can decompact them; (**anyone in need**)
-2. Cosmetics of Histograms; (**Pango**)
+2. Cosmetics of Histograms; (**Pango**, tecnically should be fine)
 3. TO SEE includes;
 4. Check comments;
 
