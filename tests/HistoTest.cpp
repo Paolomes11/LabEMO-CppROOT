@@ -25,20 +25,18 @@ TEST_CASE("Tests for Histograms")
 
   SUBCASE("Test for num of entries")
   {
-    CHECK(abs(MyHist[0]->GetEntries() - 1E7 - 1E5) <= 1E5); // (1E7 + 1E5) +- 1E5
-
-    for (int i = 1; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
       CHECK(MyHist[i]->GetEntries() == 1E7);
     }
 
-    CHECK(4.950E8 <= MyHist[6]->GetEntries());
-    CHECK(MyHist[6]->GetEntries() <= 5.778E8);
+    CHECK(5.102E8 <= MyHist[6]->GetEntries());
+    CHECK(MyHist[6]->GetEntries() <= 5.200E8);
 
     for (int i = 1; i <= 2; i++) {
-      CHECK(2.428E8 <= MyHist[6 + i]->GetEntries());
-      CHECK(MyHist[6 + i]->GetEntries() <= 2.834E8);
-      CHECK(4.229E7 <= MyHist[8 + i]->GetEntries());
-      CHECK(MyHist[8 + i]->GetEntries() <= 4.936E7);
+      CHECK(2.502E8 <= MyHist[6 + i]->GetEntries());
+      CHECK(MyHist[6 + i]->GetEntries() <= 2.550E8);
+      CHECK(4.357E7 <= MyHist[8 + i]->GetEntries());
+      CHECK(MyHist[8 + i]->GetEntries() <= 4.441E7);
     }
 
     CHECK(99051 <= MyHist[11]->GetEntries());

@@ -53,20 +53,20 @@
 - histo_energy
     - Mean = 1E7
 - histo_invmass
-    - Mean = 5.153E8
-    - Interval = [4.950-5.778]E8
+    - Mean = 5.1513E8
+    - Interval = [5.102-5.200]E8
 - histo_invmass_disc
-    - Mean = 2.527E8
-    - Interval = [2.428-2.834]E8
+    - Mean = 2.526E8
+    - Interval = [2.502-2.550]E8
 - histo_invmass_conc
-    - Mean = 2.527E8
-    - Interval = [2.428-2.834]E8
+    - Mean = 2.526E8
+    - Interval = [2.502-2.550]E8
 - histo_invmass_Pi_K_disc
-    - Mean = 4.402E7
-    - Interval = [4.229-4.936]E7
+    - Mean = 4.400E7
+    - Interval = [4.357-4.441]E7
 - histo_invmass_Pi_K_conc
-    - Mean = 4.402E7
-    - Interval = [4.229-4.936]E7
+    - Mean = 4.400E7
+    - Interval = [4.357-4.441]E7
 - histo_invmass_Ks_prod
     - Mean = 10E5
     - Interval = [99051-100949]
