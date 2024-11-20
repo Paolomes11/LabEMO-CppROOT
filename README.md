@@ -20,9 +20,8 @@
 
 ## Some things to note or check in the program
 1. All the .C file were compacted but, if needed, we can decompact them; (**anyone in need**)
-2. Cosmetics of Histograms; (**Pango**, tecnically should be fine)
-3. TO SEE includes;
-4. Check comments;
+2. TO SEE includes;
+3. Check comments;
 
 # Everything related to the histograms
 ## Numbers related to the single histogram and their names
