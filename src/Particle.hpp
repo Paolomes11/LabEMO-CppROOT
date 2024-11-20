@@ -1,6 +1,8 @@
 #ifndef PARTICLE_HPP
 #define PARTICLE_HPP
 
+#include <cmath>
+#include <cstring>
 #include "ResonanceType.hpp"
 
 class Particle

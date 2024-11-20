@@ -2,7 +2,6 @@
 #include <TH1F.h>
 #include <TMath.h>
 #include <TRandom.h>
-#include <iostream>
 
 // clang-format off
     R__LOAD_LIBRARY(root_files/ParticleType_cpp.so)

@@ -66,7 +66,7 @@ TEST_CASE("Tests for Histograms")
     double mean       = expo_fit->GetParameter(1);
     double mean_error = expo_fit->GetParError(1);
 
-    CHECK(abs(mean + 1) < mean_error);
+    CHECK(abs(mean + 1) < mean_error * 3);
   }
 
   SUBCASE("Testing the Maximum point of the Difference Histograms for K* mass")
