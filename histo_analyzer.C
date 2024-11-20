@@ -231,7 +231,7 @@ void histo_analyzer()
       histograms_invmass[5]->GetYaxis()->SetTitle(titles[2]);
       histograms_invmass[5]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
       histograms_invmass[5]->Draw();
-      // gPad->WaitPrimitive();
+      gPad->WaitPrimitive();
     }
 
     canvases[i]->SaveAs("generated_files/png_files/" + canvas_dow[i] + ".png");
