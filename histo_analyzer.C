@@ -6,6 +6,7 @@
 #include <TMath.h>
 #include <TROOT.h>
 #include <TStyle.h>
+#include <iomanip>
 #include <iostream>
 
 void histo_analyzer()
@@ -75,6 +76,7 @@ void histo_analyzer()
   }
 
   // Histos entries
+  std::cout << "=============================\nHistograms Entries:" << std::endl;
   for (int i = 0; i < 12; ++i) {
     if (i < 6) {
       std::cout << "Histo " << histograms[i]->GetName() << " entries: " << histograms[i]->GetEntries() << std::endl;
@@ -83,15 +85,17 @@ void histo_analyzer()
                 << " entries: " << histograms_invmass[i - 6]->GetEntries() << std::endl;
     }
   }
-  std::cout << std::endl;
+  std::cout << "=============================\n" << std::endl;
 
   // Histo_Particle Bin Contents
-  std::cout << "Histo histo_particles bin entries" << std::endl;
+  std::cout << "=============================\nHisto histo_particles bin entries:" << std::endl;
   for (int i = 1; i < 8; ++i) {
-    std::cout << "Bin " << particle_names[i - 1] << " content: " << histograms[0]->GetBinContent(i) << "\nBin "
-              << particle_names[i - 1] << " error :" << histograms[0]->GetBinError(i) << std::endl;
+    std::cout << "Bin " << particle_names[i - 1] << " content: " << std::left << std::setw(20)
+              << histograms[0]->GetBinContent(i) << "\n"
+              << "Bin " << particle_names[i - 1] << " error :" << std::left << std::setw(20)
+              << histograms[0]->GetBinError(i) << std::endl;
   }
-  std::cout << std::endl;
+  std::cout << "=============================\n" << std::endl;
 
   // Uniform and Exponential Fits
   TF1* Fits[3]; // 1-2 uniform, 3 exponential
@@ -106,25 +110,28 @@ void histo_analyzer()
       Fits[i] = new TF1(Fits_name[i], "expo", histograms[i + 1]->GetBinLowEdge(histograms[i + 1]->FindFirstBinAbove(0)),
                         histograms[i + 1]->GetXaxis()->GetBinUpEdge(histograms[i + 1]->FindLastBinAbove(0)));
     }
+
+    std::cout << "=============================\n" << std::endl;
+    if (i == 0) {
+      std::cout << "Results of Fit on Histogram histo_azimutal:" << std::endl;
+    } else if (i == 1) {
+      std::cout << "Results of Fit on Histogram histo_polar:" << std::endl;
+    } else {
+      std::cout << "Results of Fit on Histogram histo_impulse:" << std::endl;
+    }
     histograms[i + 1]->Fit(Fits[i], "R");
 
-    if (i == 0) {
-      std::cout << "\nResults of Fit on Histogram histo_azimutal:" << std::endl;
-    } else if (i == 1) {
-      std::cout << "\nResults of Fit on Histogram histo_polar:" << std::endl;
-    } else {
-      std::cout << "\nResults of Fit on Histogram histo_impulse:" << std::endl;
-    }
     Fits[i]->Print();
     if (i < 2) {
-      std::cout << "Fit Parameter: " << Fits[i]->GetParameter(0) << std::endl;
-      std::cout << "Fit Parameter Error: " << Fits[i]->GetParError(0) << std::endl;
+      std::cout << std::left << std::setw(20) << "\nFit Parameter: " << Fits[i]->GetParameter(0) << std::endl;
+      std::cout << std::left << std::setw(20) << "Fit Parameter Error: " << Fits[i]->GetParError(0) << std::endl;
     } else {
-      std::cout << "Fit Mean: " << Fits[i]->GetParameter(1) << " GeV" << std::endl;
-      std::cout << "Fit Mean Error: " << Fits[i]->GetParError(1) << " GeV" << std::endl;
+      std::cout << std::left << std::setw(20) << "\nFit Mean: " << Fits[i]->GetParameter(1) << " GeV" << std::endl;
+      std::cout << std::left << std::setw(20) << "Fit Mean Error: " << Fits[i]->GetParError(1) << " GeV" << std::endl;
     }
-    std::cout << "Chi2/NDF: " << Fits[i]->GetChisquare() / Fits[i]->GetNDF() << std::endl;
-    std::cout << "Probability of fit: " << Fits[i]->GetProb() * 100 << "%\n" << std::endl;
+    std::cout << std::left << std::setw(20) << "Chi2/NDF: " << Fits[i]->GetChisquare() / Fits[i]->GetNDF() << std::endl;
+    std::cout << std::left << std::setw(20) << "Probability of fit: " << Fits[i]->GetProb() * 100 << "%\n" << std::endl;
+    std::cout << "=============================\n" << std::endl;
   }
 
   // Inv_Mass Histos Subtraction
@@ -145,22 +152,30 @@ void histo_analyzer()
   for (int i = 0; i < 2; i++) {
     gaussianFits[i] =
         new TF1(gaussian_names[i], "gaus", results[i]->GetXaxis()->GetXmin(), results[i]->GetXaxis()->GetXmax());
-    results[i]->Fit(gaussianFits[i], "R");
-
+    std::cout << "=============================\n" << std::endl;
     if (i == 0) {
-      std::cout << "\nResults of Fit on Histogram Difference Concordant and Discordant Particle Invariant Mass"
+      std::cout << "Results of Fit on Histogram Difference Concordant and Discordant Particle Invariant Mass"
                 << std::endl;
     } else {
-      std::cout << "\nResults of Fit on Histogram Difference Concordant and Discordant Particle Pi-K Invariant Mass"
+      std::cout << "Results of Fit on Histogram Difference Concordant and Discordant Particle Pi-K Invariant Mass"
                 << std::endl;
     }
+    results[i]->Fit(gaussianFits[i], "R");
+
     gaussianFits[i]->Print();
-    std::cout << "Mass of K*: " << gaussianFits[i]->GetParameter(1) << " GeV/c2" << std::endl;
-    std::cout << "Mass of K* Error: " << gaussianFits[i]->GetParError(1) << " GeV/c2" << std::endl;
-    std::cout << "Width of K*: " << gaussianFits[i]->GetParameter(2) << " GeV/c2" << std::endl;
-    std::cout << "Width of K* Error: " << gaussianFits[i]->GetParError(2) << " GeV/c2" << std::endl;
-    std::cout << "Chi2/NDF: " << gaussianFits[i]->GetChisquare() / gaussianFits[i]->GetNDF() << std::endl;
-    std::cout << "Probability of fit: " << gaussianFits[i]->GetProb() * 100 << "%\n" << std::endl;
+    std::cout << std::left << std::setw(20) << "\nMass of K*: " << gaussianFits[i]->GetParameter(1) << " GeV/c2"
+              << std::endl;
+    std::cout << std::left << std::setw(20) << "Mass of K* Error: " << gaussianFits[i]->GetParError(1) << " GeV/c2"
+              << std::endl;
+    std::cout << std::left << std::setw(20) << "Width of K*: " << gaussianFits[i]->GetParameter(2) << " GeV/c2"
+              << std::endl;
+    std::cout << std::left << std::setw(20) << "Width of K* Error: " << gaussianFits[i]->GetParError(2) << " GeV/c2"
+              << std::endl;
+    std::cout << std::left << std::setw(20)
+              << "Chi2/NDF: " << gaussianFits[i]->GetChisquare() / gaussianFits[i]->GetNDF() << std::endl;
+    std::cout << std::left << std::setw(20) << "Probability of fit: " << gaussianFits[i]->GetProb() * 100 << "%\n"
+              << std::endl;
+    std::cout << "=============================\n" << std::endl;
   }
 
   // Canvases
@@ -226,7 +241,7 @@ void histo_analyzer()
         results[j]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
         results[j]->Draw();
       }
-      canvases[i]->cd(3);  
+      canvases[i]->cd(3);
       histograms_invmass[5]->SetLineColor(colors[1]);
       histograms_invmass[5]->GetYaxis()->SetTitle(titles[2]);
       histograms_invmass[5]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
