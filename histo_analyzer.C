@@ -3,12 +3,10 @@
 #include <TF1.h>
 #include <TFile.h>
 #include <TH1F.h>
-#include <TLegend.h>
 #include <TMath.h>
 #include <TROOT.h>
 #include <TStyle.h>
 #include <iostream>
-// TO SEE INCLUDES
 
 void histo_analyzer()
 {
