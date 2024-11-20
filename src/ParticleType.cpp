@@ -1,6 +1,4 @@
 #include "ParticleType.hpp"
-#include <iomanip>
-#include <iostream>
 
 // ctor
 ParticleType::ParticleType(const char* name, double mass, int charge)

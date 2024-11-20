@@ -1,6 +1,4 @@
 #include "ResonanceType.hpp"
-#include <iomanip>
-#include <iostream>
 
 ResonanceType::ResonanceType(const char* Name, double Mass, int Charge, double Width)
     : ParticleType(Name, Mass, Charge)

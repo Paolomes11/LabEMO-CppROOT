@@ -1,8 +1,4 @@
 #include "Particle.hpp"
-#include <cmath>
-#include <cstring>
-#include <iomanip>
-#include <iostream>
 
 ParticleType* Particle::fParticleType[fMaxNumParticleType] = {nullptr};
 int Particle::fNParticleType                               = 0;
@@ -182,7 +178,7 @@ int Particle::SetP(double px, double py, double pz)
 // Energy and invariant mass
 double Particle::GetEnergy() const
 {
-  return sqrt(pow(fParticleType[fIndex]->GetMass(), 2) + fModule2(fPx, fPy, fPz));
+  return sqrt(pow(GetMass(), 2) + fModule2(fPx, fPy, fPz));
 }
 
 double Particle::InvMass(Particle& p) const
@@ -216,12 +212,12 @@ int Particle::Decay2body(Particle& dau1, Particle& dau2) const
 
     double invnum = 1. / RAND_MAX;
     do {
-      x1 = 2.0 * rand() * invnum - 1.0; // Warning double to float
-      x2 = 2.0 * rand() * invnum - 1.0; // Warning double to float
+      x1 = 2.0 * rand() * invnum - 1.0;
+      x2 = 2.0 * rand() * invnum - 1.0;
       w  = x1 * x1 + x2 * x2;
     } while (w >= 1.0);
 
-    w  = sqrt((-2.0 * log(w)) / w); // Warning double to float
+    w  = sqrt((-2.0 * log(w)) / w);
     y1 = x1 * w;
 
     massMot += fParticleType[fIndex]->GetWidth() * y1;

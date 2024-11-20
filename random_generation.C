@@ -2,7 +2,6 @@
 #include <TH1F.h>
 #include <TMath.h>
 #include <TRandom.h>
-#include <iostream>
 
 // clang-format off
     R__LOAD_LIBRARY(root_files/ParticleType_cpp.so)
@@ -15,7 +14,7 @@
 void random_generation()
 {
   Int_t Nbase = 100;
-  Int_t Nmax  = 140;
+  Int_t Nmax  = 150;
   Int_t nGen  = 1E5;
 
   TString particle_names[7] = {"Pi+", "Pi-", "K+", "K-", "P+", "P-", "K*"};
