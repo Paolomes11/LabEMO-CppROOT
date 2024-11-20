@@ -5,11 +5,53 @@
 #include <TH1F.h>
 #include <TLegend.h>
 #include <TMath.h>
+#include <TROOT.h>
+#include <TStyle.h>
 #include <iostream>
 // TO SEE INCLUDES
 
 void histo_analyzer()
 {
+  //Canvas Style
+  TStyle* graphStyle = new TStyle("graphStyle", "Stile personalizzato");
+  graphStyle->SetFrameBorderMode(0);
+  graphStyle->SetFrameFillColor(0);
+  graphStyle->SetCanvasBorderMode(0);
+  graphStyle->SetCanvasColor(0);
+  graphStyle->SetPadBorderMode(0);
+  graphStyle->SetPadColor(0);
+  graphStyle->SetStatColor(0);
+  graphStyle->SetPadGridX(true);
+  graphStyle->SetPadGridY(true);
+  graphStyle->SetLabelFont(42, "");
+  graphStyle->SetLabelFont(42, "XY");
+  graphStyle->SetLabelSize(0.04, "XY");
+  graphStyle->SetTitleFont(42, "");
+  graphStyle->SetTitleFont(42, "XY");
+  graphStyle->SetTitleSize(0.035, "XY");
+  graphStyle->SetTitleOffset(1.3, "XY");
+  graphStyle->SetTitleAlign(23);
+  graphStyle->SetTitleSize(0.050, "");
+  graphStyle->SetTitleX(0.5);
+  graphStyle->SetTitleBorderSize(0);
+  graphStyle->SetTitleFillColor(0);
+  graphStyle->SetTitleBorderSize(0);
+  graphStyle->SetTitleStyle(0);
+  graphStyle->SetTitleOffset(0., "Y");
+  graphStyle->SetPalette(57);
+  graphStyle->SetLineWidth(2);
+  graphStyle->SetOptFit(1111);
+  graphStyle->SetOptStat(1111);
+  graphStyle->SetStatBorderSize(1);
+  graphStyle->SetStatY(0.935);
+  graphStyle->SetStatFontSize(0.03);
+  graphStyle->SetStatFont(42);
+  graphStyle->SetFuncWidth(2);
+  graphStyle->SetFuncColor(2);
+  graphStyle->SetHistLineColor(kBlue + 2);
+  gROOT->SetStyle("graphStyle");
+  
+  // Open file 
   TFile* file = TFile::Open("generated_files/histograms.root");
   if (!file || file->IsZombie()) {
     std::cerr << "Error opening file!" << std::endl;
@@ -86,7 +128,7 @@ void histo_analyzer()
   }
 
   // Inv_Mass Histos Subtraction
-  TString result_names[2] = {"result1_2", "result3_4"};
+  TString result_names[2] = {"Diff_InvMass_Disc_Conc", "Diff_InvMass_Disc_Conc_PiK"};
   TString clone_names[2]  = {"hist1_clone", "hist2_clone"};
   TH1F* results[2];
   TH1F* hist_clones[2];
@@ -138,33 +180,29 @@ void histo_analyzer()
       "impulse_distribution",    "transverse_impulse_distribution", "energy_distribution",
       "invmass_distribution",    "conc_disc_invmass_distribution",  "conc_disc_PiK_invmass_distribution",
       "Ks_distribution_analysis"};
-  TString titles[2] = {"Difference Concordant and Discordant Particle Invariant Mass",
-                       "Difference Concordant and Discordant Particle Pi-K Invariant Mass"};
+  TString titles[3] = {"Difference Concordant and Discordant Particle Invariant Mass",
+                       "Difference Concordant and Discordant Particle Pi-K Invariant Mass", "entries"};
   TCanvas* canvases[10];
   EColor colors[3]   = {kBlue, kGreen, kSpring};
   int Cerulean_Color = TColor::GetColor(54, 126, 166);
   for (int i = 0; i < 10; i++) {
     if (i < 6) {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1200, 700);
       histograms[i]->SetLineColor(colors[0]);
       histograms[i]->SetFillColorAlpha(Cerulean_Color, 0.1);
-      histograms[i]->SetLineWidth(2);
-      histograms[i]->GetYaxis()->SetTitle("entries");
-      histograms[i]->GetYaxis()->SetTitleOffset(1.3);
-      histograms[i]->GetYaxis()->SetLabelSize(0.04);
-      if (i == 0 || i == 1 || i == 2) {
+      histograms[i]->GetYaxis()->SetTitle(titles[2]);
+      if (i == 0) {
         histograms[i]->GetXaxis()->SetTitle(canvas_des[i]);
+      } else if (i == 1 || i == 2) {
+        histograms[i]->GetXaxis()->SetTitle(canvas_des[i] + " (rad)");
       } else {
         histograms[i]->GetXaxis()->SetTitle(canvas_des[i] + " (GeV)");
       }
-      histograms[i]->GetXaxis()->SetTitleOffset(1.3);
-      histograms[i]->GetXaxis()->SetLabelSize(0.04);
       histograms[i]->Draw();
     } else if (i == 6) {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 900, 600);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1200, 700);
       histograms_invmass[0]->SetLineColor(colors[0]);
-      histograms_invmass[0]->SetLineWidth(2);
-      histograms_invmass[0]->GetYaxis()->SetTitle("entries");
+      histograms_invmass[0]->GetYaxis()->SetTitle(titles[2]);
       histograms_invmass[0]->GetXaxis()->SetTitle(canvas_des[i] + " (GeV/c2)");
       histograms_invmass[0]->Draw();
     } else if (i == 7 || i == 8) {
@@ -173,46 +211,27 @@ void histo_analyzer()
       for (int j = 0; j < 2; j++) {
         canvases[i]->cd(j + 1);
         histograms_invmass[(i - 7) * 2 + j + 1]->SetLineColor(colors[j]);
-        histograms_invmass[(i - 7) * 2 + j + 1]->SetLineWidth(2);
-        histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetTitle("entries");
-        histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetTitleOffset(1.3);
-        histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetLabelSize(0.04);
+        histograms_invmass[(i - 7) * 2 + j + 1]->GetYaxis()->SetTitle(titles[2]);
         histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
-        histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetTitleOffset(1.3);
-        histograms_invmass[(i - 7) * 2 + j + 1]->GetXaxis()->SetLabelSize(0.04);
         histograms_invmass[(i - 7) * 2 + j + 1]->Draw();
       }
     } else {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 2100, 800);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 2100, 400);
       canvases[i]->Divide(3, 1);
       for (int j = 0; j < 2; j++) {
         canvases[i]->cd(j + 1);
         results[j]->SetTitle(titles[j]);
         results[j]->SetLineColor(colors[0]);
-        results[j]->SetLineWidth(2);
-        results[j]->GetYaxis()->SetTitle("entries");
-        results[j]->GetYaxis()->SetTitleOffset(1.5);
-        results[j]->GetYaxis()->SetTitleSize(0.03);
-        results[j]->GetYaxis()->SetLabelSize(0.03);
+        results[j]->GetYaxis()->SetTitle(titles[2]);
         results[j]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
-        results[j]->GetXaxis()->SetTitleOffset(1.3);
-        results[j]->GetXaxis()->SetTitleSize(0.03);
-        results[j]->GetXaxis()->SetLabelSize(0.03);
         results[j]->Draw();
       }
       canvases[i]->cd(3);
       histograms_invmass[5]->SetLineColor(colors[1]);
-      histograms_invmass[5]->SetLineWidth(2);
-      histograms_invmass[5]->GetYaxis()->SetTitle("entries");
-      histograms_invmass[5]->GetYaxis()->SetTitleOffset(1.3);
-      histograms_invmass[5]->GetYaxis()->SetTitleSize(0.03);
-      histograms_invmass[5]->GetYaxis()->SetLabelSize(0.03);
+      histograms_invmass[5]->GetYaxis()->SetTitle(titles[2]);
       histograms_invmass[5]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
-      histograms_invmass[5]->GetXaxis()->SetTitleOffset(1.3);
-      histograms_invmass[5]->GetXaxis()->SetTitleSize(0.03);
-      histograms_invmass[5]->GetXaxis()->SetLabelSize(0.03);
       histograms_invmass[5]->Draw();
-      gPad->WaitPrimitive();
+      // gPad->WaitPrimitive();
     }
 
     canvases[i]->SaveAs("generated_files/png_files/" + canvas_dow[i] + ".png");
