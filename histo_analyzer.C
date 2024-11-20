@@ -12,7 +12,7 @@
 
 void histo_analyzer()
 {
-  //Canvas Style
+  // Canvas Style
   TStyle* graphStyle = new TStyle("graphStyle", "Stile personalizzato");
   graphStyle->SetFrameBorderMode(0);
   graphStyle->SetFrameFillColor(0);
@@ -28,8 +28,8 @@ void histo_analyzer()
   graphStyle->SetLabelSize(0.04, "XY");
   graphStyle->SetTitleFont(42, "");
   graphStyle->SetTitleFont(42, "XY");
-  graphStyle->SetTitleSize(0.035, "XY");
-  graphStyle->SetTitleOffset(1.3, "XY");
+  graphStyle->SetTitleSize(0.03, "XY");
+  graphStyle->SetTitleOffset(1.1, "XY");
   graphStyle->SetTitleAlign(23);
   graphStyle->SetTitleSize(0.050, "");
   graphStyle->SetTitleX(0.5);
@@ -44,14 +44,16 @@ void histo_analyzer()
   graphStyle->SetOptStat(1111);
   graphStyle->SetStatBorderSize(1);
   graphStyle->SetStatY(0.935);
+  graphStyle->SetStatX(0.99);
   graphStyle->SetStatFontSize(0.03);
   graphStyle->SetStatFont(42);
+  graphStyle->SetStatW(0.15);
   graphStyle->SetFuncWidth(2);
   graphStyle->SetFuncColor(2);
   graphStyle->SetHistLineColor(kBlue + 2);
   gROOT->SetStyle("graphStyle");
-  
-  // Open file 
+
+  // Open file
   TFile* file = TFile::Open("generated_files/histograms.root");
   if (!file || file->IsZombie()) {
     std::cerr << "Error opening file!" << std::endl;
@@ -187,7 +189,7 @@ void histo_analyzer()
   int Cerulean_Color = TColor::GetColor(54, 126, 166);
   for (int i = 0; i < 10; i++) {
     if (i < 6) {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1200, 700);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1400, 700);
       histograms[i]->SetLineColor(colors[0]);
       histograms[i]->SetFillColorAlpha(Cerulean_Color, 0.1);
       histograms[i]->GetYaxis()->SetTitle(titles[2]);
@@ -200,13 +202,13 @@ void histo_analyzer()
       }
       histograms[i]->Draw();
     } else if (i == 6) {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1200, 700);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1400, 700);
       histograms_invmass[0]->SetLineColor(colors[0]);
       histograms_invmass[0]->GetYaxis()->SetTitle(titles[2]);
       histograms_invmass[0]->GetXaxis()->SetTitle(canvas_des[i] + " (GeV/c2)");
       histograms_invmass[0]->Draw();
     } else if (i == 7 || i == 8) {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1700, 600);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 1700, 700);
       canvases[i]->Divide(2, 1);
       for (int j = 0; j < 2; j++) {
         canvases[i]->cd(j + 1);
@@ -216,8 +218,8 @@ void histo_analyzer()
         histograms_invmass[(i - 7) * 2 + j + 1]->Draw();
       }
     } else {
-      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 2100, 400);
-      canvases[i]->Divide(3, 1);
+      canvases[i] = new TCanvas(canvas_name + i + 1, canvas_des[i], 2100, 1400);
+      canvases[i]->Divide(2, 2);
       for (int j = 0; j < 2; j++) {
         canvases[i]->cd(j + 1);
         results[j]->SetTitle(titles[j]);
@@ -226,7 +228,7 @@ void histo_analyzer()
         results[j]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
         results[j]->Draw();
       }
-      canvases[i]->cd(3);
+      canvases[i]->cd(3);  
       histograms_invmass[5]->SetLineColor(colors[1]);
       histograms_invmass[5]->GetYaxis()->SetTitle(titles[2]);
       histograms_invmass[5]->GetXaxis()->SetTitle(canvas_des[6] + " (GeV/c2)");
