@@ -68,3 +68,6 @@
 - histo_invmass_Ks_prod
     - Mean = 10E5
     - Interval = [99051-100949]
+
+# Results of the tests
+The tests for the histograms have all been set with a percentage of 99% but, because of the mere number of tests related to probability, it is still rather common to see one or maximum two of the 31 tests fail.
