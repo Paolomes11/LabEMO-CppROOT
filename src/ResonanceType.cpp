@@ -1,6 +1,6 @@
 #include "ResonanceType.hpp"
 
-ResonanceType::ResonanceType(const char* Name, double Mass, int Charge, double Width)
+ResonanceType::ResonanceType(const char* Name, const double Mass, const int Charge, const double Width)
     : ParticleType(Name, Mass, Charge)
     , fWidth(Width) {};
 
