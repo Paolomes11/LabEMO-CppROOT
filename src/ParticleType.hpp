@@ -7,7 +7,7 @@
 class ParticleType
 {
  public:
-  ParticleType(const char* name, double mass, int charge);
+  ParticleType(const char* name, const double mass, const int charge);
   virtual ~ParticleType() = default;
 
   // Getters

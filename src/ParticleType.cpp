@@ -1,7 +1,7 @@
 #include "ParticleType.hpp"
 
 // ctor
-ParticleType::ParticleType(const char* name, double mass, int charge)
+ParticleType::ParticleType(const char* name, const double mass, const int charge)
     : fName(name)
     , fMass(mass)
     , fCharge(charge)
