@@ -112,5 +112,15 @@ TEST_CASE("Tests for Histograms")
     }
   }
 
+  SUBCASE("Testing the resonance of ks product"){
+    TF1* gaus_fit = new TF1("gaussianFit", "gaus", MyHist[11]->GetXaxis()->GetXmin(), MyHist[11]->GetXaxis()->GetXmax());
+    MyHist[11]->Fit(gaus_fit, "R");
+
+    double resonance      = gaus_fit->GetParameter(2);
+    double resonance_error = gaus_fit->GetParError(2);
+
+    CHECK(abs(resonance - 0.050) < resonance_error * 3); // 3 for 99%
+  }
+
   file->Close();
 }
