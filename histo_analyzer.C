@@ -146,8 +146,8 @@ void histo_analyzer()
   }
 
   //  Gaussian Fits
-  TString gaussian_names[2] = {"gaussianFits1_2", "gaussianFits3_4"};
-  TF1* gaussianFits[2];
+  TString gaussian_names[3] = {"gaussianFits1_2", "gaussianFits3_4", "gaussianFits_true"};
+  TF1* gaussianFits[3];
 
   for (int i = 0; i < 2; i++) {
     gaussianFits[i] =
@@ -177,6 +177,28 @@ void histo_analyzer()
               << std::endl;
     std::cout << "=============================\n" << std::endl;
   }
+
+  gaussianFits[2] = new TF1(gaussian_names[2], "gaus", histograms_invmass[5]->GetXaxis()->GetXmin(),
+                            histograms_invmass[5]->GetXaxis()->GetXmax());
+  std::cout << "=============================\n" << std::endl;
+
+  std::cout << "Results of Fit on Histogram Ks products" << std::endl;
+  histograms_invmass[5]->Fit(gaussianFits[2], "R");
+
+  gaussianFits[2]->Print();
+  std::cout << std::left << std::setw(20) << "\nMass of K*: " << gaussianFits[2]->GetParameter(1) << " GeV/c2"
+            << std::endl;
+  std::cout << std::left << std::setw(20) << "Mass of K* Error: " << gaussianFits[2]->GetParError(1) << " GeV/c2"
+            << std::endl;
+  std::cout << std::left << std::setw(20) << "Width of K*: " << gaussianFits[2]->GetParameter(2) << " GeV/c2"
+            << std::endl;
+  std::cout << std::left << std::setw(20) << "Width of K* Error: " << gaussianFits[2]->GetParError(2) << " GeV/c2"
+            << std::endl;
+  std::cout << std::left << std::setw(20) << "Chi2/NDF: " << gaussianFits[2]->GetChisquare() / gaussianFits[2]->GetNDF()
+            << std::endl;
+  std::cout << std::left << std::setw(20) << "Probability of fit: " << gaussianFits[2]->GetProb() * 100 << "%\n"
+            << std::endl;
+  std::cout << "=============================\n" << std::endl;
 
   // Canvases
   TString canvas_name    = "canvas";
