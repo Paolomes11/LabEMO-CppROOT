@@ -136,9 +136,7 @@ void histo_analyzer()
 
   // Inv_Mass Histos Subtraction
   TString result_names[2] = {"Diff_InvMass_Disc_Conc", "Diff_InvMass_Disc_Conc_PiK"};
-  TString clone_names[2]  = {"hist1_clone", "hist2_clone"};
   TH1F* results[2];
-  TH1F* hist_clones[2];
 
   for (int i = 0; i < 2; i++) {
     results[i] = (TH1F*)histograms_invmass[2 * i + 1]->Clone(result_names[i]);

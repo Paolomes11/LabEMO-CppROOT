@@ -232,19 +232,15 @@ int Particle::Decay2body(Particle& dau1, Particle& dau2) const
                      * (massMot * massMot - (massDau1 - massDau2) * (massDau1 - massDau2)))
               / massMot * 0.5;
 
-  double norm = 2 * M_PI / RAND_MAX;
-
+  double norm  = 2 * M_PI / RAND_MAX;
   double phi   = rand() * norm;
   double theta = rand() * norm * 0.5 - M_PI / 2.;
   dau1.SetP(pout * sin(theta) * cos(phi), pout * sin(theta) * sin(phi), pout * cos(theta));
   dau2.SetP(-pout * sin(theta) * cos(phi), -pout * sin(theta) * sin(phi), -pout * cos(theta));
-
   double energy = sqrt(fPx * fPx + fPy * fPy + fPz * fPz + massMot * massMot);
-
-  double bx = fPx / energy;
-  double by = fPy / energy;
-  double bz = fPz / energy;
-
+  double bx     = fPx / energy;
+  double by     = fPy / energy;
+  double bz     = fPz / energy;
   dau1.Boost(bx, by, bz);
   dau2.Boost(bx, by, bz);
 

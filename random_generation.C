@@ -42,10 +42,10 @@ void random_generation()
   double max_bin[12]      = {8, 7, 3.5, 7, 8, 6, 7, 7, 7, 7, 7, 1.1};
 
   TH1F* AllHist[12];
-  for(int i = 0; i < 12; ++i) {
+  for (int i = 0; i < 12; ++i) {
     AllHist[i] = new TH1F(histo_names[i], histo_desc[i], histo_bins[i], min_bin[i], max_bin[i]);
 
-    if(i > 5){
+    if (i > 5) {
       AllHist[i]->Sumw2();
     }
   }
@@ -225,10 +225,10 @@ void random_generation()
   }
 
   // Write histograms
-  for(int i = 0; i < 12; ++i) {
+  for (int i = 0; i < 12; ++i) {
     AllHist[i]->Write();
   }
-  
+
   file->Close();
   delete file;
 }

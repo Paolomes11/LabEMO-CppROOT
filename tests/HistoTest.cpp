@@ -105,18 +105,20 @@ TEST_CASE("Tests for Histograms")
           new TF1(gaus_name + i, "gaus", MyHist[11]->GetXaxis()->GetXmin(), MyHist[11]->GetXaxis()->GetXmax());
       difference[i]->Fit(gaus_fits[i], "R");
 
-      means[i] = gaus_fits[i]->GetParameter(1);
+      means[i]       = gaus_fits[i]->GetParameter(1);
       means_error[i] = gaus_fits[i]->GetParError(1);
 
       CHECK(abs(means[i] - 0.89166) < means_error[i] * 3);
     }
   }
 
-  SUBCASE("Testing the resonance of ks product"){
-    TF1* gaus_fit = new TF1("gaussianFit", "gaus", MyHist[11]->GetXaxis()->GetXmin(), MyHist[11]->GetXaxis()->GetXmax());
+  SUBCASE("Testing the resonance of ks product")
+  {
+    TF1* gaus_fit =
+        new TF1("gaussianFit", "gaus", MyHist[11]->GetXaxis()->GetXmin(), MyHist[11]->GetXaxis()->GetXmax());
     MyHist[11]->Fit(gaus_fit, "R");
 
-    double resonance      = gaus_fit->GetParameter(2);
+    double resonance       = gaus_fit->GetParameter(2);
     double resonance_error = gaus_fit->GetParError(2);
 
     CHECK(abs(resonance - 0.050) < resonance_error * 3); // 3 for 99%
